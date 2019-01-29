@@ -10,6 +10,7 @@ type Props = {
   children: React.node,
   defaultScreen: React.Node,
   tintColor: string,
+  backgroundColor: string,
 };
 
 type State = {
@@ -45,7 +46,7 @@ export default class BottomNavigation extends Component<Props, State> {
   }
 
   render() {
-    const { tintColor } = this.props;
+    const { backgroundColor, tintColor } = this.props;
     const { activeScreen } = this.state;
     const contextValue = { setActiveScreen: this.setActiveScreen, activeScreen, tintColor };
     return (
@@ -54,7 +55,7 @@ export default class BottomNavigation extends Component<Props, State> {
           <ScrollView>
             {activeScreen && activeScreen()}
           </ScrollView>
-          <View style={styles.navBar}>
+          <View style={[styles.navBar, { backgroundColor }]}>
             {this.props.children}
           </View>
         </View>
