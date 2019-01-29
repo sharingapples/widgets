@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet, NativeModules, Platform } from 'react-native';
 
 import NavigatonContext from './NavigatonContext';
 
@@ -8,28 +8,27 @@ import Nav from './Nav';
 
 type Props = {
   children: React.node,
-  defaultScreen: React.Node,
+  defaultScreen: Class<Component>,
   tintColor: string,
+  backgroundColor: string,
 };
 
 type State = {
-  activeScreen: null | React.Node,
+  Screen: Class<Component>,
 };
+
+const padding = Platform.OS === 'ios' ? NativeModules.Screen.bottomMargin / 2 : 0;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: 'relative',
   },
   navBar: {
-    height: 60,
+    height: 60 + padding,
+    paddingBottom: padding,
     width: '100%',
     flexDirection: 'row',
     backgroundColor: 'red',
-    borderTopWidth: 1,
-    borderColor: '#d6d7da',
-    justifyContent: 'space-between',
-    alignItems: 'center',
   },
 });
 
@@ -37,24 +36,22 @@ export default class BottomNavigation extends Component<Props, State> {
   static Item = Nav;
 
   state = {
-    activeScreen: this.props.defaultScreen,
+    Screen: this.props.defaultScreen,
   };
 
-  setActiveScreen = (screen) => {
-    this.setState({ activeScreen: screen });
+  setActiveScreen = (Screen) => {
+    this.setState({ Screen });
   }
 
   render() {
-    const { tintColor } = this.props;
-    const { activeScreen } = this.state;
-    const contextValue = { setActiveScreen: this.setActiveScreen, activeScreen, tintColor };
+    const { tintColor, backgroundColor } = this.props;
+    const { Screen } = this.state;
+    const contextValue = { setActiveScreen: this.setActiveScreen, activeScreen: Screen, tintColor };
     return (
       <NavigatonContext.Provider value={contextValue}>
         <View style={styles.container}>
-          <ScrollView>
-            {activeScreen && activeScreen()}
-          </ScrollView>
-          <View style={styles.navBar}>
+          <Screen />
+          <View style={[styles.navBar, { backgroundColor }]}>
             {this.props.children}
           </View>
         </View>

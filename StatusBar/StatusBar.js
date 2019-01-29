@@ -23,19 +23,20 @@ type Props = {
   title: string,
   backgroundColor: ?string,
   light?: boolean,
+  fontColor: ?string,
 };
 
 // eslint-disable-next-line react/prefer-stateless-function
 class StatusBar extends Component<Props> {
   render() {
-    const { backgroundColor, light, title } = this.props;
+    const { backgroundColor, light, title, fontColor } = this.props;
     return (
       <View style={[styles.container, { backgroundColor }]}>
         <RNStatusBar
           barStyle={light ? 'light-content' : 'dark-content'}
           backgroundColor={backgroundColor}
         />
-        <Text style={styles.title}>{title}</Text>
+        <Text style={[styles.title, { color: fontColor }]}>{title}</Text>
       </View>
     );
   }
