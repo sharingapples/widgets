@@ -8,7 +8,7 @@ import NavigatonContext from './NavigatonContext';
 
 type Props = {
   title: string,
-  Screen: Class<Component>,
+  screen: Class<Component>,
   icon: number,
 }
 
@@ -27,13 +27,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const Nav = ({ title, Screen, icon }: Props) => (
+const Nav = ({ title, screen, icon }: Props) => (
   <NavigatonContext.Consumer>
     {
       ({ setActiveScreen, activeScreen, tintColor }) => {
-        const activeColor = activeScreen === Screen ? tintColor : undefined;
+        const activeColor = activeScreen === screen ? tintColor : undefined;
         return (
-          <TouchableOpacity style={styles.container} onPress={() => setActiveScreen(Screen)}>
+          <TouchableOpacity style={styles.container} onPress={() => setActiveScreen(screen)}>
             <Image source={icon} style={styles.icon} tintColor={activeColor} />
             <Text allowFontScaling={false} style={[styles.title, { color: activeColor }]}>
               {title}
