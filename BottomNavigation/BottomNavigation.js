@@ -1,6 +1,8 @@
 // @flow
 import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet, NativeModules, Platform } from 'react-native';
+import {
+  View, StyleSheet, NativeModules, Platform,
+} from 'react-native';
 
 import NavigatonContext from './NavigatonContext';
 
@@ -35,16 +37,19 @@ const styles = StyleSheet.create({
 export default class BottomNavigation extends Component<Props, State> {
   static Item = Nav;
 
-  state = {
-    Screen: this.props.defaultScreen,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      Screen: props.defaultScreen,
+    };
+  }
 
   setActiveScreen = (Screen) => {
     this.setState({ Screen });
   }
 
   render() {
-    const { tintColor, backgroundColor } = this.props;
+    const { tintColor, backgroundColor, children } = this.props;
     const { Screen } = this.state;
     const contextValue = { setActiveScreen: this.setActiveScreen, activeScreen: Screen, tintColor };
     return (
@@ -52,7 +57,7 @@ export default class BottomNavigation extends Component<Props, State> {
         <View style={styles.container}>
           <Screen />
           <View style={[styles.navBar, { backgroundColor }]}>
-            {this.props.children}
+            {children}
           </View>
         </View>
       </NavigatonContext.Provider>
