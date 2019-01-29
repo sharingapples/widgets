@@ -10,6 +10,7 @@ type Props = {
   children: React.node,
   defaultScreen: Class<Component>,
   tintColor: string,
+  backgroundColor: string,
 };
 
 type State = {
@@ -43,14 +44,14 @@ export default class BottomNavigation extends Component<Props, State> {
   }
 
   render() {
-    const { tintColor } = this.props;
+    const { tintColor, backgroundColor } = this.props;
     const { Screen } = this.state;
     const contextValue = { setActiveScreen: this.setActiveScreen, activeScreen: Screen, tintColor };
     return (
       <NavigatonContext.Provider value={contextValue}>
         <View style={styles.container}>
           <Screen />
-          <View style={styles.navBar}>
+          <View style={[styles.navBar, { backgroundColor }]}>
             {this.props.children}
           </View>
         </View>
