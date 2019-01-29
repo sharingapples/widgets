@@ -14,9 +14,9 @@ type Props = {
 
 const styles = StyleSheet.create({
   container: {
-    width: 64,
+    flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
   },
   icon: {
     width: 24,
@@ -33,13 +33,11 @@ const Nav = ({ title, screen, icon }: Props) => (
       ({ setActiveScreen, activeScreen, tintColor }) => {
         const activeColor = activeScreen === screen ? tintColor : undefined;
         return (
-          <TouchableOpacity onPress={() => setActiveScreen(screen)}>
-            <View style={styles.container}>
+          <TouchableOpacity style={styles.container} onPress={() => setActiveScreen(screen)}>
               <Image source={icon} style={styles.icon} tintColor={activeColor} />
               <Text allowFontScaling={false} style={[styles.title, { color: activeColor }]}>
                 {title}
               </Text>
-            </View>
           </TouchableOpacity>
         );
       }

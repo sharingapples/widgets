@@ -3,14 +3,10 @@ import React from 'react';
 
 type Context = {
   tintColor: string,
-  activeScreen: null | React.Node,
-  setActiveScreen: (screen: React.Node) => void,
+  activeScreen: Class<Component>,
+  setActiveScreen: (screen: Class<Component>) => void,
 };
 
-const NavigationContext = React.createContext<Context>({
-  tintColor: '',
-  activeScreen: null,
-  setActiveScreen: () => { },
-});
+const NavigationContext = React.createContext<Context>();
 
 export default NavigationContext;
