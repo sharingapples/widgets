@@ -4,12 +4,7 @@ import {
   View, Text, StatusBar as RNStatusBar, StyleSheet, Platform, NativeModules,
 } from 'react-native';
 
-const { Screen } = NativeModules;
-
-const barHeight = Platform.select({
-  ios: 44,
-  default: 0,
-});
+const barHeight = Platform.OS === 'ios' ? NativeModules.Screen.topMargin : 0;
 
 const styles = StyleSheet.create({
   container: {
