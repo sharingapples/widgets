@@ -7,7 +7,7 @@ import {
 const { Screen } = NativeModules;
 
 const barHeight = Platform.select({
-  ios: Screen.topInset,
+  ios: 44,
   default: 0,
 });
 

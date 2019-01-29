@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   navBar: {
-    height: 60,
     width: '100%',
     flexDirection: 'row',
     backgroundColor: 'red',
