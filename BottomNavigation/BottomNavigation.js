@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     paddingBottom: padding,
     width: '100%',
     flexDirection: 'row',
-    backgroundColor: 'red',
   },
 });
 
