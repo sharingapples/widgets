@@ -8,9 +8,14 @@ const barHeight = Platform.OS === 'ios' ? NativeModules.Screen.topMargin : 0;
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: barHeight,
     width: '100%',
-    minHeight: barHeight + 42,
+  },
+  body: {
+    marginTop: barHeight,
+    minHeight: 42,
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   title: {
@@ -19,7 +24,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     alignSelf: 'center',
     position: 'absolute',
-    top: barHeight,
+    marginTop: barHeight,
   },
 });
 
@@ -40,13 +45,15 @@ class StatusBar extends Component<Props> {
           barStyle={light ? 'light-content' : 'dark-content'}
           backgroundColor={backgroundColor}
         />
-        <Text
-          allowFontScaling={false}
-          style={[styles.title, { color: light ? 'white' : 'black' }]}
-        >
-          {title}
-        </Text>
-        {children}
+        <View style={styles.body}>
+          <Text
+            allowFontScaling={false}
+            style={[styles.title, { color: light ? 'white' : 'black' }]}
+          >
+            {title}
+          </Text>
+          {children}
+        </View>
       </View>
     );
   }
