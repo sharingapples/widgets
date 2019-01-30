@@ -8,14 +8,18 @@ const barHeight = Platform.OS === 'ios' ? NativeModules.Screen.topMargin : 0;
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: barHeight + 10,
-    paddingBottom: 10,
+    paddingTop: barHeight,
     width: '100%',
+    minHeight: barHeight + 42,
+    justifyContent: 'center',
   },
   title: {
+    flex: 1,
     fontSize: 24,
     fontWeight: 'bold',
     alignSelf: 'center',
+    position: 'absolute',
+    top: barHeight,
   },
 });
 
@@ -23,7 +27,7 @@ type Props = {
   title: string,
   backgroundColor: ?string,
   light?: boolean,
-  children?: React.Node,
+  children?: React.Node | Array<React.Node>,
 };
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -36,9 +40,13 @@ class StatusBar extends Component<Props> {
           barStyle={light ? 'light-content' : 'dark-content'}
           backgroundColor={backgroundColor}
         />
-        {children
-          || (<Text style={[styles.title, { color: light ? 'white' : 'black' }]}>{title}</Text>)
-        }
+        <Text
+          allowFontScaling={false}
+          style={[styles.title, { color: light ? 'white' : 'black' }]}
+        >
+          {title}
+        </Text>
+        {children}
       </View>
     );
   }
@@ -46,7 +54,7 @@ class StatusBar extends Component<Props> {
 
 StatusBar.defaultProps = {
   light: false,
-  children: React.Node,
+  children: undefined,
 };
 
 export default StatusBar;
