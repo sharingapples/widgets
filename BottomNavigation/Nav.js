@@ -34,7 +34,7 @@ const Nav = ({ title, screen, icon }: Props) => (
         const activeColor = activeScreen === screen ? tintColor : undefined;
         return (
           <TouchableOpacity style={styles.container} onPress={() => setActiveScreen(screen)}>
-            <Image source={icon} style={styles.icon} tintColor={activeColor} />
+            <Image source={icon} style={[styles.icon, { tintColor: activeColor }]} />
             <Text allowFontScaling={false} style={[styles.title, { color: activeColor }]}>
               {title}
             </Text>
