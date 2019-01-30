@@ -23,7 +23,7 @@ type Props = {
   title: string,
   backgroundColor: ?string,
   light?: boolean,
-  children: any,
+  children?: React.Node,
 };
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -46,6 +46,7 @@ class StatusBar extends Component<Props> {
 
 StatusBar.defaultProps = {
   light: false,
+  children: React.Node,
 };
 
 export default StatusBar;
