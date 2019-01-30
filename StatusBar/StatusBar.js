@@ -10,12 +10,12 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: barHeight + 10,
     paddingBottom: 10,
-    alignItems: 'center',
     width: '100%',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    alignSelf: 'center',
   },
 });
 
@@ -23,20 +23,23 @@ type Props = {
   title: string,
   backgroundColor: ?string,
   light?: boolean,
-  fontColor: ?string,
+  component: () => any,
 };
 
 // eslint-disable-next-line react/prefer-stateless-function
 class StatusBar extends Component<Props> {
   render() {
-    const { backgroundColor, light, title, fontColor } = this.props;
+    const { backgroundColor, light, title, component } = this.props;
     return (
       <View style={[styles.container, { backgroundColor }]}>
         <RNStatusBar
           barStyle={light ? 'light-content' : 'dark-content'}
           backgroundColor={backgroundColor}
         />
-        <Text style={[styles.title, { color: fontColor }]}>{title}</Text>
+        {component
+          ? component({ ...this.props })
+          : <Text style={[styles.title, { color: light ? 'white' : 'black' }]}>{title}</Text>
+        }
       </View>
     );
   }
