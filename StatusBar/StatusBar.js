@@ -18,17 +18,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  titleContainer: {
-    flex: 1,
+  title: {
     width: '100%',
-    justifyContent: 'center',
     position: 'absolute',
-    marginTop: barHeight,
-  },
-  titleText: {
     fontSize: 24,
+    textAlign: 'center',
     fontWeight: 'bold',
-    alignSelf: 'center',
   },
 });
 
@@ -52,16 +47,12 @@ class StatusBar extends Component<Props> {
         <View style={styles.body}>
           {title
           && (
-            <View
-              style={styles.titleContainer}
+            <Text
+              allowFontScaling={false}
+              style={[styles.title, { color: light ? 'white' : 'black' }]}
             >
-              <Text
-                allowFontScaling={false}
-                style={[styles.titleText, { color: light ? 'white' : 'black' }]}
-              >
-                {title}
-              </Text>
-            </View>
+              {title}
+            </Text>
           )
           }
           {children}
