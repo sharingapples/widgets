@@ -8,13 +8,21 @@ const barHeight = Platform.OS === 'ios' ? NativeModules.Screen.topMargin : 0;
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: barHeight + 10,
-    paddingBottom: 10,
-    alignItems: 'center',
     width: '100%',
   },
+  body: {
+    marginTop: barHeight,
+    minHeight: 42,
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   title: {
+    width: '100%',
+    position: 'absolute',
     fontSize: 24,
+    textAlign: 'center',
     fontWeight: 'bold',
   },
 });
@@ -23,20 +31,32 @@ type Props = {
   title: string,
   backgroundColor: ?string,
   light?: boolean,
-  fontColor: ?string,
+  children?: React.Node | Array<React.Node>,
 };
 
 // eslint-disable-next-line react/prefer-stateless-function
 class StatusBar extends Component<Props> {
   render() {
-    const { backgroundColor, light, title, fontColor } = this.props;
+    const { backgroundColor, light, title, children } = this.props;
     return (
       <View style={[styles.container, { backgroundColor }]}>
         <RNStatusBar
           barStyle={light ? 'light-content' : 'dark-content'}
           backgroundColor={backgroundColor}
         />
-        <Text style={[styles.title, { color: fontColor }]}>{title}</Text>
+        <View style={styles.body}>
+          {title
+          && (
+            <Text
+              allowFontScaling={false}
+              style={[styles.title, { color: light ? 'white' : 'black' }]}
+            >
+              {title}
+            </Text>
+          )
+          }
+          {children}
+        </View>
       </View>
     );
   }
@@ -44,6 +64,7 @@ class StatusBar extends Component<Props> {
 
 StatusBar.defaultProps = {
   light: false,
+  children: undefined,
 };
 
 export default StatusBar;
