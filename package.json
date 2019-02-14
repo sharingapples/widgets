@@ -1,6 +1,6 @@
 {
   "name": "@bhoos/widgets",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React Native Components",
   "main": "index.js",
   "repository": "git@github.com:bhoos/widgets.git",
