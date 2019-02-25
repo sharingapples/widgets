@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     height: 3,
     width: '100%',
     resizeMode: 'stretch',
+    zIndex: 99,
   },
   topBar: {
     flexDirection: 'row',
@@ -36,7 +37,6 @@ type Props = {
   titleColor?: string,
   onClose: () => void,
   children: any,
-  backgroundColor: string,
 };
 
 class BottomPopup extends Component<Props> {
@@ -65,7 +65,7 @@ class BottomPopup extends Component<Props> {
   }
 
   render() {
-    const { title, titleBack, titleColor, onClose, children, backgroundColor } = this.props;
+    const { title, titleBack, titleColor, onClose, children } = this.props;
     const titleElem = typeof title === 'string' ? (
       <Text
         allowFontScaling={false}
@@ -76,7 +76,7 @@ class BottomPopup extends Component<Props> {
     ) : title;
 
     return (
-      <Animated.View style={[styles.container, this.animatedStyle, { backgroundColor }]}>
+      <Animated.View style={[styles.container, this.animatedStyle]}>
         <Image source={shadow} style={styles.shadow} />
         <View style={[styles.topBar, { backgroundColor: titleBack }]}>
           {titleElem}
