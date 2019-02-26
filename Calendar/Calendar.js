@@ -9,6 +9,7 @@ type Props = {
   value?: string,
   width?: number,
   defaultView?: string,
+  selectedDateColor?: string,
 }
 
 type State = {
@@ -16,7 +17,6 @@ type State = {
   activeView: string,
 }
 
-const BRAND_COLOR = '#ffd400';
 const calPadding = 5;
 
 const styles = StyleSheet.create({
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   calRow: { flexDirection: 'row', justifyContent: 'space-between' },
   centerItems: { alignItems: 'center', justifyContent: 'center' },
   calCell: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  isSelectedContainer: { borderRadius: 5, backgroundColor: BRAND_COLOR },
+  isSelectedContainer: { borderRadius: 5 },
   isSelectedText: { color: 'white' },
 });
 
@@ -55,6 +55,7 @@ class Calendar extends PureComponent<Props, State> {
     width: 300,
     value: '',
     defaultView: 'day',
+    selectedDateColor: '#ffd400',
   };
 
   constructor(props) {
@@ -144,7 +145,7 @@ class Calendar extends PureComponent<Props, State> {
   }
 
   renderWeekDays = () => {
-    const { value } = this.props;
+    const { value, selectedDateColor } = this.props;
     const { currentDate } = this.state;
     const selectedDate = value && moment(value).format('dd');
     const selectedMonth = value && moment(value).format('YYYYMM') === currentDate.format('YYYYMM');
@@ -155,7 +156,7 @@ class Calendar extends PureComponent<Props, State> {
           ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((v, i) => {
             const isSelected = selectedMonth && selectedDate === v;
             return (
-              <View key={`${v}${i + 1}`} style={[styles.calCell, isSelected ? { borderBottomColor: BRAND_COLOR, borderBottomWidth: 2 } : {}]}>
+              <View key={`${v}${i + 1}`} style={[styles.calCell, isSelected ? { borderBottomColor: selectedDateColor, borderBottomWidth: 2 } : {}]}>
                 <Text style={{ color: 'grey' }}>{v}</Text>
               </View>
             );
@@ -166,7 +167,7 @@ class Calendar extends PureComponent<Props, State> {
   }
 
   renderWeeks = (date, monthIndex) => {
-    const { value } = this.props;
+    const { value, selectedDateColor } = this.props;
     return (
       <View key={date} style={styles.calRow}>
         {[0, 1, 2, 3, 4, 5, 6].map((i) => {
@@ -184,7 +185,9 @@ class Calendar extends PureComponent<Props, State> {
               style={[
                 styles.calCell,
                 this.dayCellDimension,
-                isSelected ? styles.isSelectedContainer : {},
+                isSelected
+                  ? { ...styles.isSelectedContainer, backgroundColor: selectedDateColor }
+                  : {},
               ]}
               onPress={() => !isPast && this.handleCellPress(daysDate)}
             >
@@ -200,7 +203,7 @@ class Calendar extends PureComponent<Props, State> {
 
   renderYearsOrMonths = () => {
     const { currentDate, activeView } = this.state;
-    const { value } = this.props;
+    const { value, selectedDateColor } = this.props;
     const dateAddFormat = calendarData.formats[activeView];
     const headerFormat = calendarData.header[activeView];
     const checkIfSelectedFormat = activeView === 'month' ? 'YYYYMMM' : 'YYYY';
@@ -219,7 +222,9 @@ class Calendar extends PureComponent<Props, State> {
           style={[
             styles.calCell,
             this.cellDimension,
-            isSelectedView ? styles.isSelectedContainer : {},
+            isSelectedView
+              ? { ...styles.isSelectedContainer, backgroundColor: selectedDateColor }
+              : {},
           ]}
         >
           <Text
