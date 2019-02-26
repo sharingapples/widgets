@@ -5,13 +5,10 @@ import moment from 'moment';
 import Back from './Back.png';
 
 type Props = {
-  onChange: () => void,
-  selected?: string,
-  calPadding?: number,
-  calWidth?: number,
-  calendarDateFormat?: string,
+  onChange: (value: Date) => void,
+  value?: string,
+  width?: number,
   defaultView?: string,
-  close?: () => void,
 }
 
 type State = {
@@ -20,6 +17,7 @@ type State = {
 }
 
 const BRAND_COLOR = '#ffd400';
+const calPadding = 5;
 
 const styles = StyleSheet.create({
   container: {
@@ -54,44 +52,40 @@ const calendarData = {
 };
 class Calendar extends PureComponent<Props, State> {
   static defaultProps = {
-    calWidth: 300,
-    calPadding: 5,
-    selected: '',
-    calendarDateFormat: 'YYYY-MM-DD',
+    width: 300,
+    value: '',
     defaultView: 'day',
-    close: () => {},
   };
 
   constructor(props) {
     super(props);
-    const { defaultView, selected } = this.props;
+    const { defaultView, value } = this.props;
     this.state = {
       activeView: defaultView,
-      currentDate: selected
-        ? moment(selected).startOf(calendarData.formats[defaultView])
+      currentDate: value
+        ? moment(value).startOf(calendarData.formats[defaultView])
         : moment().startOf(calendarData.formats[defaultView]),
     };
   }
 
   dayCellDimension = () => {
-    const { calWidth, calPadding } = this.props;
+    const { width } = this.props;
     return {
-      width: (calWidth - (2 * calPadding)) / 7,
-      height: (calWidth - (2 * calPadding)) / 7,
+      width: (width - (2 * calPadding)) / 7,
+      height: (width - (2 * calPadding)) / 7,
     };
   }
 
   cellDimension = () => {
-    const { calWidth, calPadding } = this.props;
+    const { width } = this.props;
     return {
-      width: (calWidth - (2 * calPadding)) / 4,
-      height: (calWidth - (2 * calPadding)) / 4,
+      width: (width - (2 * calPadding)) / 4,
+      height: (width - (2 * calPadding)) / 4,
     };
   }
 
   renderHeader = () => {
     const { activeView, currentDate } = this.state;
-    const { close } = this.props;
     switch (activeView) {
       case 'day':
         return (
@@ -115,7 +109,7 @@ class Calendar extends PureComponent<Props, State> {
           </TouchableOpacity>
         );
       default:
-        return <TouchableOpacity onPress={close}><Text>Cancel</Text></TouchableOpacity>;
+        return <Text />;
     }
   }
 
@@ -150,10 +144,10 @@ class Calendar extends PureComponent<Props, State> {
   }
 
   renderWeekDays = () => {
-    const { selected } = this.props;
+    const { value } = this.props;
     const { currentDate } = this.state;
-    const selectedDate = selected && moment(selected).format('dd');
-    const selectedMonth = selected && moment(selected).format('YYYYMM') === currentDate.format('YYYYMM');
+    const selectedDate = value && moment(value).format('dd');
+    const selectedMonth = value && moment(value).format('YYYYMM') === currentDate.format('YYYYMM');
 
     return (
       <View style={[styles.calRow, { paddingBottom: 5 }]}>
@@ -172,7 +166,7 @@ class Calendar extends PureComponent<Props, State> {
   }
 
   renderWeeks = (date, monthIndex) => {
-    const { selected } = this.props;
+    const { value } = this.props;
     return (
       <View key={date} style={styles.calRow}>
         {[0, 1, 2, 3, 4, 5, 6].map((i) => {
@@ -182,7 +176,7 @@ class Calendar extends PureComponent<Props, State> {
 
           const extraStyle = !isPast && isCurrentMonth ? { color: 'black', fontWeight: 'bold' } : { color: 'grey' };
 
-          const isSelected = selected && moment(selected).diff(daysDate, 'd') === 0;
+          const isSelected = value && moment(value).diff(daysDate, 'd') === 0;
 
           return (
             <TouchableOpacity
@@ -206,11 +200,11 @@ class Calendar extends PureComponent<Props, State> {
 
   renderYearsOrMonths = () => {
     const { currentDate, activeView } = this.state;
-    const { selected } = this.props;
+    const { value } = this.props;
     const dateAddFormat = calendarData.formats[activeView];
     const headerFormat = calendarData.header[activeView];
     const checkIfSelectedFormat = activeView === 'month' ? 'YYYYMMM' : 'YYYY';
-    const selectedDateText = selected && moment(selected).format(checkIfSelectedFormat);
+    const selectedDateText = value && moment(value).format(checkIfSelectedFormat);
     const dataChunks = [];
 
     const chunkData = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((j) => {
@@ -254,10 +248,10 @@ class Calendar extends PureComponent<Props, State> {
 
   handleCellPress = (date) => {
     const { activeView } = this.state;
-    const { calendarDateFormat, onChange } = this.props;
+    const { onChange } = this.props;
 
     if (activeView === 'day') {
-      if (onChange) onChange(date.format(calendarDateFormat));
+      if (onChange) onChange(date);
     } else if (activeView === 'month') {
       this.setState({ activeView: 'day', currentDate: date });
     } else if (activeView === 'year') {
@@ -280,22 +274,21 @@ class Calendar extends PureComponent<Props, State> {
 
   render() {
     const {
-      calWidth, calPadding, close,
+      width,
     } = this.props;
     const { activeView } = this.state;
 
     return (
-      <View style={[styles.container, { width: calWidth }]}>
-        <TouchableOpacity
+      <View style={[styles.container, { width }]}>
+        <View
           style={[styles.calRow, { paddingTop: calPadding * 2, paddingBottom: calPadding * 2 }]}
-          onPress={close}
         >
           {this.renderToggleArrow('prev')}
           <View style={styles.centerItems}>
             {this.renderHeader()}
           </View>
           {this.renderToggleArrow('next')}
-        </TouchableOpacity>
+        </View>
         <View style={{ padding: calPadding }}>
           {activeView === 'day' ? this.renderWeekDays() : null}
           {this.renderData()}
