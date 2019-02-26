@@ -62,50 +62,36 @@ class Calendar extends PureComponent<Props, State> {
     close: () => {},
   };
 
-  state = {
-    activeView: this.props.defaultView,
-    currentDate: this.props.selected
-      ? moment(this.props.selected).startOf(calendarData.formats[this.props.defaultView])
-      : moment().startOf(calendarData.formats[this.props.defaultView]),
+  constructor(props) {
+    super(props);
+    const { defaultView, selected } = this.props;
+    this.state = {
+      activeView: defaultView,
+      currentDate: selected
+        ? moment(selected).startOf(calendarData.formats[defaultView])
+        : moment().startOf(calendarData.formats[defaultView]),
+    };
   }
 
-  dayCellDimension = {
-    width: (this.props.calWidth - (2 * this.props.calPadding)) / 7,
-    height: (this.props.calWidth - (2 * this.props.calPadding)) / 7,
+  dayCellDimension = () => {
+    const { calWidth, calPadding } = this.props;
+    return {
+      width: (calWidth - (2 * calPadding)) / 7,
+      height: (calWidth - (2 * calPadding)) / 7,
+    };
   }
 
-  cellDimension = {
-    width: (this.props.calWidth - (2 * this.props.calPadding)) / 4,
-    height: (this.props.calWidth - (2 * this.props.calPadding)) / 4,
-  }
-
-  render() {
-    const {
-      calWidth, calPadding, close,
-    } = this.props;
-
-    return (
-      <View style={[styles.container, { width: calWidth }]}>
-        <TouchableOpacity
-          style={[styles.calRow, { paddingTop: calPadding * 2, paddingBottom: calPadding * 2 }]}
-          onPress={close}
-        >
-          {this.renderToggleArrow('prev')}
-          <View style={styles.centerItems}>
-            {this.renderHeader()}
-          </View>
-          {this.renderToggleArrow('next')}
-        </TouchableOpacity>
-        <View style={{ padding: calPadding }}>
-          {this.state.activeView === 'day' ? this.renderWeekDays() : null}
-          {this.renderData()}
-        </View>
-      </View>
-    );
+  cellDimension = () => {
+    const { calWidth, calPadding } = this.props;
+    return {
+      width: (calWidth - (2 * calPadding)) / 4,
+      height: (calWidth - (2 * calPadding)) / 4,
+    };
   }
 
   renderHeader = () => {
     const { activeView, currentDate } = this.state;
+    const { close } = this.props;
     switch (activeView) {
       case 'day':
         return (
@@ -129,7 +115,7 @@ class Calendar extends PureComponent<Props, State> {
           </TouchableOpacity>
         );
       default:
-        return <TouchableOpacity onPress={this.props.close}><Text>Cancel</Text></TouchableOpacity>;
+        return <TouchableOpacity onPress={close}><Text>Cancel</Text></TouchableOpacity>;
     }
   }
 
@@ -143,7 +129,8 @@ class Calendar extends PureComponent<Props, State> {
   }
 
   renderData = () => {
-    return this.state.activeView === 'day' ? this.renderDays() : this.renderYearsOrMonths();
+    const { activeView } = this.state;
+    return activeView === 'day' ? this.renderDays() : this.renderYearsOrMonths();
   }
 
   renderDays = () => {
@@ -184,35 +171,38 @@ class Calendar extends PureComponent<Props, State> {
     );
   }
 
-  renderWeeks = (date, monthIndex) => (
-    <View key={date} style={styles.calRow}>
-      {[0, 1, 2, 3, 4, 5, 6].map((i) => {
-        const daysDate = date.clone().add(i, 'd');
-        const isCurrentMonth = daysDate.month() === monthIndex;
-        const isPast = daysDate.diff(moment(), 'd') < 0;
+  renderWeeks = (date, monthIndex) => {
+    const { selected } = this.props;
+    return (
+      <View key={date} style={styles.calRow}>
+        {[0, 1, 2, 3, 4, 5, 6].map((i) => {
+          const daysDate = date.clone().add(i, 'd');
+          const isCurrentMonth = daysDate.month() === monthIndex;
+          const isPast = daysDate.diff(moment(), 'd') < 0;
 
-        const extraStyle = !isPast && isCurrentMonth ? { color: 'black', fontWeight: 'bold' } : { color: 'grey' };
+          const extraStyle = !isPast && isCurrentMonth ? { color: 'black', fontWeight: 'bold' } : { color: 'grey' };
 
-        const isSelected = this.props.selected && moment(this.props.selected).diff(daysDate, 'd') === 0;
+          const isSelected = selected && moment(selected).diff(daysDate, 'd') === 0;
 
-        return (
-          <TouchableOpacity
-            key={`${daysDate}${i}`}
-            style={[
-              styles.calCell,
-              this.dayCellDimension,
-              isSelected ? styles.isSelectedContainer : {},
-            ]}
-            onPress={() => !isPast && this.handleCellPress(daysDate)}
-          >
-            <Text style={[styles.calText, extraStyle, isSelected ? styles.isSelectedText : {}]}>
-              {daysDate.format('D')}
-            </Text>
-          </TouchableOpacity>
-        );
-      })}
-    </View>
-  );
+          return (
+            <TouchableOpacity
+              key={`${daysDate}${i}`}
+              style={[
+                styles.calCell,
+                this.dayCellDimension,
+                isSelected ? styles.isSelectedContainer : {},
+              ]}
+              onPress={() => !isPast && this.handleCellPress(daysDate)}
+            >
+              <Text style={[styles.calText, extraStyle, isSelected ? styles.isSelectedText : {}]}>
+                {daysDate.format('D')}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    );
+  }
 
   renderYearsOrMonths = () => {
     const { currentDate, activeView } = this.state;
@@ -235,7 +225,7 @@ class Calendar extends PureComponent<Props, State> {
           style={[
             styles.calCell,
             this.cellDimension,
-            isSelectedView ? styles.isSelectedContainer : {}
+            isSelectedView ? styles.isSelectedContainer : {},
           ]}
         >
           <Text
@@ -287,6 +277,32 @@ class Calendar extends PureComponent<Props, State> {
   }
 
   onViewChange = view => this.setState(prevState => ({ currentDate: prevState.currentDate.startOf('year'), activeView: view }));
+
+  render() {
+    const {
+      calWidth, calPadding, close,
+    } = this.props;
+    const { activeView } = this.state;
+
+    return (
+      <View style={[styles.container, { width: calWidth }]}>
+        <TouchableOpacity
+          style={[styles.calRow, { paddingTop: calPadding * 2, paddingBottom: calPadding * 2 }]}
+          onPress={close}
+        >
+          {this.renderToggleArrow('prev')}
+          <View style={styles.centerItems}>
+            {this.renderHeader()}
+          </View>
+          {this.renderToggleArrow('next')}
+        </TouchableOpacity>
+        <View style={{ padding: calPadding }}>
+          {activeView === 'day' ? this.renderWeekDays() : null}
+          {this.renderData()}
+        </View>
+      </View>
+    );
+  }
 }
 
 export default Calendar;

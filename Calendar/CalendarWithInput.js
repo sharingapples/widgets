@@ -43,10 +43,25 @@ class CalendarWithInput extends Component<Props, State> {
     defaultView: 'day',
   };
 
-  state = {
-    calendarVisible: false,
-    selectedDate: this.props.selected && moment(this.props.selected),
-  };
+  constructor(props) {
+    super(props);
+    const { selected } = this.props;
+
+    this.state = {
+      calendarVisible: false,
+      selectedDate: selected && moment(selected),
+    };
+  }
+
+  handleChange = (date) => {
+    const { onChange } = this.props;
+
+    this.setState({ selectedDate: date });
+    if (onChange) onChange(date);
+    this.toggle();
+  }
+
+  toggle = () => this.setState(prevState => ({ calendarVisible: !prevState.calendarVisible }));
 
   render() {
     const {
@@ -87,16 +102,6 @@ class CalendarWithInput extends Component<Props, State> {
       </>
     );
   }
-
-  handleChange = (date) => {
-    const { onChange } = this.props;
-
-    this.setState({ selectedDate: date });
-    if (onChange) onChange(date);
-    this.toggle();
-  }
-
-  toggle = () => this.setState(prevState => ({ calendarVisible: !prevState.calendarVisible }));
 }
 
 export default CalendarWithInput;
