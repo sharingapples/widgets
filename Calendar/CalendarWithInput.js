@@ -7,11 +7,10 @@ import Calendar from './Calendar';
 
 type Props = {
   onChange: () => void,
-  selected?: string,
+  value?: string,
   placeholder?: string,
   calendarDateFormat?: string,
-  calPadding?: number,
-  calWidth?: number,
+  width?: number,
   defaultView?: string,
 }
 
@@ -35,21 +34,20 @@ const styles = StyleSheet.create({
 
 class CalendarWithInput extends Component<Props, State> {
   static defaultProps = {
-    selected: '',
+    value: '',
     placeholder: 'Select a date',
     calendarDateFormat: 'YYYY-MM-DD',
-    calWidth: 300,
-    calPadding: 5,
-    defaultView: 'day',
+    width: 300,
+    defaultView: 'year',
   };
 
   constructor(props) {
     super(props);
-    const { selected } = this.props;
+    const { value } = this.props;
 
     this.state = {
       calendarVisible: false,
-      selectedDate: selected && moment(selected),
+      selectedDate: value && moment(value),
     };
   }
 
@@ -67,13 +65,12 @@ class CalendarWithInput extends Component<Props, State> {
     const {
       placeholder,
       calendarDateFormat,
-      calPadding,
-      calWidth,
+      width,
       defaultView,
     } = this.props;
     const { calendarVisible, selectedDate } = this.state;
     const calendarProps = {
-      calPadding, calWidth, defaultView, calendarDateFormat,
+      width, defaultView,
     };
 
     return (
@@ -90,8 +87,7 @@ class CalendarWithInput extends Component<Props, State> {
                 <View style={styles.inner}>
                   <Calendar
                     onChange={this.handleChange}
-                    selected={selectedDate}
-                    close={this.toggle}
+                    value={selectedDate}
                     {...calendarProps}
                   />
                 </View>

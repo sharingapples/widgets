@@ -1,20 +1,30 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import moment from 'moment';
 import Back from './Back.png';
 
 type Props = {
   onChange: (value: Date) => void,
-  value?: string,
+  value?: Date,
   width?: number,
   defaultView?: string,
   selectedDateColor?: string,
 }
 
+type TogggleProps = {
+  onPress: () => void,
+}
+
+type HeaderProps = {
+  onPress: () => void,
+  value: string,
+}
+
 type State = {
-  currentDate: string,
   activeView: string,
+  currentMonth: Date,
+  currentYear: Date,
 }
 
 const calPadding = 5;
@@ -24,9 +34,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderWidth: 1,
     borderRadius: 5,
+    padding: calPadding,
   },
-  headerStyle: { fontSize: 20, fontWeight: 'bold' },
-  headerDayMonth: { paddingRight: 10 },
+  headerTextStyle: { fontSize: 20, fontWeight: 'bold' },
+  headerStyle: { flexDirection: 'row' },
+  headerTextContainer: { paddingRight: 10 },
   calRow: { flexDirection: 'row', justifyContent: 'space-between' },
   centerItems: { alignItems: 'center', justifyContent: 'center' },
   calCell: { flex: 1, alignItems: 'center', justifyContent: 'center' },
@@ -34,23 +46,26 @@ const styles = StyleSheet.create({
   isSelectedText: { color: 'white' },
 });
 
-const calendarData = {
-  toggleDate: {
-    day: 1,
-    month: 12,
-    year: 12,
-  },
-  formats: {
-    day: 'M',
-    month: 'M',
-    year: 'y',
-  },
-  header: {
-    month: 'MMM',
-    year: 'YYYY',
-  },
-};
-class Calendar extends PureComponent<Props, State> {
+const Prev = ({ onPress }: TogggleProps) => (
+  <TouchableOpacity style={styles.centerItems} onPress={onPress}>
+    <Image source={Back} />
+  </TouchableOpacity>
+);
+
+const Next = ({ onPress }: TogggleProps) => (
+  <TouchableOpacity style={styles.centerItems} onPress={onPress}>
+    <Image source={Back} style={{ transform: [{ rotate: '180deg' }] }} />
+  </TouchableOpacity>
+);
+
+const Header = ({ value, onPress }: HeaderProps) => (
+  <TouchableOpacity onPress={onPress} style={styles.headerTextContainer}>
+    <Text style={styles.headerTextStyle}>
+      {value}
+    </Text>
+  </TouchableOpacity>
+);
+class Calendar extends Component<Props, State> {
   static defaultProps = {
     width: 300,
     value: '',
@@ -58,22 +73,18 @@ class Calendar extends PureComponent<Props, State> {
     selectedDateColor: '#ffd400',
   };
 
-  constructor(props) {
-    super(props);
-    const { defaultView, value } = this.props;
-    this.state = {
-      activeView: defaultView,
-      currentDate: value
-        ? moment(value).startOf(calendarData.formats[defaultView])
-        : moment().startOf(calendarData.formats[defaultView]),
-    };
-  }
+  state = {
+    activeView: this.props.defaultView,
+    currentDate: this.props.value 
+      ? moment(this.props.value).startOf(this.props.defaultView === 'year' ? 'year' : 'month')
+      : moment().startOf(this.props.defaultView === 'year' ? 'year' : 'month'),
+  };
 
   dayCellDimension = () => {
     const { width } = this.props;
     return {
-      width: (width - (2 * calPadding)) / 7,
-      height: (width - (2 * calPadding)) / 7,
+      width: (width - (2 * calPadding)) / 8,
+      height: (width - (2 * calPadding)) / 8,
     };
   }
 
@@ -85,143 +96,24 @@ class Calendar extends PureComponent<Props, State> {
     };
   }
 
-  renderHeader = () => {
-    const { activeView, currentDate } = this.state;
-    switch (activeView) {
-      case 'day':
-        return (
-          <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity onPress={() => this.onViewChange('month')}>
-              <Text style={[styles.headerStyle, styles.headerDayMonth]}>
-                {currentDate.format('MMMM')}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.onViewChange('year')}>
-              <Text style={styles.headerStyle}>
-                {currentDate.format('YYYY')}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        );
-      case 'month':
-        return (
-          <TouchableOpacity onPress={() => this.onViewChange('year')}>
-            <Text style={styles.headerStyle}>{currentDate.format('YYYY')}</Text>
-          </TouchableOpacity>
-        );
-      default:
-        return <Text />;
-    }
-  }
-
-  renderToggleArrow = (toggle) => {
-    const arrowStyle = toggle === 'next' ? { transform: [{ rotate: '180deg' }] } : {};
-    return (
-      <TouchableOpacity style={styles.centerItems} onPress={() => this.changeDate(toggle)}>
-        <Image source={Back} style={arrowStyle} />
-      </TouchableOpacity>
-    );
-  }
-
-  renderData = () => {
-    const { activeView } = this.state;
-    return activeView === 'day' ? this.renderDays() : this.renderYearsOrMonths();
-  }
-
-  renderDays = () => {
-    const { currentDate } = this.state;
-    const monthIndex = currentDate.month();
-    const day = currentDate.clone().startOf('month').startOf('week');
-    let done = false;
-    const dayDates = [];
-
-    while (!done) {
-      dayDates.push(this.renderWeeks(day.clone(), monthIndex));
-      day.add(7, 'd');
-      done = monthIndex !== day.month();
-    }
-
-    return dayDates;
-  }
-
-  renderWeekDays = () => {
-    const { value, selectedDateColor } = this.props;
-    const { currentDate } = this.state;
-    const selectedDate = value && moment(value).format('dd');
-    const selectedMonth = value && moment(value).format('YYYYMM') === currentDate.format('YYYYMM');
-
-    return (
-      <View style={[styles.calRow, { paddingBottom: 5 }]}>
-        {
-          ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((v, i) => {
-            const isSelected = selectedMonth && selectedDate === v;
-            return (
-              <View key={`${v}${i + 1}`} style={[styles.calCell, isSelected ? { borderBottomColor: selectedDateColor, borderBottomWidth: 2 } : {}]}>
-                <Text style={{ color: 'grey' }}>{v}</Text>
-              </View>
-            );
-          })
-        }
-      </View>
-    );
-  }
-
-  renderWeeks = (date, monthIndex) => {
-    const { value, selectedDateColor } = this.props;
-    return (
-      <View key={date} style={styles.calRow}>
-        {[0, 1, 2, 3, 4, 5, 6].map((i) => {
-          const daysDate = date.clone().add(i, 'd');
-          const isCurrentMonth = daysDate.month() === monthIndex;
-          const isPast = daysDate.diff(moment(), 'd') < 0;
-
-          const extraStyle = !isPast && isCurrentMonth ? { color: 'black', fontWeight: 'bold' } : { color: 'grey' };
-
-          const isSelected = value && moment(value).diff(daysDate, 'd') === 0;
-
-          return (
-            <TouchableOpacity
-              key={`${daysDate}${i}`}
-              style={[
-                styles.calCell,
-                this.dayCellDimension,
-                isSelected
-                  ? { ...styles.isSelectedContainer, backgroundColor: selectedDateColor }
-                  : {},
-              ]}
-              onPress={() => !isPast && this.handleCellPress(daysDate)}
-            >
-              <Text style={[styles.calText, extraStyle, isSelected ? styles.isSelectedText : {}]}>
-                {daysDate.format('D')}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    );
-  }
-
-  renderYearsOrMonths = () => {
+  renderYearsOrMonths = (dateFormat, headerFormat, changeView) => {
     const { currentDate, activeView } = this.state;
     const { value, selectedDateColor } = this.props;
-    const dateAddFormat = calendarData.formats[activeView];
-    const headerFormat = calendarData.header[activeView];
     const checkIfSelectedFormat = activeView === 'month' ? 'YYYYMMM' : 'YYYY';
     const selectedDateText = value && moment(value).format(checkIfSelectedFormat);
-    const dataChunks = [];
 
-    const chunkData = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((j) => {
-      const dates = currentDate.clone().add(j, dateAddFormat);
+    const data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((j) => {
+      const dates = currentDate.clone().add(j, dateFormat);
       const isSelectedView = dates.format(checkIfSelectedFormat) === selectedDateText;
       const extraStyle = { fontWeight: 'bold', color: 'black' };
 
       return (
         <TouchableOpacity
           key={j}
-          onPress={() => this.handleCellPress(dates)}
+          onPress={() => this.setState({ currentDate: dates, activeView: changeView })}
           style={[
-            styles.calCell,
-            this.cellDimension,
+            styles.centerItems,
+            this.cellDimension(),
             isSelectedView
               ? { ...styles.isSelectedContainer, backgroundColor: selectedDateColor }
               : {},
@@ -240,63 +132,140 @@ class Calendar extends PureComponent<Props, State> {
       );
     });
 
-    for (let i = 0; i < 12; i += 4) {
-      dataChunks.push(
-        <View key={i} style={styles.calRow}>
-          {chunkData.slice(i, i + 4)}
+    return data;
+  };
+
+  renderMonthContent = () => this.renderYearsOrMonths('M', 'MMM', 'day');
+
+  renderYearContent = () => this.renderYearsOrMonths('y', 'YYYY', 'month');
+
+  renderDayContent = () => {
+    const { currentDate } = this.state;
+    const { value } = this.props;
+    const monthIndex = currentDate.month();
+    const startDate = currentDate.clone().startOf('week');
+    const dayData = [];
+
+    for (let i = 0; i < 42; i += 1) {
+      const daysDate = startDate.clone().add(i, 'd');
+      const isCurrentMonth = daysDate.month() === monthIndex;
+      const isPast = daysDate.diff(moment(), 'd') < 0;
+      const highlight = !isPast && isCurrentMonth;
+      const isSelected = value && moment(value).diff(daysDate, 'd') === 0;
+
+      dayData.push(this.renderDays(startDate.clone().add(i, 'd'), highlight, isSelected));
+    }
+
+    return (
+      <>
+        {this.renderWeekDays()}
+        {dayData}
+      </>
+    );
+  }
+
+  renderWeekDays = () => {
+    const { value, selectedDateColor } = this.props;
+    const { currentDate } = this.state;
+    const selectedDate = value && moment(value).format('dd');
+    const selectedMonth = value && moment(value).format('YYYYMM') === currentDate.format('YYYYMM');
+
+    return (
+      ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((v, i) => {
+        const isSelected = selectedMonth && selectedDate === v;
+        return (
+          <View key={`${v}${i + 1}`} style={[styles.centerItems, this.dayCellDimension(), isSelected ? { borderBottomColor: selectedDateColor, borderBottomWidth: 2 } : {}]}>
+            <Text style={{ color: 'grey' }}>{v}</Text>
+          </View>
+        );
+      })
+    );
+  }
+
+  renderDays = (date, highlight, isSelected) => {
+    const { onChange, selectedDateColor } = this.props;
+    const formattedDate = date.format('D');
+    return (
+      <TouchableOpacity
+        key={`${date}`}
+        style={[
+          styles.centerItems,
+          this.dayCellDimension(),
+          isSelected ? { ...styles.isSelectedContainer, backgroundColor: selectedDateColor } : {},
+        ]}
+        onPress={() => onChange(date)}
+      >
+        <Text style={[styles.calText, highlight ? { fontWeight: 'bold', color: 'black' } : { color: 'grey' }, isSelected ? styles.isSelectedText : {}]}>
+          {formattedDate}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
+  renderDayHeader = () => {
+    const { currentDate } = this.state;
+    return (
+      <>
+        <Prev onPress={() => this.setState({ currentDate: currentDate.clone().subtract(1, 'M') })} />
+        <View style={styles.headerStyle}>
+          <Header value={currentDate.format('MMM')} onPress={() => this.setState({ activeView: 'month', currentDate: currentDate.clone().startOf('year') })} />
+          <Header value={currentDate.format('YYYY')} onPress={() => this.setState({ activeView: 'year', currentDate: currentDate.clone().startOf('year') })} />
         </View>
-      );
-    }
-
-    return dataChunks;
+        <Next onPress={() => this.setState({ currentDate: currentDate.clone().add(1, 'M') })} />
+      </>
+    );
   }
 
-  handleCellPress = (date) => {
-    const { activeView } = this.state;
-    const { onChange } = this.props;
-
-    if (activeView === 'day') {
-      if (onChange) onChange(date);
-    } else if (activeView === 'month') {
-      this.setState({ activeView: 'day', currentDate: date });
-    } else if (activeView === 'year') {
-      this.setState({ activeView: 'month', currentDate: date });
-    }
+  renderMonthHeader = () => {
+    const { currentDate } = this.state;
+    return (
+      <>
+        <Prev onPress={() => this.setState({ currentDate: currentDate.clone().subtract(1, 'y') })} />
+        <Header value={currentDate.format('YYYY')} onPress={() => this.setState({ activeView: 'year' })} />
+        <Next onPress={() => this.setState({ currentDate: currentDate.clone().add(1, 'y') })} />
+      </>
+    );
   }
 
-  changeDate = (toggle) => {
-    const { activeView, currentDate } = this.state;
-    const nextValue = calendarData.toggleDate[activeView];
-    const nextFormat = calendarData.formats[activeView];
-    const nextDate = toggle === 'next'
-      ? currentDate.clone().add(nextValue, nextFormat)
-      : currentDate.clone().subtract(nextValue, nextFormat);
-
-    this.setState({ currentDate: nextDate });
+  renderYearHeader = () => {
+    const { currentDate } = this.state;
+    return (
+      <>
+        <Prev onPress={() => this.setState({ currentDate: currentDate.clone().subtract(12, 'y') })} />
+        <Next onPress={() => this.setState({ currentDate: currentDate.clone().add(12, 'y') })} />
+      </>
+    );
   }
-
-  onViewChange = view => this.setState(prevState => ({ currentDate: prevState.currentDate.startOf('year'), activeView: view }));
 
   render() {
     const {
       width,
     } = this.props;
     const { activeView } = this.state;
+    let header = null;
+    let content = null;
+
+    if (activeView === 'day') {
+      header = this.renderDayHeader;
+      content = this.renderDayContent;
+    } else if (activeView === 'month') {
+      header = this.renderMonthHeader;
+      content = this.renderMonthContent;
+    } else if (activeView === 'year') {
+      header = this.renderYearHeader;
+      content = this.renderYearContent;
+    }
+
 
     return (
       <View style={[styles.container, { width }]}>
         <View
           style={[styles.calRow, { paddingTop: calPadding * 2, paddingBottom: calPadding * 2 }]}
         >
-          {this.renderToggleArrow('prev')}
-          <View style={styles.centerItems}>
-            {this.renderHeader()}
-          </View>
-          {this.renderToggleArrow('next')}
+          {header()}
         </View>
-        <View style={{ padding: calPadding }}>
-          {activeView === 'day' ? this.renderWeekDays() : null}
-          {this.renderData()}
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+          {content()}
         </View>
       </View>
     );
