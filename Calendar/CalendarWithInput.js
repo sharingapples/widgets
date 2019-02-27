@@ -38,17 +38,13 @@ class CalendarWithInput extends Component<Props, State> {
     placeholder: 'Select a date',
     calendarDateFormat: 'YYYY-MM-DD',
     width: 300,
-    defaultView: 'year',
+    defaultView: 'day',
   };
 
-  constructor(props) {
-    super(props);
-    const { value } = this.props;
+  state = {
+    calendarVisible: false,
+    selectedDate: this.props.value && moment(this.props.value),
 
-    this.state = {
-      calendarVisible: false,
-      selectedDate: value && moment(value),
-    };
   }
 
   handleChange = (date) => {

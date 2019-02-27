@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   headerTextContainer: { paddingRight: 10 },
   calRow: { flexDirection: 'row', justifyContent: 'space-between' },
   centerItems: { alignItems: 'center', justifyContent: 'center' },
-  calCell: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  calendar: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
   isSelectedContainer: { borderRadius: 5 },
   isSelectedText: { color: 'white' },
 });
@@ -96,35 +96,82 @@ class Calendar extends Component<Props, State> {
     };
   }
 
+  getWeekDayStyle = (isSelected) => {
+    const { selectedDateColor } = this.props;
+    const dayContainerStyles = {
+      ...styles.centerItems,
+      ...this.dayCellDimension(),
+    };
+    if (isSelected) {
+      return {
+        ...dayContainerStyles,
+        borderBottomColor: selectedDateColor,
+        borderBottomWidth: 2,
+      };
+    }
+    return dayContainerStyles;
+  }
+
+  getDayTextStyles = (highlight, isSelected) => {
+    if (isSelected) {
+      return {
+        fontWeight: 'bold',
+        color: 'white',
+      };
+    }
+    if (highlight) {
+      return {
+        fontWeight: 'bold',
+        color: 'black',
+      };
+    }
+    return { color: 'grey' };
+  }
+
+  getCellContainerStyles = (isSelected) => {
+    const { selectedDateColor } = this.props;
+    if (isSelected) {
+      return {
+        ...styles.centerItems,
+        backgroundColor: selectedDateColor,
+      };
+    }
+    return styles.centerItems;
+  }
+
+  getHeaderStyle = () => ({
+    ...styles.calRow,
+    paddingTop: calPadding * 2,
+    paddingBottom: calPadding * 2,
+  });
+
+  renderMonthContent = () => this.renderYearsOrMonths('M', 'MMM', 'day');
+
+  renderYearContent = () => this.renderYearsOrMonths('y', 'YYYY', 'month');
+
   renderYearsOrMonths = (dateFormat, headerFormat, changeView) => {
     const { currentDate, activeView } = this.state;
-    const { value, selectedDateColor } = this.props;
+    const { value } = this.props;
     const checkIfSelectedFormat = activeView === 'month' ? 'YYYYMMM' : 'YYYY';
     const selectedDateText = value && moment(value).format(checkIfSelectedFormat);
 
     const data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((j) => {
       const dates = currentDate.clone().add(j, dateFormat);
       const isSelectedView = dates.format(checkIfSelectedFormat) === selectedDateText;
-      const extraStyle = { fontWeight: 'bold', color: 'black' };
+      const containerStyle = this.getCellContainerStyles(isSelectedView);
+      const textStyle = { fontWeight: 'bold', color: isSelectedView ? 'white' : 'black' };
 
       return (
         <TouchableOpacity
           key={j}
           onPress={() => this.setState({ currentDate: dates, activeView: changeView })}
           style={[
-            styles.centerItems,
+            containerStyle,
             this.cellDimension(),
-            isSelectedView
-              ? { ...styles.isSelectedContainer, backgroundColor: selectedDateColor }
-              : {},
           ]}
         >
           <Text
-            style={[
-              styles.calText,
-              extraStyle,
-              isSelectedView ? styles.isSelectedText : {},
-            ]}
+            style={textStyle}
           >
             {dates.format(headerFormat)}
           </Text>
@@ -135,9 +182,43 @@ class Calendar extends Component<Props, State> {
     return data;
   };
 
-  renderMonthContent = () => this.renderYearsOrMonths('M', 'MMM', 'day');
+  renderWeekDays = () => {
+    const { value } = this.props;
+    const { currentDate } = this.state;
+    const selectedDate = value && moment(value).format('dd');
+    const selectedMonth = value && moment(value).format('YYYYMM') === currentDate.format('YYYYMM');
+    return (
+      ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((v, i) => {
+        const isSelected = selectedMonth && selectedDate === v;
+        const weekStyle = this.getWeekDayStyle(isSelected);
 
-  renderYearContent = () => this.renderYearsOrMonths('y', 'YYYY', 'month');
+        return (
+          <View key={`${v}${i + 1}`} style={weekStyle}>
+            <Text style={{ color: 'grey' }}>{v}</Text>
+          </View>
+        );
+      })
+    );
+  }
+
+  renderDays = (date, highlight, isSelected) => {
+    const { onChange } = this.props;
+    const formattedDate = date.format('D');
+    const containerStyle = this.getCellContainerStyles(isSelected);
+    const dayTextStyles = this.getDayTextStyles(highlight, isSelected);
+
+    return (
+      <TouchableOpacity
+        key={`${date}`}
+        style={[containerStyle, this.dayCellDimension()]}
+        onPress={() => onChange(date)}
+      >
+        <Text style={dayTextStyles}>
+          {formattedDate}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
 
   renderDayContent = () => {
     const { currentDate } = this.state;
@@ -163,44 +244,6 @@ class Calendar extends Component<Props, State> {
       </>
     );
   }
-
-  renderWeekDays = () => {
-    const { value, selectedDateColor } = this.props;
-    const { currentDate } = this.state;
-    const selectedDate = value && moment(value).format('dd');
-    const selectedMonth = value && moment(value).format('YYYYMM') === currentDate.format('YYYYMM');
-
-    return (
-      ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((v, i) => {
-        const isSelected = selectedMonth && selectedDate === v;
-        return (
-          <View key={`${v}${i + 1}`} style={[styles.centerItems, this.dayCellDimension(), isSelected ? { borderBottomColor: selectedDateColor, borderBottomWidth: 2 } : {}]}>
-            <Text style={{ color: 'grey' }}>{v}</Text>
-          </View>
-        );
-      })
-    );
-  }
-
-  renderDays = (date, highlight, isSelected) => {
-    const { onChange, selectedDateColor } = this.props;
-    const formattedDate = date.format('D');
-    return (
-      <TouchableOpacity
-        key={`${date}`}
-        style={[
-          styles.centerItems,
-          this.dayCellDimension(),
-          isSelected ? { ...styles.isSelectedContainer, backgroundColor: selectedDateColor } : {},
-        ]}
-        onPress={() => onChange(date)}
-      >
-        <Text style={[styles.calText, highlight ? { fontWeight: 'bold', color: 'black' } : { color: 'grey' }, isSelected ? styles.isSelectedText : {}]}>
-          {formattedDate}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
 
   renderDayHeader = () => {
     const { currentDate } = this.state;
@@ -260,11 +303,11 @@ class Calendar extends Component<Props, State> {
     return (
       <View style={[styles.container, { width }]}>
         <View
-          style={[styles.calRow, { paddingTop: calPadding * 2, paddingBottom: calPadding * 2 }]}
+          style={this.getHeaderStyle()}
         >
           {header()}
         </View>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+        <View style={styles.calendar}>
           {content()}
         </View>
       </View>
