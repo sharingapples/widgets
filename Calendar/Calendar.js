@@ -73,12 +73,19 @@ class Calendar extends Component<Props, State> {
     selectedDateColor: '#ffd400',
   };
 
-  state = {
-    activeView: this.props.defaultView,
-    currentDate: this.props.value 
-      ? moment(this.props.value).startOf(this.props.defaultView === 'year' ? 'year' : 'month')
-      : moment().startOf(this.props.defaultView === 'year' ? 'year' : 'month'),
-  };
+  constructor(props) {
+    super(props);
+    const { value, defaultView } = props;
+    const calendarFormat = defaultView === 'day' ? 'month' : defaultView;
+    const currentDate = value
+      ? moment(value).startOf(calendarFormat)
+      : moment().startOf(calendarFormat);
+
+    this.state = ({
+      activeView: defaultView,
+      currentDate,
+    });
+  }
 
   dayCellDimension = () => {
     const { width } = this.props;
@@ -280,10 +287,7 @@ class Calendar extends Component<Props, State> {
     );
   }
 
-  render() {
-    const {
-      width,
-    } = this.props;
+  getHeaderContent = () => {
     const { activeView } = this.state;
     let header = null;
     let content = null;
@@ -299,6 +303,12 @@ class Calendar extends Component<Props, State> {
       content = this.renderYearContent;
     }
 
+    return { header, content };
+  }
+
+  render() {
+    const { width } = this.props;
+    const { header, content } = this.getHeaderContent();
 
     return (
       <View style={[styles.container, { width }]}>
