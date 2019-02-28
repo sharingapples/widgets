@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
     height: 3,
     width: '100%',
     resizeMode: 'stretch',
-    zIndex: 99,
   },
   topBar: {
     flexDirection: 'row',
