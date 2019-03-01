@@ -15,7 +15,7 @@ type Props = {
 
 const styles = StyleSheet.create({
   container: {
-    width: 60,
+    width: 68,
     height: 60,
     alignItems: 'center',
     justifyContent: 'center',
