@@ -22,19 +22,6 @@ r-form provides the state management for any kind of complexity in an input comp
 Example, say if we have form with component such a name , address, email . Name can be easily accessed as form.state.name and Address can be accessed as form.state.address.
 
 
-## **Installation**
-
-To install using npm
-
-```node
-npm i r-form
-```
-
-using yarn
-```node
-yarn add r-form
-```
-
 ## **Components**
 
 
@@ -350,20 +337,3 @@ const ArrayWithinGroup = () => (
 export default ArrayWithinGroup;
 ```
 
-## **Usage**
-
-
-
-Here is the rough sketch of the example that we will be making. It is a simple form that collects the data of an individual.
-
-
-
-![dc_rough](https://user-images.githubusercontent.com/12614476/46061420-4dcf2680-c186-11e8-9c24-7cbb2675dede.png)
-
-
-
-The library provides a mechanism for the state management of the form we need to implement and wrap it to the dom. So now we enlist the component that we will be using in making this form. <br>
-
-### Form DOM components :
-
-We create DOM element for the form. R-Form provides the bare skeleton for a form structure with no DOM element, we need to wrap the DOM element with the provided r-form library. We pass the on change event and update the value there on the basis of the component. In case of simple text input we simply pass it where as other complex component requires a bit more calculation such as checkbox is an array of the data under same name so in that case we concat the data and update it. Let's see how we will make the components.
