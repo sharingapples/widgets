@@ -16,14 +16,12 @@ const styles = StyleSheet.create({
   },
   topBar: {
     flexDirection: 'row',
+    alignItems: 'center',
     padding: 10,
   },
   title: {
     flex: 1,
     fontWeight: 'bold',
-  },
-  iconContainer: {
-    justifyContent: 'center',
   },
   close: {
     width: 16,
@@ -82,7 +80,7 @@ class BottomPopup extends Component<Props> {
         <Image source={shadow} style={styles.shadow} />
         <View style={[styles.topBar, { backgroundColor: titleBack }]}>
           {titleElem}
-          <TouchableOpacity onPress={onClose} styles={styles.iconContainer}>
+          <TouchableOpacity onPress={onClose}>
             <Image source={Close} style={[styles.close, { tintColor: titleColor }]} />
           </TouchableOpacity>
         </View>
