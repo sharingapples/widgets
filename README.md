@@ -30,3 +30,33 @@ const App = () => (
   </BottomNavigation>
 );
 ```
+
+## BottomPopup
+A popup window for displaying content at the bottom of the screen.
+
+### Props
+* **visible**: Control popup display
+* **title**: Title text or title component
+* **titleBack**: Title bar background color
+* **titleColor**: Title bar text color
+* **height**: Height of popup in pixels
+* **onClose**: Close button press event
+
+### Usage
+```jsx
+import { BottomPopup } from '@bhoos/widgets';
+
+const App = () => (
+  <View>
+    <BottomPopup
+      visible={visible}
+      height={200}
+      onClose={() => this.setState({ visible: false })}
+      title="Popup Title" titleBack="black"
+      titleColor="white"
+    >
+      {content}
+    </BottomPopup>
+  </View>
+)
+```

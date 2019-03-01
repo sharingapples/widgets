@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import {
-  TouchableOpacity, Text, Image, StyleSheet,
+  TouchableOpacity, View, Text, Image, StyleSheet,
 } from 'react-native';
 
 import NavigatonContext from './NavigatonContext';
@@ -10,24 +10,43 @@ type Props = {
   title: string,
   screen: Class<Component>,
   icon: number,
+  badge: ?number,
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: 60,
+    height: 60,
     alignItems: 'center',
     justifyContent: 'center',
   },
   icon: {
-    width: 24,
-    height: 24,
+    width: 32,
+    height: 32,
   },
   title: {
     fontSize: 10,
   },
+  badge: {
+    position: 'absolute',
+    minWidth: 16,
+    height: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+    right: 6,
+    top: 4,
+    backgroundColor: '#b94a48',
+    borderRadius: 8,
+  },
+  badgeText: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: 'white',
+  },
 });
 
-const Nav = ({ title, screen, icon }: Props) => (
+const Nav = ({ title, screen, icon, badge }: Props) => (
   <NavigatonContext.Consumer>
     {
       ({ setActiveScreen, activeScreen, tintColor }) => {
@@ -38,6 +57,11 @@ const Nav = ({ title, screen, icon }: Props) => (
             <Text allowFontScaling={false} style={[styles.title, { color: activeColor }]}>
               {title}
             </Text>
+            {badge && (
+              <View style={styles.badge}>
+                <Text allowFontScaling={false} style={styles.badgeText}>{badge}</Text>
+              </View>
+            )}
           </TouchableOpacity>
         );
       }
