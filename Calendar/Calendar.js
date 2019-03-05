@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
   calendar: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
   isSelectedContainer: { borderRadius: 5 },
   isSelectedText: { color: 'white' },
+  headerText: { color: 'grey' },
 });
 
 const Prev = ({ onPress }: TogggleProps) => (
@@ -201,7 +202,7 @@ class Calendar extends Component<Props, State> {
 
         return (
           <View key={`${v}${i + 1}`} style={weekStyle}>
-            <Text style={{ color: 'grey' }}>{v}</Text>
+            <Text style={styles.headerText}>{v}</Text>
           </View>
         );
       })
@@ -241,7 +242,7 @@ class Calendar extends Component<Props, State> {
       const highlight = !isPast && isCurrentMonth;
       const isSelected = value && moment(value).diff(daysDate, 'd') === 0;
 
-      dayData.push(this.renderDays(startDate.clone().add(i, 'd'), highlight, isSelected));
+      dayData.push(this.renderDays(daysDate, highlight, isSelected));
     }
 
     return (
@@ -254,35 +255,45 @@ class Calendar extends Component<Props, State> {
 
   renderDayHeader = () => {
     const { currentDate } = this.state;
+    const formattedDate = currentDate.clone().startOf('year');
+    const nextDate = currentDate.clone().add(1, 'M');
+    const prevDate = currentDate.clone().subtract(1, 'M');
+
     return (
       <>
-        <Prev onPress={() => this.setState({ currentDate: currentDate.clone().subtract(1, 'M') })} />
+        <Prev onPress={() => this.setState({ currentDate: prevDate })} />
         <View style={styles.headerStyle}>
-          <Header value={currentDate.format('MMM')} onPress={() => this.setState({ activeView: 'month', currentDate: currentDate.clone().startOf('year') })} />
-          <Header value={currentDate.format('YYYY')} onPress={() => this.setState({ activeView: 'year', currentDate: currentDate.clone().startOf('year') })} />
+          <Header value={currentDate.format('MMM')} onPress={() => this.setState({ activeView: 'month', currentDate: formattedDate })} />
+          <Header value={currentDate.format('YYYY')} onPress={() => this.setState({ activeView: 'year', currentDate: formattedDate })} />
         </View>
-        <Next onPress={() => this.setState({ currentDate: currentDate.clone().add(1, 'M') })} />
+        <Next onPress={() => this.setState({ currentDate: nextDate })} />
       </>
     );
   }
 
   renderMonthHeader = () => {
     const { currentDate } = this.state;
+    const nextDate = currentDate.clone().add(1, 'y');
+    const prevDate = currentDate.clone().subtract(1, 'y');
+
     return (
       <>
-        <Prev onPress={() => this.setState({ currentDate: currentDate.clone().subtract(1, 'y') })} />
+        <Prev onPress={() => this.setState({ currentDate: prevDate })} />
         <Header value={currentDate.format('YYYY')} onPress={() => this.setState({ activeView: 'year' })} />
-        <Next onPress={() => this.setState({ currentDate: currentDate.clone().add(1, 'y') })} />
+        <Next onPress={() => this.setState({ currentDate: nextDate })} />
       </>
     );
   }
 
   renderYearHeader = () => {
     const { currentDate } = this.state;
+    const nextDate = currentDate.clone().add(12, 'y');
+    const prevDate = currentDate.clone().subtract(12, 'y');
+
     return (
       <>
-        <Prev onPress={() => this.setState({ currentDate: currentDate.clone().subtract(12, 'y') })} />
-        <Next onPress={() => this.setState({ currentDate: currentDate.clone().add(12, 'y') })} />
+        <Prev onPress={() => this.setState({ currentDate: prevDate })} />
+        <Next onPress={() => this.setState({ currentDate: nextDate })} />
       </>
     );
   }

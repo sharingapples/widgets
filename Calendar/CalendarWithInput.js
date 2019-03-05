@@ -69,13 +69,11 @@ class CalendarWithInput extends Component<Props, State> {
       width, defaultView,
     };
 
+    const date = selectedDate ? moment(selectedDate).format(calendarDateFormat) : placeholder;
+
     return (
       <>
-        <TouchableOpacity onPress={this.toggle}>
-          <Text>
-            {selectedDate ? moment(selectedDate).format(calendarDateFormat) : placeholder}
-          </Text>
-        </TouchableOpacity>
+        <TouchableOpacity onPress={this.toggle}><Text>{date}</Text></TouchableOpacity>
         {calendarVisible && (
           <Modal animationType="fade" transparent>
             <TouchableWithoutFeedback style={styles.outer} onPress={this.toggle}>
