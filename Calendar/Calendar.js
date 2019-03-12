@@ -164,15 +164,15 @@ class Calendar extends Component<Props, State> {
     const selectedDateText = value && moment(value).format(checkIfSelectedFormat);
 
     const data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((j) => {
-      const dates = currentDate.clone().add(j, dateFormat);
-      const isSelectedView = dates.format(checkIfSelectedFormat) === selectedDateText;
+      const date = currentDate.clone().add(j, dateFormat);
+      const isSelectedView = date.format(checkIfSelectedFormat) === selectedDateText;
       const containerStyle = this.getCellContainerStyles(isSelectedView);
       const textStyle = { fontWeight: 'bold', color: isSelectedView ? 'white' : 'black' };
 
       return (
         <TouchableOpacity
           key={j}
-          onPress={() => this.setState({ currentDate: dates, activeView: changeView })}
+          onPress={() => this.setState({ currentDate: date, activeView: changeView })}
           style={[
             containerStyle,
             this.cellDimension(),
@@ -181,7 +181,7 @@ class Calendar extends Component<Props, State> {
           <Text
             style={textStyle}
           >
-            {dates.format(headerFormat)}
+            {date.format(headerFormat)}
           </Text>
         </TouchableOpacity>
       );
