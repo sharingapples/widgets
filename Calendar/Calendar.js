@@ -240,7 +240,7 @@ class Calendar extends Component<Props, State> {
       const isCurrentMonth = daysDate.month() === monthIndex;
       const isPast = daysDate.diff(moment(), 'd') < 0;
       const highlight = !isPast && isCurrentMonth;
-      const isSelected = value && moment(value).isSame(daysDate, 'd') === 0;
+      const isSelected = value && moment(value).isSame(daysDate, 'd');
 
       dayData.push(this.renderDays(daysDate, highlight, isSelected));
     }
