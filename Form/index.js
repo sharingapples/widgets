@@ -1,19 +1,25 @@
 import Form from './Form';
-import createInput from './createInput';
 import Group from './Group';
-import Array from './Array';
-import Select from './Select';
+import Editor from './Editor';
 
-Form.createInput = createInput;
-Form.Group = Group;
-Form.Array = Array;
-Form.Select = Select;
+import useFormArray from './useFormArray';
+import useFormInput from './useFormInput';
+import useFormSubmit from './useFormSubmit';
+import useFormValidator from './useFormValidator';
+import useFormValue from './useFormValue';
+import useFormParser from './useFormParser';
+import useFormParent from './useFormParent';
 
 export {
-  createInput,
+  Form,
   Group,
-  Array,
-  Select,
-};
+  Editor,
 
-export default Form;
+  useFormArray,
+  useFormInput,
+  useFormSubmit,
+  useFormValidator,
+  useFormValue,
+  useFormParser,
+  useFormParent,
+};
