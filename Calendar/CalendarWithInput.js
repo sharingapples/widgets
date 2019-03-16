@@ -12,6 +12,7 @@ type Props = {
   calendarDateFormat?: string,
   width?: number,
   defaultView?: string,
+  textColor: ?string,
 }
 
 type State = {
@@ -41,10 +42,13 @@ class CalendarWithInput extends Component<Props, State> {
     defaultView: 'day',
   };
 
-  state = {
-    calendarVisible: false,
-    selectedDate: this.props.value && moment(this.props.value),
-
+  constructor(props) {
+    super(props);
+    const { value } = props;
+    this.state = ({
+      calendarVisible: false,
+      selectedDate: value,
+    });
   }
 
   handleChange = (date) => {
@@ -63,6 +67,7 @@ class CalendarWithInput extends Component<Props, State> {
       calendarDateFormat,
       width,
       defaultView,
+      textColor,
     } = this.props;
     const { calendarVisible, selectedDate } = this.state;
     const calendarProps = {
@@ -73,7 +78,9 @@ class CalendarWithInput extends Component<Props, State> {
 
     return (
       <>
-        <TouchableOpacity onPress={this.toggle}><Text>{date}</Text></TouchableOpacity>
+        <TouchableOpacity onPress={this.toggle}>
+          <Text style={{ color: textColor }}>{date}</Text>
+        </TouchableOpacity>
         {calendarVisible && (
           <Modal animationType="fade" transparent>
             <TouchableWithoutFeedback style={styles.outer} onPress={this.toggle}>
