@@ -126,6 +126,7 @@ class Editor extends Component<Props, State> {
 
           try {
             validator(checkValue);
+            errorHandler(null);
           } catch (err) {
             errorHandler(err.message);
           }
@@ -136,6 +137,7 @@ class Editor extends Component<Props, State> {
           const chk = typeof input === 'function' ? input(currentValue) : currentValue[input];
           try {
             validator(chk);
+            errorHandler(null);
           } catch (err) {
             errorHandler(err.message);
             return true;
