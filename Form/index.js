@@ -10,10 +10,20 @@ import useFormValue from './useFormValue';
 import useFormParser from './useFormParser';
 import useFormParent from './useFormParent';
 
+export function pipe(...validators) {
+  return (value) => {
+    for (let i = 0; i < validators.length; i += 1) {
+      validators[i](value);
+    }
+  };
+}
+
 export {
   Form,
   Group,
   Editor,
+
+  pipe,
 
   useFormArray,
   useFormInput,
