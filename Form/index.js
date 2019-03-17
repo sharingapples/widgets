@@ -23,8 +23,6 @@ export {
   Group,
   Editor,
 
-  pipe,
-
   useFormArray,
   useFormInput,
   useFormSubmit,
