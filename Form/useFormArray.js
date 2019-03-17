@@ -1,44 +1,53 @@
 import { useContext, useRef } from 'react';
 import { EditorContext } from './Editor';
 
-export default function useFormArray(name) {
+export default function useFormArray(name, defaultValue) {
   const editor = useRef();
   const { get, set } = useContext(EditorContext);
   const items = get(name) || [];
 
-  function onChange(idx) {
-    return (value) => {
-      if (items[idx] === value) {
-        return items;
-      }
-
-      const newItems = items.slice();
-      newItems[idx] = value;
-      return newItems;
-    };
-  }
-
   return {
     editor,
-    add: () => {
-      editor.current.show(createContext(items.length));
-    },
-    all: iterator => items.map((item, idx) => {
-      const insert = (value) => {
-        const v = items.slice();
-        v.splice(idx, 0, value);
-        set(name, v);
-      };
-      const remove = () => {
-        const v = items.slice();
-        v.splice(idx, 1);
-        set(name, v);
-      };
-      const edit = () => {
-        editor.current.show(createContext(idx));
+    add: (vv = defaultValue) => {
+      const idx = items.length;
+      const value = items[idx] || vv;
+
+      const onChange = (v) => {
+        const newItems = items.concat(v);
+        set(name, newItems);
       };
 
-      return iterator(item, { insert, remove, edit });
+      editor.current.edit({ value, onChange });
+    },
+    all: iterator => items.map((item, idx) => {
+      const options = {
+        get insert() {
+          return (vv = defaultValue) => {
+            const newItems = items.slice();
+            newItems.splice(idx, 0, vv);
+            set(name, newItems);
+          };
+        },
+        get remove() {
+          return () => {
+            const newItems = items.slice();
+            newItems.splice(idx, 1);
+            set(name, newItems);
+          };
+        },
+        get edit() {
+          return () => {
+            const value = items[idx];
+            const onChange = (v) => {
+              const newItems = items.slice();
+              newItems[idx] = v;
+              set(name, newItems);
+            };
+            editor.current.edit({ value, onChange });
+          };
+        },
+      };
+      return iterator(item, options);
     }),
   };
 }
