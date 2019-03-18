@@ -57,7 +57,8 @@ class Editor extends Component<Props, State> {
   shouldComponentUpdate(nextProps, nextState) {
     const nextOwner = getOwner(nextProps, nextState);
     const owner = getOwner(this.props, this.state);
-
+    if (owner === nextOwner) return false;
+    if (owner === null || nextOwner === null) return true;
     return nextOwner.value !== owner.value || nextOwner.onChange !== owner.onChange;
   }
 
