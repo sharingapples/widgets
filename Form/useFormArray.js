@@ -1,17 +1,19 @@
 import { useContext, useRef } from 'react';
 import { EditorContext } from './Editor';
+import useFormValue from './useFormValue';
 
 export default function useFormArray(name, defaultValue) {
   const editor = useRef();
-  const { get, set } = useContext(EditorContext);
-  const items = get(name) || [];
+  const { set } = useContext(EditorContext);
+
+  // TODO: the items value should be available via 'get' with changes
+  const items = useFormValue(name) || [];
 
   return {
     editor,
-    add: (vv = defaultValue) => {
+    add: () => {
       const idx = items.length;
-      const value = items[idx] || vv;
-
+      const value = items[idx] || defaultValue;
       const onChange = (v) => {
         const newItems = items.concat(v);
         set(name, newItems);
@@ -22,9 +24,9 @@ export default function useFormArray(name, defaultValue) {
     all: iterator => items.map((item, idx) => {
       const options = {
         get insert() {
-          return (vv = defaultValue) => {
+          return () => {
             const newItems = items.slice();
-            newItems.splice(idx, 0, vv);
+            newItems.splice(idx, 0, defaultValue);
             set(name, newItems);
           };
         },
