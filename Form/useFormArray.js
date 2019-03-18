@@ -5,6 +5,8 @@ import useFormValue from './useFormValue';
 export default function useFormArray(name, defaultValue) {
   const editor = useRef();
   const { set } = useContext(EditorContext);
+
+  // TODO: the items value should be available via 'get' with changes
   const items = useFormValue(name) || [];
 
   return {
