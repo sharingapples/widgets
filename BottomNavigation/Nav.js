@@ -20,12 +20,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  icon: {
-    width: 32,
-    height: 32,
-  },
+  icon: {},
   title: {
     fontSize: 10,
+    paddingTop: 5,
   },
   badge: {
     position: 'absolute',
@@ -50,7 +48,7 @@ const Nav = ({ title, screen, icon, badge }: Props) => (
   <NavigatonContext.Consumer>
     {
       ({ setActiveScreen, activeScreen, tintColor }) => {
-        const activeColor = activeScreen === screen ? tintColor : undefined;
+        const activeColor = activeScreen === screen ? tintColor : 'white';
         return (
           <TouchableOpacity style={styles.container} onPress={() => setActiveScreen(screen)}>
             <Image source={icon} style={[styles.icon, { tintColor: activeColor }]} />
