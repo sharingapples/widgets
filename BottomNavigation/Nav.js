@@ -44,10 +44,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const Nav = ({ title, screen, icon, badge }: Props) => (
+const Nav = ({ title, screen, icon, badge }: Props) => {
+  return (
   <NavigatonContext.Consumer>
     {
       ({ setActiveScreen, activeScreen, tintColor }) => {
+        console.log('badge', badge)
         const activeColor = activeScreen === screen ? tintColor : 'white';
         return (
           <TouchableOpacity style={styles.container} onPress={() => setActiveScreen(screen)}>
@@ -55,16 +57,17 @@ const Nav = ({ title, screen, icon, badge }: Props) => (
             <Text allowFontScaling={false} style={[styles.title, { color: activeColor }]}>
               {title}
             </Text>
-            {badge && (
+            {badge ? (
               <View style={styles.badge}>
                 <Text allowFontScaling={false} style={styles.badgeText}>{badge}</Text>
               </View>
-            )}
+            ) : null}
           </TouchableOpacity>
         );
       }
     }
   </NavigatonContext.Consumer>
 );
+  }
 
 export default Nav;
