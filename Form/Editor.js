@@ -10,7 +10,8 @@ let uniqueId = 0;
 type Props = {
   value: {},
   onChange: (value: {}) => void,
-  onSubmit: ?(error: boolean, value: {}) => void,
+  onSubmit: ?(value: {}) => void,
+  onError: ?(err: string) => void,
 }
 
 type State = {
@@ -56,7 +57,8 @@ class Editor extends Component<Props, State> {
   shouldComponentUpdate(nextProps, nextState) {
     const nextOwner = getOwner(nextProps, nextState);
     const owner = getOwner(this.props, this.state);
-
+    if (owner === nextOwner) return false;
+    if (owner === null || nextOwner === null) return true;
     return nextOwner.value !== owner.value || nextOwner.onChange !== owner.onChange;
   }
 
@@ -78,7 +80,7 @@ class Editor extends Component<Props, State> {
   }
 
   createContext() {
-    const { onSubmit } = this.props;
+    const { onSubmit, onError } = this.props;
     const { value, onChange } = getOwner(this.props, this.state);
 
     // Keep a copy of the value
@@ -126,6 +128,7 @@ class Editor extends Component<Props, State> {
 
           try {
             validator(checkValue);
+            errorHandler(null);
           } catch (err) {
             errorHandler(err.message);
           }
@@ -136,22 +139,20 @@ class Editor extends Component<Props, State> {
           const chk = typeof input === 'function' ? input(currentValue) : currentValue[input];
           try {
             validator(chk);
+            errorHandler(null);
           } catch (err) {
             errorHandler(err.message);
-            return true;
+            return res || err.message;
           }
           return res;
         }, false);
 
         if (error) {
-          if (onSubmit) {
-            onSubmit(true);
-          }
+          if (onError) onError(error);
         } else {
           // No error, make sure we have an updated state
-          if (onChange) onChange(currentValue);
-
-          if (onSubmit) onSubmit(false, currentValue);
+          onChange(currentValue);
+          if (onSubmit) onSubmit(currentValue);
         }
       },
       registerValidator: (input, validator, errorHandler) => {
@@ -203,7 +204,7 @@ class Editor extends Component<Props, State> {
     }
 
     const context = this.createContext();
-    const { value, onChange, onSubmit, ...other } = this.props;
+    const { value, onChange, onSubmit, onError, ...other } = this.props;
     return (
       <EditorContext.Provider {...other} value={context} />
     );

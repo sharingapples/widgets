@@ -33,6 +33,14 @@ const styles = StyleSheet.create({
   },
 });
 
+const formatDate = (date, format, placeholder) => {
+  if (!date) return placeholder;
+
+  if (typeof date === 'object') {
+    return moment(date).format(format);
+  }
+  return moment.unix(date).format(format);
+};
 class CalendarWithInput extends Component<Props, State> {
   static defaultProps = {
     value: '',
@@ -74,7 +82,7 @@ class CalendarWithInput extends Component<Props, State> {
       width, defaultView,
     };
 
-    const date = selectedDate ? moment(selectedDate).format(calendarDateFormat) : placeholder;
+    const date = formatDate(selectedDate, calendarDateFormat, placeholder);
 
     return (
       <>
