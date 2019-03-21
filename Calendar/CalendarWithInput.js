@@ -96,7 +96,7 @@ class CalendarWithInput extends Component<Props, State> {
                 <View style={styles.inner}>
                   <Calendar
                     onChange={this.handleChange}
-                    value={selectedDate}
+                    value={date}
                     {...calendarProps}
                   />
                 </View>
