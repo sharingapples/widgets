@@ -90,7 +90,7 @@ class Editor extends Component<Props, State> {
       parent: this.context,
       get: (name, defaultValue) => {
         const v = currentValue[name];
-        if (v === undefined || v === null) {
+        if (v === undefined && defaultValue !== '') {
           currentValue[name] = defaultValue;
         }
         return currentValue[name];
@@ -107,7 +107,8 @@ class Editor extends Component<Props, State> {
         }
 
         // Always update the current value
-        currentValue[name] = parsedValue;
+        // Dynamodb doesn't support empty string
+        currentValue[name] = parsedValue === '' ? null : parsedValue;
 
         // If no submit handlers are defined, propagate the change instantly
         if (!this.submitCount && onChange) {
