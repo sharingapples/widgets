@@ -1,8 +1,7 @@
 // @flow
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import left from './left.png';
-import right from './right.png';
+import { left, right } from '@app/assets/icons';
 
 const styles = StyleSheet.create({
   container: {
@@ -55,7 +54,7 @@ function Header({ date, leftArrow, rightArrow, prevMonth, nextMonth }: Props) {
           )
       }
 
-        <Text style={styles.text}>{month} {year}</Text>
+        <Text allowFontScaling={false} style={styles.text}>{month} {year}</Text>
         {rightArrow ? <View />
           : (
             <TouchableOpacity
@@ -67,7 +66,8 @@ function Header({ date, leftArrow, rightArrow, prevMonth, nextMonth }: Props) {
       }
       </View>
       <View style={styles.dayContainer}>
-        {WEEK_DAYS.map(d => <Text style={styles.dayText} key={d}>{d}</Text>)}
+        {WEEK_DAYS.map(d => (
+          <Text allowFontScaling={false} style={styles.dayText} key={d}>{d}</Text>))}
       </View>
     </>
   );

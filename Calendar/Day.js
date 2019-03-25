@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    padding: 10,
   },
 });
 
@@ -28,6 +29,7 @@ function Day({ date, currentMonth, renderDate, onSelect }: Props) {
       }}
     >
       <Text
+        allowFontScaling={false}
         style={{ color: currentMonth === dateObj.getMonth() ? 'black' : 'grey' }}
       >
         {dateObj.getDate()}
