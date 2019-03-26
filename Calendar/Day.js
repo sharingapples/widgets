@@ -13,12 +13,21 @@ const styles = StyleSheet.create({
 type Props = {
   date: Date,
   currentMonth: number,
-  renderDate: React.Node,
-  onSelect: () => void,
+  renderDate: (date: Date) => React.Node,
+  onSelect: (date: Date) => void,
+  selectedDate: Date,
+  showDate: string,
 }
 
-function Day({ date, currentMonth, renderDate, onSelect }: Props) {
+function Day({ date, currentMonth, renderDate, onSelect, selectedDate, showDate }: Props) {
   const dateObj = new Date(date);
+  const isSelected = selectedDate.getMonth() === dateObj.getMonth()
+    && selectedDate.getDate() === dateObj.getDate();
+
+  const show = showDate && (
+    showDate === 'before' ? dateObj.getMonth() > currentMonth : dateObj.getMonth() < currentMonth);
+
+
   return (
     <TouchableOpacity
       style={styles.container}
@@ -30,9 +39,11 @@ function Day({ date, currentMonth, renderDate, onSelect }: Props) {
     >
       <Text
         allowFontScaling={false}
-        style={{ color: currentMonth === dateObj.getMonth() ? 'black' : 'grey' }}
+        style={{
+          color: currentMonth === dateObj.getMonth() ? 'black' : 'grey',
+        }}
       >
-        {dateObj.getDate()}
+        {!show && dateObj.getDate()}
       </Text>
       {renderDate && renderDate(date)}
     </TouchableOpacity>

@@ -12,12 +12,14 @@ const styles = StyleSheet.create({
 type Props = {
   startOfWeek: string,
   month: number,
-  onSelect: () => void,
+  onSelect: (date: Date) => void,
+  selectedDate: Date,
+  showDate: string,
 }
 
 const days = [0, 1, 2, 3, 4, 5, 6];
 
-function Week({ startOfWeek, month, onSelect }: Props) {
+function Week({ startOfWeek, month, onSelect, selectedDate, showDate }: Props) {
   return (
     <View style={styles.container}>
       {days.map(i => (
@@ -26,6 +28,8 @@ function Week({ startOfWeek, month, onSelect }: Props) {
           date={startOfWeek + i * 86400 * 1000}
           currentMonth={month}
           onSelect={onSelect}
+          selectedDate={selectedDate}
+          showDate={showDate}
         />
       ))}
     </View>

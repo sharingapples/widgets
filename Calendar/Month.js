@@ -4,18 +4,25 @@ import Week from './Week';
 
 type Props = {
   month: number,
-  onSelect: () => void,
+  onSelect: (date: Date) => void,
   start: number,
+  selectedDate: Date,
+  showDate: string,
 }
 
-function Month({ start, month, onSelect }: Props) {
-  const weeks = new Array(6).fill(null).map((c, i) => start + i * 86400 * 1000);
-  return weeks.map((week, idx) => (
+const NUM_OF_WEEKS = 6;
+const WEEK_DIFF = 7 * 86400 * 1000;
+
+function Month({ start, month, onSelect, selectedDate, showDate }: Props) {
+  const weeks = new Array(NUM_OF_WEEKS).fill(null).map((c, i) => start + i * WEEK_DIFF);
+  return weeks.map(week => (
     <Week
       key={week}
-      startOfWeek={week + idx * 6 * 86400 * 1000}
+      startOfWeek={week}
       month={month}
       onSelect={onSelect}
+      selectedDate={selectedDate}
+      showDate={showDate}
     />
   ));
 }

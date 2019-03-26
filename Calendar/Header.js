@@ -7,11 +7,12 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginBottom: 5,
-    width: '100%',
+    paddingBottom: 5,
   },
   text: {
     fontSize: 16,
+    textAlign: 'center',
+    width: '100%',
   },
   dayContainer: {
     flexDirection: 'row',
@@ -32,38 +33,34 @@ type Props = {
   date: {},
   prevMonth: string => void,
   nextMonth: string => void,
-  leftArrow: boolean,
-  rightArrow: boolean,
 }
 
 const WEEK_DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-function Header({ date, leftArrow, rightArrow, prevMonth, nextMonth }: Props) {
+function Header({ date, prevMonth, nextMonth }: Props) {
   const month = date.toLocaleString('en-us', { month: 'long' });
   const year = date.getFullYear();
   return (
     <>
       <View style={styles.container}>
-        {leftArrow ? <View />
-          : (
-            <TouchableOpacity
-              onPress={prevMonth}
-            >
-              <Image source={left} />
-            </TouchableOpacity>
-          )
-      }
-
         <Text allowFontScaling={false} style={styles.text}>{month} {year}</Text>
-        {rightArrow ? <View />
-          : (
-            <TouchableOpacity
-              onPress={nextMonth}
-            >
-              <Image source={right} />
-            </TouchableOpacity>
-          )
-      }
+        {prevMonth && (
+          <TouchableOpacity
+            onPress={prevMonth}
+            style={{ paddingLeft: 10, paddingRight: 10, position: 'absolute', left: 0 }}
+          >
+            <Image source={left} />
+          </TouchableOpacity>
+        )}
+
+        {nextMonth && (
+          <TouchableOpacity
+            onPress={nextMonth}
+            style={{ paddingLeft: 10, paddingRight: 10, position: 'absolute', right: 0 }}
+          >
+            <Image source={right} />
+          </TouchableOpacity>
+        )}
       </View>
       <View style={styles.dayContainer}>
         {WEEK_DAYS.map(d => (
