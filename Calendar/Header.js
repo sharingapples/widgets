@@ -27,6 +27,18 @@ const styles = StyleSheet.create({
     color: 'grey',
     textAlign: 'center',
   },
+  left: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    position: 'absolute',
+    left: 0,
+  },
+  right: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    position: 'absolute',
+    right: 0,
+  },
 });
 
 type Props = {
@@ -47,7 +59,7 @@ function Header({ date, prevMonth, nextMonth }: Props) {
         {prevMonth && (
           <TouchableOpacity
             onPress={prevMonth}
-            style={{ paddingLeft: 10, paddingRight: 10, position: 'absolute', left: 0 }}
+            style={styles.left}
           >
             <Image source={left} />
           </TouchableOpacity>
@@ -56,7 +68,7 @@ function Header({ date, prevMonth, nextMonth }: Props) {
         {nextMonth && (
           <TouchableOpacity
             onPress={nextMonth}
-            style={{ paddingLeft: 10, paddingRight: 10, position: 'absolute', right: 0 }}
+            style={styles.right}
           >
             <Image source={right} />
           </TouchableOpacity>
