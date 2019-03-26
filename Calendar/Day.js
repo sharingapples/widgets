@@ -29,7 +29,7 @@ type Props = {
 
 function getFontColor(isCurrentMonth, isSelected, disabledColor, selectedColor) {
   if (isSelected) {
-    return selectedColor ? (selectedColor.text || selectedColor) : 'white';
+    return selectedColor instanceof Object ? selectedColor.text : 'white';
   }
   return isCurrentMonth ? 'black' : disabledColor || 'grey';
 }
