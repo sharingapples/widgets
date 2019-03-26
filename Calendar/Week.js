@@ -14,12 +14,11 @@ type Props = {
   month: number,
   onSelect: (date: Date) => void,
   selectedDate: Date,
-  showDate: string,
 }
 
 const days = [0, 1, 2, 3, 4, 5, 6];
 
-function Week({ startOfWeek, month, onSelect, selectedDate, showDate }: Props) {
+function Week({ startOfWeek, month, onSelect, selectedDate }: Props) {
   return (
     <View style={styles.container}>
       {days.map(i => (
@@ -29,7 +28,6 @@ function Week({ startOfWeek, month, onSelect, selectedDate, showDate }: Props) {
           currentMonth={month}
           onSelect={onSelect}
           selectedDate={selectedDate}
-          showDate={showDate}
         />
       ))}
     </View>

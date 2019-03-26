@@ -7,13 +7,12 @@ type Props = {
   onSelect: (date: Date) => void,
   start: number,
   selectedDate: Date,
-  showDate: string,
 }
 
 const NUM_OF_WEEKS = 6;
 const WEEK_DIFF = 7 * 86400 * 1000;
 
-function Month({ start, month, onSelect, selectedDate, showDate }: Props) {
+function Month({ start, month, onSelect, selectedDate }: Props) {
   const weeks = new Array(NUM_OF_WEEKS).fill(null).map((c, i) => start + i * WEEK_DIFF);
   return weeks.map(week => (
     <Week
@@ -22,7 +21,6 @@ function Month({ start, month, onSelect, selectedDate, showDate }: Props) {
       month={month}
       onSelect={onSelect}
       selectedDate={selectedDate}
-      showDate={showDate}
     />
   ));
 }

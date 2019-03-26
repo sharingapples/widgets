@@ -16,17 +16,12 @@ type Props = {
   renderDate: (date: Date) => React.Node,
   onSelect: (date: Date) => void,
   selectedDate: Date,
-  showDate: string,
 }
 
-function Day({ date, currentMonth, renderDate, onSelect, selectedDate, showDate }: Props) {
+function Day({ date, currentMonth, renderDate, onSelect, selectedDate }: Props) {
   const dateObj = new Date(date);
   const isSelected = selectedDate.getMonth() === dateObj.getMonth()
     && selectedDate.getDate() === dateObj.getDate();
-
-  const show = showDate && (
-    showDate === 'before' ? dateObj.getMonth() > currentMonth : dateObj.getMonth() < currentMonth);
-
 
   return (
     <TouchableOpacity
@@ -43,7 +38,7 @@ function Day({ date, currentMonth, renderDate, onSelect, selectedDate, showDate 
           color: currentMonth === dateObj.getMonth() ? 'black' : 'grey',
         }}
       >
-        {!show && dateObj.getDate()}
+        {dateObj.getDate()}
       </Text>
       {renderDate && renderDate(date)}
     </TouchableOpacity>
