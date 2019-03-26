@@ -46,16 +46,17 @@ function getBackgroundColor(colorObject, defaultColor) {
   return colorObject;
 }
 
+function getFullDate(date) {
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+}
+
 function Day({
   date, currentMonth, renderDate, onChange, value, disabledColor, selectedColor, todayColor,
 }: Props) {
   const dateObj = new Date(date);
-  const isSelected = value.getMonth() === dateObj.getMonth()
-    && value.getDate() === dateObj.getDate() && value.getFullYear() === dateObj.getFullYear();
+  const isSelected = getFullDate(value) === getFullDate(dateObj);
   const isCurrentMonth = currentMonth === dateObj.getMonth();
-  const today = new Date();
-  const isToday = today.getMonth() === dateObj.getMonth()
-  && today.getDate() === dateObj.getDate() && today.getFullYear() === dateObj.getFullYear();
+  const isToday = getFullDate(new Date()) === getFullDate(dateObj);
 
   return (
     <TouchableOpacity
