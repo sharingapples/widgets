@@ -57,19 +57,13 @@ function Header({ date, prevMonth, nextMonth }: Props) {
       <View style={styles.container}>
         <Text allowFontScaling={false} style={styles.text}>{month} {year}</Text>
         {prevMonth && (
-          <TouchableOpacity
-            onPress={prevMonth}
-            style={styles.left}
-          >
+          <TouchableOpacity onPress={prevMonth} style={styles.left}>
             <Image source={left} />
           </TouchableOpacity>
         )}
 
         {nextMonth && (
-          <TouchableOpacity
-            onPress={nextMonth}
-            style={styles.right}
-          >
+          <TouchableOpacity onPress={nextMonth} style={styles.right}>
             <Image source={right} />
           </TouchableOpacity>
         )}
