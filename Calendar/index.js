@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import Header from './Header';
 import Month from './Month';
@@ -22,12 +22,17 @@ function getStartOfMonth(date) {
 
 type Props = {
   renderDate: (date: Date) => React.Node,
-  onSelect: number => void,
-  selectedDate: ?Date,
+  onChange: number => void,
+  value: ?Date,
+  disabledColor: string,
+  selectedColor: { text: string, back: string} | string,
+  todayColor: { text: string, back: string} | string,
 }
 
-function Calendar({ renderDate, onSelect, selectedDate = new Date() }: Props) {
-  const [date, setDate] = useState(() => new Date());
+function Calendar({
+  renderDate, onChange, value = new Date(), disabledColor, selectedColor, todayColor,
+}: Props) {
+  const [date, setDate] = useState(value);
   const [months, setMonths] = useState(() => getMonthCount(Dimensions.get('screen'), date));
 
   const handleLayout = useCallback((e) => {
@@ -36,15 +41,14 @@ function Calendar({ renderDate, onSelect, selectedDate = new Date() }: Props) {
 
   const prevMonth = useCallback(() => {
     setDate(d => new Date(d.getFullYear(), d.getMonth() - months.length, 1));
+    setMonths(mnths => mnths.map(d => new Date(d.getFullYear(), d.getMonth() - months.length, 1)));
   }, [setDate]);
 
   const nextMonth = useCallback(() => {
     setDate(d => new Date(d.getFullYear(), d.getMonth() + months.length, 1));
+    setMonths(mnths => mnths.map(d => new Date(d.getFullYear(), d.getMonth() + months.length, 1)));
   }, [setDate]);
 
-  useEffect(() => {
-    setMonths(() => getMonthCount(Dimensions.get('screen'), date));
-  }, [date]);
 
   const first = 0;
   const last = months.length - 1;
@@ -61,9 +65,12 @@ function Calendar({ renderDate, onSelect, selectedDate = new Date() }: Props) {
           <Month
             start={getStartOfMonth(month)}
             month={month.getMonth()}
-            onSelect={onSelect}
+            selectedColor={selectedColor}
+            onChange={onChange}
+            value={value}
+            todayColor={todayColor}
+            disabledColor={disabledColor}
             renderDate={renderDate}
-            selectedDate={selectedDate}
           />
         </View>
       ))}
