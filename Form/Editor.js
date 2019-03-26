@@ -54,13 +54,13 @@ class Editor extends Component<Props, State> {
     this.parsers = {};
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const nextOwner = getOwner(nextProps, nextState);
-    const owner = getOwner(this.props, this.state);
-    if (owner === nextOwner) return false;
-    if (owner === null || nextOwner === null) return true;
-    return nextOwner.value !== owner.value || nextOwner.onChange !== owner.onChange;
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   const nextOwner = getOwner(nextProps, nextState);
+  //   const owner = getOwner(this.props, this.state);
+  //   if (owner === nextOwner) return false;
+  //   if (owner === null || nextOwner === null) return true;
+  //   return nextOwner.value !== owner.value || nextOwner.onChange !== owner.onChange;
+  // }
 
   edit(owner: { value: {}, onChange: ({}) => void }) {
     // eslint-disable-next-line react/destructuring-assignment
@@ -88,7 +88,13 @@ class Editor extends Component<Props, State> {
 
     return {
       parent: this.context,
-      get: name => currentValue[name],
+      get: (name, defaultValue) => {
+        const v = currentValue[name];
+        if (v === undefined && defaultValue !== '') {
+          currentValue[name] = defaultValue;
+        }
+        return currentValue[name];
+      },
       getState: () => currentValue,
       // eslint-disable-next-line react/destructuring-assignment
       getRootState: () => (this.context ? this.context.getRootState() : currentValue),
@@ -101,7 +107,8 @@ class Editor extends Component<Props, State> {
         }
 
         // Always update the current value
-        currentValue[name] = parsedValue;
+        // Dynamodb doesn't support empty string
+        currentValue[name] = parsedValue === '' ? null : parsedValue;
 
         // If no submit handlers are defined, propagate the change instantly
         if (!this.submitCount && onChange) {
