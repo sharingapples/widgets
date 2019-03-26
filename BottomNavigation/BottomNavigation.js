@@ -31,6 +31,8 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: '#666',
   },
 });
 
