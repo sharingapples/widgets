@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { left, right } from '@app/assets/icons';
+import right from './right.png';
+import left from './left.png';
 
 const styles = StyleSheet.create({
   container: {
@@ -58,13 +59,13 @@ function Header({ date, prevMonth, nextMonth }: Props) {
         <Text allowFontScaling={false} style={styles.text}>{month} {year}</Text>
         {prevMonth && (
           <TouchableOpacity onPress={prevMonth} style={styles.left}>
-            <Image source={left} />
+            <Image source={left} style={{ height: 16, width: 16 }} />
           </TouchableOpacity>
         )}
 
         {nextMonth && (
           <TouchableOpacity onPress={nextMonth} style={styles.right}>
-            <Image source={right} />
+            <Image source={right} style={{ height: 16, width: 16 }} />
           </TouchableOpacity>
         )}
       </View>

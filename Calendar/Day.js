@@ -1,18 +1,25 @@
 // @flow
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { getFullDate } from './util';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     padding: 10,
+    borderWidth: 1,
+    margin: -1,
+    borderColor: 'transparent',
   },
   textContainer: {
-    padding: 5,
+    paddingHorizontal: 6,
+    paddingVertical: 6,
     borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
+    width: 30,
+    height: 30,
   },
 });
 
@@ -21,57 +28,48 @@ type Props = {
   currentMonth: number,
   renderDate: (date: Date) => React.Node,
   onChange: (date: Date) => void,
-  value: Date,
-  disabledColor: string,
-  selectedColor: { text: string, back: string} | string,
-  todayColor: { text: string, back: string} | string,
+  setSelectedDates: (date: Date) => void,
+  addSelectedDates: (date: Date) => void,
+  borderStyle: {},
 }
 
-function getFontColor(isCurrentMonth, isSelected, disabledColor, selectedColor) {
-  if (isSelected) {
-    return selectedColor instanceof Object ? selectedColor.text : 'white';
-  }
-  return isCurrentMonth ? 'black' : disabledColor || 'grey';
-}
-
-function getBackgroundColor(colorObject, defaultColor) {
-  if (!colorObject) {
-    return defaultColor;
-  }
-
-  if (colorObject instanceof Object) {
-    return colorObject.back || defaultColor;
-  }
-
-  return colorObject;
-}
-
-function getFullDate(date) {
-  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+function getFontColor(isCurrentMonth) {
+  return isCurrentMonth ? 'black' : 'grey';
 }
 
 function Day({
-  date, currentMonth, renderDate, onChange, value, disabledColor, selectedColor, todayColor,
+  date,
+  currentMonth,
+  renderDate,
+  onChange,
+  borderStyle,
+  setSelectedDates,
+  addSelectedDates,
 }: Props) {
   const dateObj = new Date(date);
-  const isSelected = getFullDate(value) === getFullDate(dateObj);
   const isCurrentMonth = currentMonth === dateObj.getMonth();
   const isToday = getFullDate(new Date()) === getFullDate(dateObj);
-
   return (
     <TouchableOpacity
-      style={[styles.container, { backgroundColor: isSelected ? getBackgroundColor(selectedColor, 'white') : 'white' }]}
+      style={[styles.container, borderStyle]}
+      onLongPress={() => {
+        // stack this to selected date
+        addSelectedDates(date);
+      }}
       onPress={() => {
+        // override array of selected dates and just add this date
+        setSelectedDates({ [date]: {} });
         if (onChange) {
           onChange(date);
         }
       }}
     >
-      <View style={[styles.textContainer, { backgroundColor: isToday ? getBackgroundColor(todayColor, 'blue') : 'white' }]}>
+
+      <View style={[styles.textContainer, { backgroundColor: isToday ? 'blue' : 'white' }]}>
         <Text
           allowFontScaling={false}
           style={{
-            color: getFontColor(isCurrentMonth, isSelected, disabledColor, selectedColor),
+            color: isToday ? 'white' : getFontColor(isCurrentMonth),
             fontSize: 14,
           }}
         >
@@ -83,4 +81,4 @@ function Day({
   );
 }
 
-export default Day;
+export default React.memo(Day);

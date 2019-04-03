@@ -1,6 +1,7 @@
 // @flow
 import React, { useState, useCallback } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
+import { getDateBorderStyle } from './util';
 import Header from './Header';
 import Month from './Month';
 
@@ -24,16 +25,16 @@ type Props = {
   renderDate: (date: Date) => React.Node,
   onChange: number => void,
   value: ?Date,
-  disabledColor: string,
-  selectedColor: { text: string, back: string} | string,
-  todayColor: { text: string, back: string} | string,
 }
 
 function Calendar({
-  renderDate, onChange, value = new Date(), disabledColor, selectedColor, todayColor,
+  renderDate, onChange, value = new Date(),
 }: Props) {
   const [date, setDate] = useState(value);
   const [months, setMonths] = useState(() => getMonthCount(Dimensions.get('screen'), date));
+  const [selectedDates, setSelectedDates] = useState({
+    [date.getTime()]: {},
+  });
 
   const handleLayout = useCallback((e) => {
     setMonths(getMonthCount(e.nativeEvent.layout, date));
@@ -48,6 +49,10 @@ function Calendar({
     setDate(d => new Date(d.getFullYear(), d.getMonth() + months.length, 1));
     setMonths(mnths => mnths.map(d => new Date(d.getFullYear(), d.getMonth() + months.length, 1)));
   }, [setDate]);
+
+  const addSelectedDates = useCallback((v) => {
+    setSelectedDates(d => ({ ...d, [v]: {} }));
+  }, [setSelectedDates]);
 
 
   const first = 0;
@@ -65,18 +70,17 @@ function Calendar({
           <Month
             start={getStartOfMonth(month)}
             month={month.getMonth()}
-            selectedColor={selectedColor}
             onChange={onChange}
             value={value}
-            todayColor={todayColor}
-            disabledColor={disabledColor}
             renderDate={renderDate}
+            selectedDates={selectedDates}
+            setSelectedDates={setSelectedDates}
+            addSelectedDates={addSelectedDates}
           />
         </View>
       ))}
     </View>
   );
 }
-
 
 export default Calendar;

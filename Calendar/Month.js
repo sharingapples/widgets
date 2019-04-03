@@ -9,7 +9,7 @@ type Props = {
   selectedDate: Date,
 }
 
-const NUM_OF_WEEKS = 6;
+const NUM_OF_WEEKS = 5;
 const WEEK_DIFF = 7 * 86400 * 1000;
 
 function Month({ start, month, ...other }: Props) {
