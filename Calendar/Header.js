@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'grey',
     paddingBottom: 5,
     borderBottomWidth: StyleSheet.hairlineWidth,
+    marginBottom: 5,
   },
   dayText: {
     flex: 1,

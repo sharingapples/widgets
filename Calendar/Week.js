@@ -14,17 +14,17 @@ type Props = {
   startOfWeek: string,
   month: number,
   onSelect: (date: Date) => void,
-  selectedDates: { },
+  selection: any,
 }
 
 const days = [0, 1, 2, 3, 4, 5, 6];
 
-function Week({ startOfWeek, month, selectedDates, ...other }: Props) {
+function Week({ startOfWeek, month, selection, ...other }: Props) {
   return (
     <View style={styles.container}>
       {days.map((i) => {
         const date = startOfWeek + i * DAY_DIFF;
-        const borderStyle = getDateBorderStyle(date, selectedDates, month);
+        const borderStyle = getDateBorderStyle(date, selection);
         return (
           <Day
             key={i}

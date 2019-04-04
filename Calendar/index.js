@@ -3,10 +3,12 @@ import React, { useState, useCallback } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import Header from './Header';
 import Month from './Month';
+import { isDate, getUnixTimeStamp } from './util';
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    backgroundColor: 'white',
   },
 });
 
@@ -31,10 +33,23 @@ function Calendar({
 }: Props) {
   const [date, setDate] = useState(value);
   const [months, setMonths] = useState(() => getMonthCount(Dimensions.get('screen'), date));
-  const [multipleSelect, setMultipleSelect] = useState(false);
-  const [selectedDates, setSelectedDates] = useState({
-    [date.getTime()]: {},
-  });
+  const [selection, setSelection] = useState(new Date());
+
+  const selectDate = useCallback((d, long) => {
+    setSelection((prev) => {
+      if (!isDate(prev)) {
+        return { ...prev, [d]: true };
+      }
+      if (long) {
+        return { [getUnixTimeStamp(prev)]: {}, [d]: {} };
+      }
+      return new Date(d);
+    });
+  }, [setSelection]);
+
+  const removeMulitpleSelect = useCallback(() => {
+    setSelection(prev => new Date(parseInt(Object.keys(prev).pop(), 10)));
+  }, [setSelection]);
 
   const handleLayout = useCallback((e) => {
     setMonths(getMonthCount(e.nativeEvent.layout, date));
@@ -50,25 +65,6 @@ function Calendar({
     setMonths(mnths => mnths.map(d => new Date(d.getFullYear(), d.getMonth() + months.length, 1)));
   }, [setDate]);
 
-  const addSelectedDates = useCallback((v) => {
-    setSelectedDates((d) => {
-      if (multipleSelect) {
-        return { ...d, [v]: {} };
-      }
-      return { [v]: {} };
-    });
-  }, [multipleSelect, setSelectedDates]);
-
-  const addMultipleSelect = useCallback((v) => {
-    setSelectedDates(d => ({ ...d, [v]: {} }));
-    setMultipleSelect(true);
-  }, [setMultipleSelect]);
-
-  const removeMulitpleSelect = useCallback(() => {
-    setMultipleSelect(false);
-    setSelectedDates({ [date.getTime()]: {} });
-  }, [setMultipleSelect]);
-
 
   const first = 0;
   const last = months.length - 1;
@@ -81,7 +77,7 @@ function Calendar({
             date={month}
             prevMonth={(idx === first || months.length === 1) && prevMonth}
             nextMonth={(idx === last || months.length === 1) && nextMonth}
-            multiple={multipleSelect}
+            multiple={!isDate(selection)}
             removeMulitpleSelect={removeMulitpleSelect}
           />
           <Month
@@ -90,9 +86,8 @@ function Calendar({
             onChange={onChange}
             value={value}
             renderDate={renderDate}
-            selectedDates={selectedDates}
-            addSelectedDates={addSelectedDates}
-            addMultipleSelect={addMultipleSelect}
+            selectDate={selectDate}
+            selection={selection}
           />
         </View>
       ))}
