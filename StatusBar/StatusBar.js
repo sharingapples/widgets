@@ -17,6 +17,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#aaa',
   },
   title: {
     width: '100%',

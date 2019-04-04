@@ -1,13 +1,6 @@
 import { useState, useContext, useCallback } from 'react';
 import { EditorContext } from './Editor';
 
-function isSet(v) {
-  return v !== null && v !== undefined;
-}
-function T(v, defaultValue = '') {
-  return isSet(v) ? v : defaultValue;
-}
-
 export default function useFormInput(name, defaultValue, valueOnBlur, valueOnFocus) {
   const { get, set } = useContext(EditorContext);
 
