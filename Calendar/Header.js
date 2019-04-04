@@ -46,17 +46,29 @@ type Props = {
   date: {},
   prevMonth: string => void,
   nextMonth: string => void,
+  multiple: boolean,
+  removeMulitpleSelect: boolean => void,
 }
 
 const WEEK_DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-function Header({ date, prevMonth, nextMonth }: Props) {
+function Header({ date, prevMonth, nextMonth, multiple, removeMulitpleSelect }: Props) {
   const month = date.toLocaleString('en-us', { month: 'long' });
   const year = date.getFullYear();
   return (
     <>
       <View style={styles.container}>
-        <Text allowFontScaling={false} style={styles.text}>{month} {year}</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1 }}>
+          <Text allowFontScaling={false}>{month} {year}</Text>
+          {multiple && (
+            <TouchableOpacity
+              style={{ marginLeft: 10 }}
+              onPress={() => removeMulitpleSelect(false)}
+            >
+              <Text allowFontScaling={false} style={{ color: 'blue' }}>Clear Selection</Text>
+            </TouchableOpacity>
+          )}
+        </View>
         {prevMonth && (
           <TouchableOpacity onPress={prevMonth} style={styles.left}>
             <Image source={left} style={{ height: 16, width: 16 }} />
@@ -77,4 +89,4 @@ function Header({ date, prevMonth, nextMonth }: Props) {
   );
 }
 
-export default Header;
+export default React.memo(Header);

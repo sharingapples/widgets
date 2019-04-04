@@ -34,11 +34,16 @@ export function getDateBorderStyle(date, selectedDates = {}) {
   const nextDay = date + SINGLE_DAY * DAY_DIFF;
   const prevDay = date - SINGLE_DAY * DAY_DIFF;
 
-  const bit0 = selectedDates[prevWeek] ? 1 : 0;
-  const bit1 = selectedDates[nextDay] ? 2 : 0;
-  const bit2 = selectedDates[nextWeek] ? 4 : 0;
-  const bit3 = selectedDates[prevDay] ? 8 : 0;
+  const isSunday = new Date(date).getDay() === 0;
+  const isSaturday = new Date(date).getDay() === 6;
 
+
+  const bit0 = selectedDates[prevWeek] ? 1 : 0;
+  const bit1 = selectedDates[nextDay] && !isSaturday ? 2 : 0;
+  const bit2 = selectedDates[nextWeek] ? 4 : 0;
+  const bit3 = selectedDates[prevDay] && !isSunday ? 8 : 0;
+
+  // eslint-disable-next-line no-bitwise
   const borderStyleIndex = bit0 | bit1 | bit2 | bit3;
   return borderStyles[borderStyleIndex];
 }

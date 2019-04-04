@@ -24,7 +24,7 @@ function Week({ startOfWeek, month, selectedDates, ...other }: Props) {
     <View style={styles.container}>
       {days.map((i) => {
         const date = startOfWeek + i * DAY_DIFF;
-        const borderStyle = getDateBorderStyle(date, selectedDates);
+        const borderStyle = getDateBorderStyle(date, selectedDates, month);
         return (
           <Day
             key={i}

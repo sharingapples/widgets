@@ -28,7 +28,7 @@ type Props = {
   currentMonth: number,
   renderDate: (date: Date) => React.Node,
   onChange: (date: Date) => void,
-  setSelectedDates: (date: Date) => void,
+  addMultipleSelect: (date: Date) => void,
   addSelectedDates: (date: Date) => void,
   borderStyle: {},
 }
@@ -43,8 +43,8 @@ function Day({
   renderDate,
   onChange,
   borderStyle,
-  setSelectedDates,
   addSelectedDates,
+  addMultipleSelect,
 }: Props) {
   const dateObj = new Date(date);
   const isCurrentMonth = currentMonth === dateObj.getMonth();
@@ -54,11 +54,11 @@ function Day({
       style={[styles.container, borderStyle]}
       onLongPress={() => {
         // stack this to selected date
-        addSelectedDates(date);
+        addMultipleSelect(date);
       }}
       onPress={() => {
         // override array of selected dates and just add this date
-        setSelectedDates({ [date]: {} });
+        addSelectedDates(date);
         if (onChange) {
           onChange(date);
         }

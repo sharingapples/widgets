@@ -1,7 +1,6 @@
 // @flow
 import React, { useState, useCallback } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import { getDateBorderStyle } from './util';
 import Header from './Header';
 import Month from './Month';
 
@@ -32,6 +31,7 @@ function Calendar({
 }: Props) {
   const [date, setDate] = useState(value);
   const [months, setMonths] = useState(() => getMonthCount(Dimensions.get('screen'), date));
+  const [multipleSelect, setMultipleSelect] = useState(false);
   const [selectedDates, setSelectedDates] = useState({
     [date.getTime()]: {},
   });
@@ -51,8 +51,23 @@ function Calendar({
   }, [setDate]);
 
   const addSelectedDates = useCallback((v) => {
+    setSelectedDates((d) => {
+      if (multipleSelect) {
+        return { ...d, [v]: {} };
+      }
+      return { [v]: {} };
+    });
+  }, [multipleSelect, setSelectedDates]);
+
+  const addMultipleSelect = useCallback((v) => {
     setSelectedDates(d => ({ ...d, [v]: {} }));
-  }, [setSelectedDates]);
+    setMultipleSelect(true);
+  }, [setMultipleSelect]);
+
+  const removeMulitpleSelect = useCallback(() => {
+    setMultipleSelect(false);
+    setSelectedDates({ [date.getTime()]: {} });
+  }, [setMultipleSelect]);
 
 
   const first = 0;
@@ -66,6 +81,8 @@ function Calendar({
             date={month}
             prevMonth={(idx === first || months.length === 1) && prevMonth}
             nextMonth={(idx === last || months.length === 1) && nextMonth}
+            multiple={multipleSelect}
+            removeMulitpleSelect={removeMulitpleSelect}
           />
           <Month
             start={getStartOfMonth(month)}
@@ -74,13 +91,14 @@ function Calendar({
             value={value}
             renderDate={renderDate}
             selectedDates={selectedDates}
-            setSelectedDates={setSelectedDates}
             addSelectedDates={addSelectedDates}
+            addMultipleSelect={addMultipleSelect}
           />
         </View>
       ))}
     </View>
   );
 }
+
 
 export default Calendar;
