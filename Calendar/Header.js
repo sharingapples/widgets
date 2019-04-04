@@ -10,14 +10,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingBottom: 5,
   },
-  text: {
+  titleContainer: {
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  dateText: {
     fontSize: 16,
-    textAlign: 'center',
-    width: '100%',
+    color: 'black',
+  },
+  clearTextContainer: {
+    marginLeft: 15,
+  },
+  clearText: {
+    fontSize: 14,
+    color: 'blue',
   },
   dayContainer: {
     flexDirection: 'row',
     width: '100%',
+    marginTop: 10,
     borderBottomColor: 'grey',
     paddingBottom: 5,
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -41,6 +54,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
   },
+  icon: {
+    height: 16,
+    width: 16,
+  },
 });
 
 type Props = {
@@ -59,26 +76,26 @@ function Header({ date, prevMonth, nextMonth, multiple, removeMulitpleSelect }: 
   return (
     <>
       <View style={styles.container}>
-        <View style={{ flexDirection: 'row', justifyContent: 'center', flex: 1 }}>
-          <Text allowFontScaling={false}>{month} {year}</Text>
+        <View style={styles.titleContainer}>
+          <Text allowFontScaling={false} style={styles.dateText}>{month} {year}</Text>
           {multiple && (
             <TouchableOpacity
-              style={{ marginLeft: 10 }}
+              style={styles.clearTextContainer}
               onPress={() => removeMulitpleSelect(false)}
             >
-              <Text allowFontScaling={false} style={{ color: 'blue' }}>Clear Selection</Text>
+              <Text allowFontScaling={false} style={styles.clearText}>Clear Selection</Text>
             </TouchableOpacity>
           )}
         </View>
         {prevMonth && (
           <TouchableOpacity onPress={prevMonth} style={styles.left}>
-            <Image source={left} style={{ height: 16, width: 16 }} />
+            <Image source={left} style={styles.icon} />
           </TouchableOpacity>
         )}
 
         {nextMonth && (
           <TouchableOpacity onPress={nextMonth} style={styles.right}>
-            <Image source={right} style={{ height: 16, width: 16 }} />
+            <Image source={right} style={styles.icon} />
           </TouchableOpacity>
         )}
       </View>
