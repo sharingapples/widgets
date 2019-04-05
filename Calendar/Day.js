@@ -1,16 +1,19 @@
 // @flow
-import React from 'react';
+import React, { useRef } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { getFullDate } from './util';
+import { getTheme } from 'std-theme';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    padding: 10,
-    borderWidth: 1,
+    paddingHorizontal: 3,
+    paddingVertical: 3,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
     margin: -1,
-    borderColor: 'transparent',
   },
   textContainer: {
     paddingHorizontal: 6,
@@ -23,6 +26,8 @@ const styles = StyleSheet.create({
   },
 });
 
+const theme = getTheme();
+
 type Props = {
   date: Date,
   currentMonth: number,
@@ -33,7 +38,7 @@ type Props = {
 }
 
 function getFontColor(isCurrentMonth) {
-  return isCurrentMonth ? 'black' : 'grey';
+  return isCurrentMonth ? theme.colorOnDefault : theme.colorOnDisabled;
 }
 
 function Day({
@@ -46,10 +51,16 @@ function Day({
 }: Props) {
   const dateObj = new Date(date);
   const isCurrentMonth = currentMonth === dateObj.getMonth();
-  const isToday = getFullDate(new Date()) === getFullDate(dateObj);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const isToday = date === today.getTime();
+  const renderCount = useRef(0);
+
+  renderCount.current += 1;
+
   return (
     <TouchableOpacity
-      style={[styles.container, borderStyle]}
+      style={[styles.container, borderStyle || { borderColor: 'transparent' }]}
       onLongPress={() => {
         // stack this to selected date
         selectDate(date, true);
@@ -63,11 +74,11 @@ function Day({
       }}
     >
 
-      <View style={[styles.textContainer, { backgroundColor: isToday ? 'blue' : 'white' }]}>
+      <View style={[styles.textContainer, { backgroundColor: isToday ? theme.colorPrimary : 'white' }]}>
         <Text
           allowFontScaling={false}
           style={{
-            color: isToday ? 'white' : getFontColor(isCurrentMonth),
+            color: isToday ? theme.colorOnPrimary : getFontColor(isCurrentMonth),
             fontSize: 14,
           }}
         >

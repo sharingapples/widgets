@@ -1,8 +1,11 @@
 // @flow
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { getTheme } from 'std-theme';
 import right from './right.png';
 import left from './left.png';
+
+const theme = getTheme();
 
 const styles = StyleSheet.create({
   container: {
@@ -18,20 +21,21 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: 16,
-    color: 'black',
+    color: theme.colorOnDefault,
+    fontWeight: 'bold',
   },
   clearTextContainer: {
     marginLeft: 15,
   },
   clearText: {
     fontSize: 14,
-    color: 'blue',
+    color: theme.colorPrimary,
   },
   dayContainer: {
     flexDirection: 'row',
     width: '100%',
-    marginTop: 10,
-    borderBottomColor: 'grey',
+    marginTop: 3,
+    borderBottomColor: theme.colorDisabled,
     paddingBottom: 5,
     borderBottomWidth: StyleSheet.hairlineWidth,
     marginBottom: 5,
@@ -39,24 +43,23 @@ const styles = StyleSheet.create({
   dayText: {
     flex: 1,
     fontSize: 12,
-    color: 'grey',
+    color: theme.colorOnDisabled,
     textAlign: 'center',
   },
   left: {
-    paddingLeft: 10,
-    paddingRight: 10,
     position: 'absolute',
     left: 0,
   },
   right: {
-    paddingLeft: 10,
-    paddingRight: 10,
     position: 'absolute',
     right: 0,
   },
   icon: {
     height: 16,
     width: 16,
+    paddingLeft: 10,
+    paddingRight: 10,
+    tintColor: theme.colorOnDefault,
   },
 });
 
@@ -71,13 +74,16 @@ type Props = {
 const WEEK_DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 function Header({ date, prevMonth, nextMonth, multiple, removeMulitpleSelect }: Props) {
-  const month = date.toLocaleString('en-us', { month: 'long' });
-  const year = date.getFullYear();
+  const dateString = date.toString();
+  const month = dateString.substr(4, 3);
+  const year = dateString.substr(11, 4);
   return (
     <>
       <View style={styles.container}>
         <View style={styles.titleContainer}>
-          <Text allowFontScaling={false} style={styles.dateText}>{month} {year}</Text>
+          <Text allowFontScaling={false} style={styles.dateText}>
+            {month} {year}
+          </Text>
           {multiple && (
             <TouchableOpacity
               style={styles.clearTextContainer}
@@ -88,15 +94,19 @@ function Header({ date, prevMonth, nextMonth, multiple, removeMulitpleSelect }: 
           )}
         </View>
         {prevMonth && (
-          <TouchableOpacity onPress={prevMonth} style={styles.left}>
-            <Image source={left} style={styles.icon} />
-          </TouchableOpacity>
+          <View style={styles.left}>
+            <TouchableWithoutFeedback onPress={prevMonth}>
+              <Image source={left} style={styles.icon} />
+            </TouchableWithoutFeedback>
+          </View>
         )}
 
         {nextMonth && (
-          <TouchableOpacity onPress={nextMonth} style={styles.right}>
-            <Image source={right} style={styles.icon} />
-          </TouchableOpacity>
+          <View style={styles.right}>
+            <TouchableWithoutFeedback onPress={nextMonth}>
+              <Image source={right} style={styles.icon} />
+            </TouchableWithoutFeedback>
+          </View>
         )}
       </View>
       <View style={styles.dayContainer}>

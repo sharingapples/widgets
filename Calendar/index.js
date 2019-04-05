@@ -1,6 +1,6 @@
 // @flow
 import React, { useState, useCallback } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions, Text } from 'react-native';
 import Header from './Header';
 import Month from './Month';
 import { isDate, getUnixTimeStamp } from './util';
@@ -26,10 +26,11 @@ type Props = {
   renderDate: (date: Date) => React.Node,
   onChange: number => void,
   value: ?Date,
+  theme: string,
 }
 
 function Calendar({
-  renderDate, onChange, value = new Date(),
+  renderDate, onChange, value = new Date(), theme = 'light',
 }: Props) {
   const [date, setDate] = useState(value);
   const [months, setMonths] = useState(() => getMonthCount(Dimensions.get('screen'), date));

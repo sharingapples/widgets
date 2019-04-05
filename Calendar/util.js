@@ -1,11 +1,8 @@
+import { getTheme } from 'std-theme';
 
+const theme = getTheme();
 
 /* eslint-disable no-bitwise */
-
-export function getFullDate(date) {
-  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-}
-
 export function getUnixTimeStamp(date) {
   date.setHours(0, 0, 0, 0);
   return date.getTime();
@@ -16,10 +13,10 @@ export const SEVEN_DAYS = 7;
 export const SINGLE_DAY = 1;
 
 const borderStyles = Array(16).fill(null).map((n, idx) => ({
-  borderTopColor: idx & 1 ? 'transparent' : 'blue',
-  borderRightColor: idx & 2 ? 'transparent' : 'blue',
-  borderBottomColor: idx & 4 ? 'transparent' : 'blue',
-  borderLeftColor: idx & 8 ? 'transparent' : 'blue',
+  borderTopColor: idx & 1 ? 'transparent' : theme.colorPrimary,
+  borderRightColor: idx & 2 ? 'transparent' : theme.colorPrimary,
+  borderBottomColor: idx & 4 ? 'transparent' : theme.colorPrimary,
+  borderLeftColor: idx & 8 ? 'transparent' : theme.colorPrimary,
 }));
 
 
@@ -28,7 +25,7 @@ export function isDate(date) {
 }
 
 export function getDateBorderStyle(date, selectedDates = {}) {
-  if (isDate(selectedDates) && getFullDate(selectedDates) === getFullDate(new Date(date))) {
+  if (isDate(selectedDates) && selectedDates.toDateString() === new Date(date).toDateString()) {
     return borderStyles[0];
   }
 
