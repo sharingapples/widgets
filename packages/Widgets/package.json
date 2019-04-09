@@ -6,9 +6,6 @@
   "repository": "git@github.com:bhoos/widgets.git",
   "author": "Ranjan Shrestha <ranjan@sharingapples.com>",
   "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
     "@sharingapples/bottom-navigation": "^1.0.0",
     "@sharingapples/safe-padding": "^1.0.0",
