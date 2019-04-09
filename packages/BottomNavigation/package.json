@@ -1,6 +1,6 @@
 {
   "name": "@sharingapples/bottom-navigation",
-  "version": "0.1.1",
+  "version": "1.0.3",
   "description": "Bottom Navigation",
   "main": "src/BottomNavigation.js",
   "react-native": "src/BottomNavigation.js",
@@ -10,7 +10,7 @@
     "react-native": ">=0.59"
   },
   "dependencies": {
-    "@sharingapples/safe-padding": "^0.1.1"
+    "@sharingapples/safe-padding": "^1.0.3"
   },
   "publishConfig": {
     "access": "public"
