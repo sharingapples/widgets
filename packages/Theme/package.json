@@ -3,6 +3,9 @@
   "version": "0.1.1",
   "description": "Standard theme definition for widgets",
   "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "Ranjan Shrestha",
   "license": "MIT"
 }
