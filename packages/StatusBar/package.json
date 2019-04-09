@@ -11,6 +11,9 @@
     "react": ">=16",
     "react-native": ">=0.41"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "Ranjan Shrestha",
   "license": "MIT"
 }

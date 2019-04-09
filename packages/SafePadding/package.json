@@ -8,6 +8,9 @@
   "keywords": [
     "react-native"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "Ranjan Shrestha",
   "license": "MIT",
   "peerDependencies": {
