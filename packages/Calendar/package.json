@@ -1,0 +1,16 @@
+{
+  "name": "@sharingapples/calendar",
+  "version": "1.0.3",
+  "description": "React Native Calendar Widget",
+  "main": "src/index.js",
+  "peerDependencies": {
+    "@sharingapples/theme": "^1.0.3",
+    "react": ">=16.8",
+    "react-native": ">=0.59"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "private": false
+}
