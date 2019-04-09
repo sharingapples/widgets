@@ -22,6 +22,7 @@
     "@sharingapples/eslint-config": "^1.0.4",
     "babel-jest": "^24.7.1",
     "jest": "^24.7.1",
+    "lerna": "^3.13.2",
     "metro-react-native-babel-preset": "^0.53.1",
     "react-test-renderer": "16.8.3"
   },
