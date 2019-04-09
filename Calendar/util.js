@@ -16,9 +16,23 @@ const borderStyles = Array(16).fill(null).map((n, idx) => ({
 }));
 
 
+const cache = {};
+
+function memeoize(dep) {
+  if (cache[dep]) {
+    return cache[dep];
+  }
+  cache[dep] = dep.reduce((acc, cur) => {
+    acc[cur.toDateString()] = true;
+    return acc;
+  }, {});
+  return cache[dep];
+}
+
 export function isDate(date) {
   return date instanceof Date;
 }
+
 
 function getDateString(date, diff, add) {
   if (add) {
@@ -32,10 +46,7 @@ export function getDateBorderStyle(date, selectedDates = {}) {
     return selectedDates.toDateString() === date.toDateString() ? borderStyles[0] : undefined;
   }
 
-  const allDates = selectedDates.reduce((acc, cur) => {
-    acc[cur.toDateString()] = true;
-    return acc;
-  }, {});
+  const allDates = memeoize(selectedDates);
 
   const currentDateString = date.toDateString();
   if (!allDates[currentDateString]) {
