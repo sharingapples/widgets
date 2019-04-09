@@ -14,12 +14,7 @@ const styles = StyleSheet.create({
 
 function getMonthCount({ width }, date) {
   return width > 400
-    ? [new Date(date), new Date(date.getFullYear(), date.getMonth() + 1)] : [new Date(date)];
-}
-
-function getStartOfMonth(date) {
-  const first = new Date(date.getFullYear(), date.getMonth(), 1);
-  return first.getTime() - new Date(first).getDay() * 86400 * 1000;
+    ? [date, new Date(date.getFullYear(), date.getMonth() + 1)] : [date];
 }
 
 type Props = {
@@ -81,8 +76,7 @@ function Calendar({
             removeMulitpleSelect={removeMulitpleSelect}
           />
           <Month
-            start={getStartOfMonth(month)}
-            month={month.getMonth()}
+            date={month}
             onChange={onChange}
             value={value}
             renderDate={renderDate}
