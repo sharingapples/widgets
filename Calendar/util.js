@@ -13,10 +13,10 @@ export const SEVEN_DAYS = 7;
 export const SINGLE_DAY = 1;
 
 const borderStyles = Array(16).fill(null).map((n, idx) => ({
-  borderTopColor: idx & 1 ? 'transparent' : theme.colorPrimary,
-  borderRightColor: idx & 2 ? 'transparent' : theme.colorPrimary,
-  borderBottomColor: idx & 4 ? 'transparent' : theme.colorPrimary,
-  borderLeftColor: idx & 8 ? 'transparent' : theme.colorPrimary,
+  borderTopColor: idx & 1 ? 'transparent' : theme.primary,
+  borderRightColor: idx & 2 ? 'transparent' : theme.primary,
+  borderBottomColor: idx & 4 ? 'transparent' : theme.primary,
+  borderLeftColor: idx & 8 ? 'transparent' : theme.primary,
 }));
 
 

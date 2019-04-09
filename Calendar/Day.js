@@ -74,11 +74,11 @@ function Day({
       }}
     >
 
-      <View style={[styles.textContainer, { backgroundColor: isToday ? theme.colorPrimary : 'white' }]}>
+      <View style={[styles.textContainer, { backgroundColor: isToday ? theme.primary : 'white' }]}>
         <Text
           allowFontScaling={false}
           style={{
-            color: isToday ? theme.colorOnPrimary : getFontColor(isCurrentMonth),
+            color: isToday ? theme.onPrimary : getFontColor(isCurrentMonth),
             fontSize: 14,
           }}
         >
