@@ -12,6 +12,9 @@
   "dependencies": {
     "@sharingapples/safe-padding": "^0.1.1"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "Ranjan Shrestha",
   "license": "MIT"
 }
