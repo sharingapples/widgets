@@ -26,8 +26,7 @@ type Props = {
 function Calendar({
   renderDate, onChange, value = new Date(),
 }: Props) {
-  const [date, setDate] = useState(value);
-  const [months, setMonths] = useState(() => getMonthCount(Dimensions.get('screen'), date));
+  const [months, setMonths] = useState(() => getMonthCount(Dimensions.get('screen'), new Date()));
   const [selection, setSelection] = useState(new Date());
 
   const selectDate = useCallback((d, long) => {
@@ -47,18 +46,16 @@ function Calendar({
   }, [setSelection]);
 
   const handleLayout = useCallback((e) => {
-    setMonths(getMonthCount(e.nativeEvent.layout, date));
+    setMonths(getMonthCount(e.nativeEvent.layout, new Date()));
   }, [setMonths]);
 
   const prevMonth = useCallback(() => {
-    setDate(d => new Date(d.getFullYear(), d.getMonth() - 1, 1));
     setMonths(mnths => mnths.map(d => new Date(d.getFullYear(), d.getMonth() - 1, 1)));
-  }, [setDate]);
+  }, [setMonths]);
 
   const nextMonth = useCallback(() => {
-    setDate(d => new Date(d.getFullYear(), d.getMonth() + 1, 1));
     setMonths(mnths => mnths.map(d => new Date(d.getFullYear(), d.getMonth() + 1, 1)));
-  }, [setDate]);
+  }, [setMonths]);
 
 
   const first = 0;
