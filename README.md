@@ -11,6 +11,7 @@ import { StatusBar, BottomNavigation } from '@sharingapples/widgets';
 
 Or you can install specific widget as required
 > `yarn add @sharingapples/status-bar`
+
 > `yarn add @sharingapples/bottom-navigation`
 
 ```javascript
@@ -23,10 +24,11 @@ be installed separately in the app. Also note that the `theme` library
 should be used as **peerDependency** in any library it is used.
 
 **IMPORTANT**
-When setting the theme, make sure you do it in the main entry point
+
+*When setting the theme, make sure you do it in the main entry point
 `index.js` file, and also make sure you load the app after the theme
 has been set with `require` and not `import`. The `import`s are hoisted
-on to the top by babel and hence, the theme would not have been set.
+on to the top by babel and hence, the theme would not have been set.*
 
 ### Using the standard theme library
 1. Setting the theme in application
