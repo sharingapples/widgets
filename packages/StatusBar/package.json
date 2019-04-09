@@ -1,0 +1,19 @@
+{
+  "name": "@sharingapples/status-bar",
+  "version": "1.0.3",
+  "description": "A StatusBar with purpose",
+  "main": "src/StatusBar.js",
+  "dependencies": {
+    "@sharingapples/safe-padding": "^1.0.3"
+  },
+  "peerDependencies": {
+    "@sharingapples/theme": "^0.1.0",
+    "react": ">=16",
+    "react-native": ">=0.41"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Ranjan Shrestha",
+  "license": "MIT"
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@sharingapples/bottom-navigation",
+  "version": "1.0.3",
+  "description": "Bottom Navigation",
+  "main": "src/BottomNavigation.js",
+  "react-native": "src/BottomNavigation.js",
+  "peerDependencies": {
+    "@sharingapples/theme": "^0.1.0",
+    "react": ">=16.8",
+    "react-native": ">=0.59"
+  },
+  "dependencies": {
+    "@sharingapples/safe-padding": "^1.0.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Ranjan Shrestha",
+  "license": "MIT"
+}
