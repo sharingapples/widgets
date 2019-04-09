@@ -42,7 +42,11 @@ function Calendar({
   const selecteDate = useCallback((d, long) => {
     setValue((prev) => {
       if (Array.isArray(prev)) {
-        return [...prev, d];
+        // logic to remove the date if already Selected
+        const isAlreadySelected = prev.filter(dates => dates.toDateString() === d.toDateString());
+        return isAlreadySelected.length > 0
+          ? [...prev.filter(dates => dates.toDateString() !== d.toDateString())]
+          : [...prev, d];
       }
       if (long) {
         return [prev, d];
