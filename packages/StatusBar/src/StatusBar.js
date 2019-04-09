@@ -1,14 +1,15 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 
 import {
   View, Text, StatusBar as RNStatusBar, StyleSheet,
 } from 'react-native';
 import SafePadding from '@sharingapples/safe-padding';
-import { getTheme, isDark } from '@sharingapples/theme';
+import { getTheme } from '@sharingapples/theme';
+import isDark from '@sharingapples/theme/isDark';
 
 const theme = getTheme();
-const backgroundColor = theme.primaryVariant;
+const backgroundColor = theme.primary;
 const textColor = theme.onPrimary;
 
 const barStyle = isDark(backgroundColor) ? 'light-content' : 'dark-content';
@@ -43,25 +44,22 @@ type Props = {
   children?: React.Node | Array<React.Node>,
 };
 
-// eslint-disable-next-line react/prefer-stateless-function
-class StatusBar extends Component<Props> {
-  render() {
-    const { title, children } = this.props;
-    return (
-      <View style={styles.container}>
-        <RNStatusBar barStyle={barStyle} backgroundColor={backgroundColor} />
-        <View style={styles.body}>
-          {!!title
-          && (
-            <Text allowFontScaling={false} style={styles.title}>
-              {title}
-            </Text>
-          )}
-          {children}
-        </View>
+// eslint-disab le-next-line react/prefer-stateless-function
+function StatusBar({ title, children }: Props) {
+  return (
+    <View style={styles.container}>
+      <RNStatusBar barStyle={barStyle} backgroundColor={backgroundColor} />
+      <View style={styles.body}>
+        {!!title
+        && (
+          <Text allowFontScaling={false} style={styles.title}>
+            {title}
+          </Text>
+        )}
+        {children}
       </View>
-    );
-  }
+    </View>
+  );
 }
 
 StatusBar.defaultProps = {

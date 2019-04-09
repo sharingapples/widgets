@@ -1,13 +1,5 @@
 /* global __DEV__ */
-import material from './stock/material';
-
-let currentTheme = material;
-
-export {
-  material,
-};
-
-export function isDark(color) {
+module.exports = function isDark(color) {
   if (color.startsWith('#')) {
     const len = color.length < 7 ? 1 : 2;
     const red = parseInt(color.substr(1, len), 16) / 255;
@@ -24,12 +16,4 @@ export function isDark(color) {
 
   // Assume non dark by default
   return false;
-}
-
-export function setTheme(theme) {
-  currentTheme = theme;
-}
-
-export function getTheme() {
-  return currentTheme;
-}
+};

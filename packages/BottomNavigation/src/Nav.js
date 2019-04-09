@@ -8,6 +8,7 @@ import { getTheme } from '@sharingapples/theme';
 import NavigationContext from './NavigatonContext';
 
 const theme = getTheme();
+
 const selectColor = theme.brand;
 const textColor = theme.onSurface;
 

@@ -2,7 +2,7 @@
   "name": "@sharingapples/theme",
   "version": "0.1.0",
   "description": "Standard theme definition for widgets",
-  "main": "src/index.js",
+  "main": "index.js",
   "author": "Ranjan Shrestha",
   "license": "MIT"
 }
