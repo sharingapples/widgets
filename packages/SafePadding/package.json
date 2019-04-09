@@ -1,0 +1,19 @@
+
+{
+  "name": "@sharingapples/safe-padding",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "react-native": "index.js",
+  "scripts": {
+
+  },
+  "keywords": [
+    "react-native"
+  ],
+  "author": "Ranjan Shrestha",
+  "license": "MIT",
+  "peerDependencies": {
+    "react-native": ">=0.41"
+  }
+}
