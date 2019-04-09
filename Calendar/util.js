@@ -1,4 +1,4 @@
-import { getTheme } from 'std-theme';
+import { getTheme } from '@sharingapples/theme';
 
 const theme = getTheme();
 

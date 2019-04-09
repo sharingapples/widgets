@@ -1,7 +1,7 @@
 // @flow
 import React, { useRef } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { getTheme } from 'std-theme';
+import { getTheme } from '@sharingapples/theme';
 
 const styles = StyleSheet.create({
   container: {

@@ -1,9 +1,9 @@
 // @flow
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
-import { getTheme } from 'std-theme';
-import right from './right.png';
-import left from './left.png';
+import { getTheme } from '@sharingapples/theme';
+import right from './assets/right.png';
+import left from './assets/left.png';
 
 const theme = getTheme();
 
