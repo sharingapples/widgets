@@ -26,7 +26,7 @@ export function isDark(color) {
   return false;
 }
 
-export function selectTheme(theme) {
+export function setTheme(theme) {
   currentTheme = theme;
 }
 
