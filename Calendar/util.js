@@ -3,10 +3,6 @@ import { getTheme } from '@sharingapples/theme';
 const theme = getTheme();
 
 /* eslint-disable no-bitwise */
-export function getUnixTimeStamp(date) {
-  date.setHours(0, 0, 0, 0);
-  return date.getTime();
-}
 
 export const DAY_DIFF = 86400 * 1000;
 export const SEVEN_DAYS = 7;
@@ -24,24 +20,37 @@ export function isDate(date) {
   return date instanceof Date;
 }
 
+function getDateString(date, diff, add) {
+  if (add) {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate() + diff).toDateString();
+  }
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate() - diff).toDateString();
+}
+
 export function getDateBorderStyle(date, selectedDates = {}) {
-  if (isDate(selectedDates) && selectedDates.toDateString() === new Date(date).toDateString()) {
-    return borderStyles[0];
+  if (isDate(selectedDates)) {
+    return selectedDates.toDateString() === date.toDateString() ? borderStyles[0] : undefined;
   }
 
-  if (!selectedDates[date]) {
+  const allDates = selectedDates.reduce((acc, cur) => {
+    acc[cur.toDateString()] = true;
+    return acc;
+  }, {});
+
+  const currentDateString = date.toDateString();
+  if (!allDates[currentDateString]) {
     return undefined;
   }
 
-  const prevWeek = date - SEVEN_DAYS * DAY_DIFF;
-  const nextWeek = date + SEVEN_DAYS * DAY_DIFF;
-  const nextDay = date + SINGLE_DAY * DAY_DIFF;
-  const prevDay = date - SINGLE_DAY * DAY_DIFF;
+  const prevWeek = getDateString(date, SEVEN_DAYS);
+  const nextWeek = getDateString(date, SEVEN_DAYS, true);
+  const nextDay = getDateString(date, SINGLE_DAY, true);
+  const prevDay = getDateString(date, SINGLE_DAY);
 
-  const bit0 = selectedDates[prevWeek] ? 1 : 0;
-  const bit1 = selectedDates[nextDay] ? 2 : 0;
-  const bit2 = selectedDates[nextWeek] ? 4 : 0;
-  const bit3 = selectedDates[prevDay] ? 8 : 0;
+  const bit0 = allDates[prevWeek] ? 1 : 0;
+  const bit1 = allDates[nextDay] ? 2 : 0;
+  const bit2 = allDates[nextWeek] ? 4 : 0;
+  const bit3 = allDates[prevDay] ? 8 : 0;
 
   const borderStyleIndex = bit0 | bit1 | bit2 | bit3;
   return borderStyles[borderStyleIndex];

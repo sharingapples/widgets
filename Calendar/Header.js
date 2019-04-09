@@ -55,8 +55,6 @@ const styles = StyleSheet.create({
     right: 0,
   },
   icon: {
-    height: 16,
-    width: 16,
     paddingLeft: 10,
     paddingRight: 10,
     tintColor: theme.colorOnDefault,

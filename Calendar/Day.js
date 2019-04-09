@@ -32,45 +32,34 @@ type Props = {
   date: Date,
   currentMonth: number,
   renderDate: (date: Date) => React.Node,
-  onChange: (date: Date) => void,
   selectDate: (date: Date) => void,
   borderStyle: {},
 }
 
 function getFontColor(isCurrentMonth) {
-  return isCurrentMonth ? theme.colorOnDefault : theme.colorOnDisabled;
+  return isCurrentMonth ? theme.colorOnDefault : theme.onDisabled;
 }
 
 function Day({
   date,
   currentMonth,
   renderDate,
-  onChange,
   borderStyle,
   selectDate,
 }: Props) {
   const dateObj = new Date(date);
   const isCurrentMonth = currentMonth === dateObj.getMonth();
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const isToday = date === today.getTime();
-  const renderCount = useRef(0);
-
-  renderCount.current += 1;
-
+  const isToday = dateObj.toDateString() === new Date().toDateString();
   return (
     <TouchableOpacity
       style={[styles.container, borderStyle || { borderColor: 'transparent' }]}
       onLongPress={() => {
         // stack this to selected date
-        selectDate(date, true);
+        selectDate(dateObj, true);
       }}
       onPress={() => {
         // override array of selected dates and just add this date
-        selectDate(date, false);
-        if (onChange) {
-          onChange(date);
-        }
+        selectDate(dateObj, false);
       }}
     >
 
@@ -85,7 +74,7 @@ function Day({
           {dateObj.getDate()}
         </Text>
       </View>
-      {renderDate && renderDate(date)}
+      {renderDate && renderDate(dateObj)}
     </TouchableOpacity>
   );
 }
