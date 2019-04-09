@@ -1,6 +1,6 @@
 {
   "name": "@sharingapples/theme",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "Standard theme definition for widgets",
   "main": "index.js",
   "publishConfig": {
