@@ -1,6 +1,6 @@
 // @flow
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import SafePadding from '@sharingapples/safe-padding';
 import { getTheme } from '@sharingapples/theme';
 import NavigatonContext from './NavigatonContext';
@@ -8,8 +8,11 @@ import NavigatonContext from './NavigatonContext';
 import Nav from './Nav';
 
 const theme = getTheme();
-const backgroundColor = theme.surface;
-const textColor = theme.onSurface;
+const backgroundColor = theme.background;
+const textColor = theme.onBackground;
+
+// the safe offset required for Home Bar
+const safeOffset = Math.min(SafePadding.bottom, 12);
 
 type Props = {
   children: React.node,
@@ -17,18 +20,22 @@ type Props = {
 };
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor,
+    paddingBottom: safeOffset,
+  },
   container: {
     flex: 1,
   },
   navBar: {
-    backgroundColor,
-    // Allow bottom padding for home bar
-    paddingBottom: Math.min(SafePadding.bottom, 12),
     flexDirection: 'row',
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: textColor,
   },
 });
+
+const behavior = Platform.OS === 'ios' ? 'height' : undefined;
 
 function BottomNavigation({ home, ...other }: Props) {
   const [Screen, setScreen] = useState(() => home);
@@ -39,12 +46,18 @@ function BottomNavigation({ home, ...other }: Props) {
   };
 
   return (
-    <NavigatonContext.Provider value={contextValue}>
-      <View style={styles.container}>
-        <Screen />
-      </View>
-      <View style={styles.navBar} {...other} />
-    </NavigatonContext.Provider>
+    <KeyboardAvoidingView
+      style={styles.root}
+      behavior={behavior}
+      keyboardVerticalOffset={-safeOffset}
+    >
+      <NavigatonContext.Provider value={contextValue}>
+        <View style={styles.container}>
+          <Screen />
+        </View>
+        <View style={styles.navBar} {...other} />
+      </NavigatonContext.Provider>
+    </KeyboardAvoidingView>
   );
 }
 
