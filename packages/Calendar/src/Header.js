@@ -6,8 +6,9 @@ import right from './assets/right.png';
 import left from './assets/left.png';
 
 const theme = getTheme();
-const textColor = theme.onCalendar || theme.onSurface;
-const primaryColor = theme.primary;
+const calendarTheme = theme.onCalendar || theme;
+const textColor = calendarTheme.onBackground;
+const primaryColor = calendarTheme.primary;
 
 
 const styles = StyleSheet.create({

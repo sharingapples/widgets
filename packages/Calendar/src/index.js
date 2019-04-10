@@ -1,13 +1,17 @@
 // @flow
 import React, { useState, useCallback } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
+import { getTheme } from '@sharingapples/theme';
 import Header from './Header';
 import Month from './Month';
+
+const theme = getTheme();
+const calendarTheme = theme.onCalendar || theme;
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: 'white',
+    backgroundColor: calendarTheme.background,
   },
 });
 

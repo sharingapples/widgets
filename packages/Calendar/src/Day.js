@@ -4,9 +4,11 @@ import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { getTheme } from '@sharingapples/theme';
 
 const theme = getTheme();
-const textColor = theme.onCalendar || theme.onSurface;
+const calendarTheme = theme.onCalendar || theme;
+const textColor = calendarTheme.onBackground;
+const backgroundColor = calendarTheme.background;
 const primaryFontColor = theme.onPrimary;
-const disabledFontColor = theme.onDisabled;
+const disabledFontColor = theme.disabled;
 
 const styles = StyleSheet.create({
   container: {
@@ -67,7 +69,10 @@ function Day({
       }}
     >
 
-      <View style={[styles.textContainer, { backgroundColor: isToday ? theme.primary : 'white' }]}>
+      <View style={[
+        styles.textContainer, { backgroundColor: isToday ? theme.primary : backgroundColor },
+      ]}
+      >
         <Text
           allowFontScaling={false}
           style={{

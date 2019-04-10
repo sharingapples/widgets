@@ -1,6 +1,7 @@
 import { getTheme } from '@sharingapples/theme';
 
 const theme = getTheme();
+const calendarTheme = theme.onCalendar || theme;
 
 /* eslint-disable no-bitwise */
 
@@ -9,10 +10,10 @@ export const SEVEN_DAYS = 7;
 export const SINGLE_DAY = 1;
 
 const borderStyles = Array(16).fill(null).map((n, idx) => ({
-  borderTopColor: idx & 1 ? 'transparent' : theme.primary,
-  borderRightColor: idx & 2 ? 'transparent' : theme.primary,
-  borderBottomColor: idx & 4 ? 'transparent' : theme.primary,
-  borderLeftColor: idx & 8 ? 'transparent' : theme.primary,
+  borderTopColor: idx & 1 ? 'transparent' : calendarTheme.primary,
+  borderRightColor: idx & 2 ? 'transparent' : calendarTheme.primary,
+  borderBottomColor: idx & 4 ? 'transparent' : calendarTheme.primary,
+  borderLeftColor: idx & 8 ? 'transparent' : calendarTheme.primary,
 }));
 
 
