@@ -1,6 +1,6 @@
 {
   "name": "@sharingapples/bottom-navigation",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Bottom Navigation",
   "main": "src/BottomNavigation.js",
   "react-native": "src/BottomNavigation.js",
