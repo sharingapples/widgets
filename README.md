@@ -88,7 +88,7 @@ const App = () => (
 ```
 
 ## Calendar
-Display a calendar component with select and multiSelect features
+Display a calendar component with select and multiSelect features, [Details](packages/Calendar/README.md)
 
 ### Usage
 ```jsx
