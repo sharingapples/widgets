@@ -39,7 +39,7 @@ function Calendar({
     setMonths(mnths => mnths.map(d => new Date(d.getFullYear(), d.getMonth() + 1, 1)));
   }, [setMonths]);
 
-  const selecteDate = useCallback((d, long) => {
+  const selectDate = useCallback((d, long) => {
     setValue((prev) => {
       if (Array.isArray(prev)) {
         // logic to remove the date if already Selected
@@ -55,6 +55,12 @@ function Calendar({
     });
   }, [setValue]);
 
+  const removeMultipleSelect = useCallback(() => {
+    setValue((prev) => {
+      return prev.pop();
+    });
+  }, [setValue]);
+
 
   const first = 0;
   const last = months.length - 1;
@@ -67,13 +73,14 @@ function Calendar({
             date={month}
             prevMonth={(idx === first || months.length === 1) && prevMonth}
             nextMonth={(idx === last || months.length === 1) && nextMonth}
-            multiple={false}
+            multiple={Array.isArray(value)}
+            removeMultipleSelect={removeMultipleSelect}
           />
           <Month
             date={month}
             value={value}
             renderDate={renderDate}
-            selectDate={selecteDate}
+            selectDate={selectDate}
           />
         </View>
       ))}
