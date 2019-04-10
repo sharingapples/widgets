@@ -1,10 +1,12 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import CalendarWidget from '@sharingapples/calendar';
 
 export default function Calendar() {
+  const [value, setValue] = useState(new Date());
   return (
     <View>
-      <Text>Calendar</Text>
+      <CalendarWidget value={value} setValue={setValue} />
     </View>
   );
 }

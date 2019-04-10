@@ -17,7 +17,7 @@ export default function App() {
   return (
     <>
       <StatusBar title="Showcase" />
-      <Navigation home={Home}>
+      <Navigation home={Calendar}>
         <Navigation.Item title={Home.title} screen={Home} icon={home} badge={2} />
         <Navigation.Item title={Calendar.title} screen={Calendar} icon={calendar} />
       </Navigation>
