@@ -28,8 +28,8 @@ function Calendar({
   const [months, setMonths] = useState(() => getMonthCount(Dimensions.get('screen'), value));
 
   const handleLayout = useCallback((e) => {
-    // setMonths(getMonthCount(e.nativeEvent.layout, new Date()));
-  }, [setMonths]);
+    setMonths(getMonthCount(e.nativeEvent.layout, value));
+  }, [value, setMonths]);
 
   const prevMonth = useCallback(() => {
     setMonths(mnths => mnths.map(d => new Date(d.getFullYear(), d.getMonth() - 1, 1)));

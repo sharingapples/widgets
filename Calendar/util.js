@@ -18,7 +18,7 @@ const borderStyles = Array(16).fill(null).map((n, idx) => ({
 
 const cache = {};
 
-function memeoize(dep) {
+function memoize(dep) {
   if (cache[dep]) {
     return cache[dep];
   }
@@ -41,12 +41,12 @@ function getDateString(date, diff, add) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() - diff).toDateString();
 }
 
-export function getDateBorderStyle(date, selectedDates = {}) {
+export function getDateBorderStyle(date, selectedDates) {
   if (isDate(selectedDates)) {
     return selectedDates.toDateString() === date.toDateString() ? borderStyles[0] : undefined;
   }
 
-  const allDates = memeoize(selectedDates);
+  const allDates = memoize(selectedDates);
 
   const currentDateString = date.toDateString();
   if (!allDates[currentDateString]) {

@@ -1,5 +1,5 @@
 // @flow
-import React, { useRef } from 'react';
+import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { getTheme } from '@sharingapples/theme';
 
@@ -50,6 +50,7 @@ function Day({
   const dateObj = new Date(date);
   const isCurrentMonth = currentMonth === dateObj.getMonth();
   const isToday = dateObj.toDateString() === new Date().toDateString();
+
   return (
     <TouchableOpacity
       style={[styles.container, borderStyle || { borderColor: 'transparent' }]}
