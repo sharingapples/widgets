@@ -39,6 +39,10 @@ function getDateString(date, diff) {
 }
 
 export function getDateBorderStyle(date, selectedDates) {
+  if (!selectedDates) {
+    return undefined;
+  }
+
   if (isDate(selectedDates)) {
     return selectedDates.toDateString() === date.toDateString() ? borderStyles[0] : undefined;
   }

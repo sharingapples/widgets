@@ -6,6 +6,9 @@ import right from './assets/right.png';
 import left from './assets/left.png';
 
 const theme = getTheme();
+const textColor = theme.onCalendar || theme.onSurface;
+const primaryColor = theme.primary;
+
 
 const styles = StyleSheet.create({
   container: {
@@ -21,7 +24,7 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: 16,
-    color: theme.colorOnDefault,
+    color: textColor,
     fontWeight: 'bold',
   },
   clearTextContainer: {
@@ -29,7 +32,7 @@ const styles = StyleSheet.create({
   },
   clearText: {
     fontSize: 14,
-    color: theme.primary,
+    color: primaryColor,
   },
   dayContainer: {
     flexDirection: 'row',
@@ -43,7 +46,7 @@ const styles = StyleSheet.create({
   dayText: {
     flex: 1,
     fontSize: 12,
-    color: theme.colorOnDisabled,
+    color: textColor,
     textAlign: 'center',
   },
   left: {
@@ -57,21 +60,22 @@ const styles = StyleSheet.create({
   icon: {
     paddingLeft: 10,
     paddingRight: 10,
-    tintColor: theme.colorOnDefault,
+    tintColor: textColor,
   },
 });
 
 type Props = {
   date: {},
-  prevMonth: string => void,
-  nextMonth: string => void,
+  prevMonth: boolean,
+  nextMonth: boolean,
   multiple: boolean,
-  removeMultipleSelect: boolean => void,
+  clearSelection: boolean => void,
+  shiftMonth: number => void,
 }
 
 const WEEK_DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-function Header({ date, prevMonth, nextMonth, multiple, removeMultipleSelect }: Props) {
+function Header({ date, prevMonth, nextMonth, multiple, shiftMonth, clearSelection }: Props) {
   const dateString = date.toString();
   const month = dateString.substr(4, 3);
   const year = dateString.substr(11, 4);
@@ -85,7 +89,7 @@ function Header({ date, prevMonth, nextMonth, multiple, removeMultipleSelect }: 
           {multiple && (
             <TouchableOpacity
               style={styles.clearTextContainer}
-              onPress={() => removeMultipleSelect(false)}
+              onPress={() => clearSelection(null)}
             >
               <Text allowFontScaling={false} style={styles.clearText}>Clear Selection</Text>
             </TouchableOpacity>
@@ -93,7 +97,7 @@ function Header({ date, prevMonth, nextMonth, multiple, removeMultipleSelect }: 
         </View>
         {prevMonth && (
           <View style={styles.left}>
-            <TouchableWithoutFeedback onPress={prevMonth}>
+            <TouchableWithoutFeedback onPress={() => shiftMonth(-1)}>
               <Image source={left} style={styles.icon} />
             </TouchableWithoutFeedback>
           </View>
@@ -101,7 +105,7 @@ function Header({ date, prevMonth, nextMonth, multiple, removeMultipleSelect }: 
 
         {nextMonth && (
           <View style={styles.right}>
-            <TouchableWithoutFeedback onPress={nextMonth}>
+            <TouchableWithoutFeedback onPress={() => shiftMonth(1)}>
               <Image source={right} style={styles.icon} />
             </TouchableWithoutFeedback>
           </View>

@@ -3,6 +3,11 @@ import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { getTheme } from '@sharingapples/theme';
 
+const theme = getTheme();
+const textColor = theme.onCalendar || theme.onSurface;
+const primaryFontColor = theme.onPrimary;
+const disabledFontColor = theme.onDisabled;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -26,8 +31,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const theme = getTheme();
-
 type Props = {
   date: Date,
   currentMonth: number,
@@ -37,7 +40,7 @@ type Props = {
 }
 
 function getFontColor(isCurrentMonth) {
-  return isCurrentMonth ? theme.colorOnDefault : theme.onDisabled;
+  return isCurrentMonth ? textColor : disabledFontColor;
 }
 
 function Day({
@@ -68,7 +71,7 @@ function Day({
         <Text
           allowFontScaling={false}
           style={{
-            color: isToday ? theme.onPrimary : getFontColor(isCurrentMonth),
+            color: isToday ? primaryFontColor : getFontColor(isCurrentMonth),
             fontSize: 14,
           }}
         >

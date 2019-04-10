@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
   },
 });
 
-function getMonthCount({ width }, date) {
+function getMonthCount({ width }, value) {
+  const date = Array.isArray(value) ? value[0] : value;
   return width > 400
     ? [date, new Date(date.getFullYear(), date.getMonth() + 1)] : [date];
 }
@@ -28,20 +29,21 @@ function Calendar({
   const [months, setMonths] = useState(() => getMonthCount(Dimensions.get('screen'), value));
 
   const handleLayout = useCallback((e) => {
-    setMonths(getMonthCount(e.nativeEvent.layout, value));
-  }, [value, setMonths]);
-
-  const prevMonth = useCallback(() => {
-    setMonths(mnths => mnths.map(d => new Date(d.getFullYear(), d.getMonth() - 1, 1)));
+    setMonths(mnths => getMonthCount(e.nativeEvent.layout, mnths));
   }, [setMonths]);
 
-  const nextMonth = useCallback(() => {
-    setMonths(mnths => mnths.map(d => new Date(d.getFullYear(), d.getMonth() + 1, 1)));
+
+  const shiftMonth = useCallback((shift) => {
+    setMonths(mnths => mnths.map(d => new Date(d.getFullYear(), d.getMonth() + shift, 1)));
   }, [setMonths]);
 
   const selectDate = useCallback((d, long) => {
     setValue((prev) => {
       if (Array.isArray(prev)) {
+        // called if clearSelect is pressed
+        if (!d) {
+          return null;
+        }
         // logic to remove the date if already Selected
         const isAlreadySelected = prev.filter(dates => dates.toDateString() === d.toDateString());
         return isAlreadySelected.length > 0
@@ -55,12 +57,6 @@ function Calendar({
     });
   }, [setValue]);
 
-  const removeMultipleSelect = useCallback(() => {
-    setValue((prev) => {
-      return prev.pop();
-    });
-  }, [setValue]);
-
 
   const first = 0;
   const last = months.length - 1;
@@ -71,10 +67,11 @@ function Calendar({
         <View key={month} style={{ flex: 1, padding: 5 }}>
           <Header
             date={month}
-            prevMonth={(idx === first || months.length === 1) && prevMonth}
-            nextMonth={(idx === last || months.length === 1) && nextMonth}
+            prevMonth={(idx === first || months.length === 1)}
+            nextMonth={(idx === last || months.length === 1)}
+            shiftMonth={shiftMonth}
             multiple={Array.isArray(value)}
-            removeMultipleSelect={removeMultipleSelect}
+            clearSelection={selectDate}
           />
           <Month
             date={month}
