@@ -55,7 +55,10 @@ function Calendar({
           : [...prev, d];
       }
       if (long) {
-        return [prev, d];
+        if (prev) {
+          return [prev, d];
+        }
+        return [d];
       }
       return d;
     });
