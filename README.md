@@ -86,3 +86,19 @@ const App = () => (
   </BottomNavigation>
 );
 ```
+
+## Calendar
+Display a calendar component with select and multiSelect features
+
+### Usage
+```jsx
+import React, { useState } from 'react';
+import BottomNavigation from '@sharingapples/calendar';
+
+function App() {
+  const [value, setValue] = useState(new Date());
+  return (
+      <Calendar value={value} setValue={setValue} />
+  )
+}
+```
