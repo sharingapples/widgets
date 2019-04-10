@@ -7,20 +7,17 @@
  */
 
 import React from 'react';
-import StatusBar from '@sharingapples/status-bar';
 import Navigation from '@sharingapples/bottom-navigation';
 
-import { Home, Calendar } from './screens';
-import { home, calendar } from './assets';
+import { Home, Calendar, Form } from './screens';
+import { home, calendar, form } from './assets';
 
 export default function App() {
   return (
-    <>
-      <StatusBar title="Showcase" />
-      <Navigation home={Home}>
-        <Navigation.Item title={Home.title} screen={Home} icon={home} badge={2} />
-        <Navigation.Item title={Calendar.title} screen={Calendar} icon={calendar} />
-      </Navigation>
-    </>
+    <Navigation home={Form}>
+      <Navigation.Item title={Home.title} screen={Home} icon={home} badge={2} />
+      <Navigation.Item title={Calendar.title} screen={Calendar} icon={calendar} />
+      <Navigation.Item title={Form.title} screen={Form} icon={form} />
+    </Navigation>
   );
 }
