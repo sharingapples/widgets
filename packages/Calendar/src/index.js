@@ -8,6 +8,8 @@ import Month from './Month';
 const theme = getTheme();
 const calendarTheme = theme.onCalendar || theme;
 
+const YEARS_DIFF = 11;
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -86,7 +88,7 @@ function Calendar({
       if (v === 'M') {
         return mnths.map((m, idx) => new Date(m.getFullYear() + idx, m.getMonth(), 1));
       }
-      return mnths.map((m, idx) => new Date(m.getFullYear() + idx * 11, m.getMonth(), 1));
+      return mnths.map((m, idx) => new Date(m.getFullYear() + idx * YEARS_DIFF, m.getMonth(), 1));
     });
   }, [setView, setMonths]);
 
