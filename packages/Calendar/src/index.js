@@ -16,9 +16,11 @@ const styles = StyleSheet.create({
 });
 
 function getMonthCount({ width }, value) {
-  const date = Array.isArray(value) ? value[0] : value;
+  if (Array.isArray(value)) {
+    return value;
+  }
   return width > 400
-    ? [date, new Date(date.getFullYear(), date.getMonth() + 1)] : [date];
+    ? [value, new Date(value.getFullYear(), value.getMonth() + 1)] : [value];
 }
 
 type Props = {
@@ -75,10 +77,16 @@ function Calendar({
   const setCalendarView = useCallback((v, val) => {
     setView(v);
     setMonths((mnths) => {
-      if (v === 'D') {
-        return mnths.map((m, idx) => new Date(m.getFullYear(), val + idx, 1));
+      if (val) {
+        if (v === 'D') {
+          return mnths.map((m, idx) => new Date(m.getFullYear(), val + idx, 1));
+        }
+        return mnths.map((m, idx) => new Date(val + idx, m.getMonth(), 1));
       }
-      return mnths.map((m, idx) => new Date(val + idx, m.getMonth(), 1));
+      if (v === 'M') {
+        return mnths.map((m, idx) => new Date(m.getFullYear() + idx, m.getMonth(), 1));
+      }
+      return mnths.map((m, idx) => new Date(m.getFullYear() + idx * 11, m.getMonth(), 1));
     });
   }, [setView, setMonths]);
 
@@ -98,7 +106,7 @@ function Calendar({
             multiple={Array.isArray(value)}
             clearSelection={selectDate}
             view={view}
-            setView={setView}
+            setView={setCalendarView}
           />
           <Month
             date={month}
