@@ -31,6 +31,12 @@ function Calendar({
   renderDate, setValue, value,
 }: Props) {
   const [months, setMonths] = useState(() => getMonthCount(Dimensions.get('screen'), value));
+  const [view, setView] = useState('D');
+  /*
+    D = day
+    M = Month
+    Y = Year
+  */
 
   const handleLayout = useCallback((e) => {
     const { layout } = e.nativeEvent;
@@ -38,8 +44,12 @@ function Calendar({
   }, [setMonths]);
 
 
-  const shiftMonth = useCallback((shift) => {
-    setMonths(mnths => mnths.map(d => new Date(d.getFullYear(), d.getMonth() + shift, 1)));
+  const shift = useCallback((v, val) => {
+    setMonths(mnths => mnths.map(d => new Date(
+      v === 'D' ? d.getFullYear() : d.getFullYear() + val,
+      v === 'D' ? d.getMonth() + val : d.getMonth(),
+      1
+    )));
   }, [setMonths]);
 
   const selectDate = useCallback((d, long) => {
@@ -62,27 +72,41 @@ function Calendar({
     });
   }, [setValue]);
 
+  const setCalendarView = useCallback((v, val) => {
+    setView(v);
+    setMonths((mnths) => {
+      if (v === 'D') {
+        return mnths.map((m, idx) => new Date(m.getFullYear(), val + idx, 1));
+      }
+      return mnths.map((m, idx) => new Date(val + idx, m.getMonth(), 1));
+    });
+  }, [setView, setMonths]);
+
 
   const first = 0;
   const last = months.length - 1;
-
   return (
     <View style={styles.container} onLayout={handleLayout}>
       {months.map((month, idx) => (
         <View key={month} style={{ flex: 1, padding: 5 }}>
           <Header
+            idx={idx}
             date={month}
             prevMonth={(idx === first || months.length === 1)}
             nextMonth={(idx === last || months.length === 1)}
-            shiftMonth={shiftMonth}
+            shift={shift}
             multiple={Array.isArray(value)}
             clearSelection={selectDate}
+            view={view}
+            setView={setView}
           />
           <Month
             date={month}
             value={value}
             renderDate={renderDate}
             selectDate={selectDate}
+            view={view}
+            setView={setCalendarView}
           />
         </View>
       ))}

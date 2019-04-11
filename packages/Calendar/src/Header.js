@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { getTheme } from '@sharingapples/theme';
 import right from './assets/right.png';
 import left from './assets/left.png';
@@ -67,16 +67,27 @@ const styles = StyleSheet.create({
 
 type Props = {
   date: {},
+  view: string,
+  setView: string => void,
   prevMonth: boolean,
   nextMonth: boolean,
   multiple: boolean,
   clearSelection: boolean => void,
-  shiftMonth: number => void,
+  shift: number => void,
 }
 
 const WEEK_DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-function Header({ date, prevMonth, nextMonth, multiple, shiftMonth, clearSelection }: Props) {
+function Header({
+  view,
+  date,
+  shift,
+  setView,
+  multiple,
+  prevMonth,
+  nextMonth,
+  clearSelection,
+}: Props) {
   const dateString = date.toString();
   const month = dateString.substr(4, 3);
   const year = dateString.substr(11, 4);
@@ -84,9 +95,13 @@ function Header({ date, prevMonth, nextMonth, multiple, shiftMonth, clearSelecti
     <>
       <View style={styles.container}>
         <View style={styles.titleContainer}>
-          <Text allowFontScaling={false} style={styles.dateText}>
-            {month} {year}
-          </Text>
+          <TouchableHighlight
+            onPress={() => setView(view === 'D' ? 'M' : 'Y')}
+          >
+            <Text allowFontScaling={false} style={styles.dateText}>
+              {view === 'D' && month} {view === 'D' || view === 'M' ? year : 'Year'}
+            </Text>
+          </TouchableHighlight>
           {multiple && (
             <TouchableOpacity
               style={styles.clearTextContainer}
@@ -98,22 +113,22 @@ function Header({ date, prevMonth, nextMonth, multiple, shiftMonth, clearSelecti
         </View>
         {prevMonth && (
           <View style={styles.left}>
-            <TouchableWithoutFeedback onPress={() => shiftMonth(-1)}>
+            <TouchableHighlight onPress={() => shift(view, -1)}>
               <Image source={left} style={styles.icon} />
-            </TouchableWithoutFeedback>
+            </TouchableHighlight>
           </View>
         )}
 
         {nextMonth && (
           <View style={styles.right}>
-            <TouchableWithoutFeedback onPress={() => shiftMonth(1)}>
+            <TouchableHighlight onPress={() => shift(view, 1)}>
               <Image source={right} style={styles.icon} />
-            </TouchableWithoutFeedback>
+            </TouchableHighlight>
           </View>
         )}
       </View>
       <View style={styles.dayContainer}>
-        {WEEK_DAYS.map(d => (
+        {view === 'D' && WEEK_DAYS.map(d => (
           <Text allowFontScaling={false} style={styles.dayText} key={d}>{d}</Text>))}
       </View>
     </>

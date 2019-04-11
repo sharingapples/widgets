@@ -34,6 +34,10 @@ export function isDate(date) {
   return date instanceof Date;
 }
 
+export function generateYears(year) {
+  return Array(16).fill(0).map((m, idx) => year + idx);
+}
+
 
 function getDateString(date, diff) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() + diff).toDateString();

@@ -55,7 +55,6 @@ function Day({
   const dateObj = new Date(date);
   const isCurrentMonth = currentMonth === dateObj.getMonth();
   const isToday = dateObj.toDateString() === new Date().toDateString();
-
   return (
     <TouchableOpacity
       style={[styles.container, borderStyle || { borderColor: 'transparent' }]}
