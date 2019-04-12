@@ -113,17 +113,17 @@ function Header({
         </View>
         {prevMonth && (
           <View style={styles.left}>
-            <TouchableHighlight onPress={() => shift(view, -1)}>
+            <TouchableOpacity onPress={() => shift(view, -1)}>
               <Image source={left} style={styles.icon} />
-            </TouchableHighlight>
+            </TouchableOpacity>
           </View>
         )}
 
         {nextMonth && (
           <View style={styles.right}>
-            <TouchableHighlight onPress={() => shift(view, 1)}>
+            <TouchableOpacity onPress={() => shift(view, 1)}>
               <Image source={right} style={styles.icon} />
-            </TouchableHighlight>
+            </TouchableOpacity>
           </View>
         )}
       </View>

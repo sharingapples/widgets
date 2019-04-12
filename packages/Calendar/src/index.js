@@ -21,7 +21,7 @@ function getMonthCount({ width }, value) {
   if (Array.isArray(value)) {
     return value;
   }
-  return width > 400
+  return width > 560
     ? [value, new Date(value.getFullYear(), value.getMonth() + 1)] : [value];
 }
 
@@ -77,14 +77,18 @@ function Calendar({
   }, [setValue]);
 
   const setCalendarView = useCallback((v, val) => {
+    // v = which view D | M | Y
+    // val =  value to change  M | Y
     setView(v);
     setMonths((mnths) => {
       if (val) {
+        // call from month component
         if (v === 'D') {
           return mnths.map((m, idx) => new Date(m.getFullYear(), val + idx, 1));
         }
         return mnths.map((m, idx) => new Date(val + idx, m.getMonth(), 1));
       }
+      // call by header component
       if (v === 'M') {
         return mnths.map((m, idx) => new Date(m.getFullYear() + idx, m.getMonth(), 1));
       }
