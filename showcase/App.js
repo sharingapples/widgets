@@ -16,7 +16,7 @@ import { home, calendar } from './assets';
 export default function App() {
   return (
     <>
-      <StatusBar title="Showcase" />
+      <StatusBar>ShowCase</StatusBar>
       <Navigation home={Calendar}>
         <Navigation.Item title={Home.title} screen={Home} icon={home} badge={2} />
         <Navigation.Item title={Calendar.title} screen={Calendar} icon={calendar} />

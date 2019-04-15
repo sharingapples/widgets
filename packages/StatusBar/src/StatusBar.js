@@ -9,8 +9,9 @@ import { getTheme } from '@sharingapples/theme';
 import isDark from '@sharingapples/theme/isDark';
 
 const theme = getTheme();
-const backgroundColor = theme.primary;
-const textColor = theme.onPrimary;
+const componentTheme = theme.StatusBar || theme;
+const backgroundColor = componentTheme.primary;
+const textColor = componentTheme.onPrimary;
 
 const barStyle = isDark(backgroundColor) ? 'light-content' : 'dark-content';
 
@@ -40,23 +41,29 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  title: string,
-  children?: React.Node | Array<React.Node>,
+  children?: string | React.Node | Array<React.Node>,
 };
 
+function Title(title) {
+  return (
+    <Text allowFontScaling={false} style={styles.title}>{title}</Text>
+  );
+}
+
+function parseChildren(children) {
+  if (typeof children === 'string') {
+    return Title(children);
+  }
+  return children;
+}
+
 // eslint-disab le-next-line react/prefer-stateless-function
-function StatusBar({ title, children }: Props) {
+function StatusBar({ children }: Props) {
   return (
     <View style={styles.container}>
       <RNStatusBar barStyle={barStyle} backgroundColor={backgroundColor} />
       <View style={styles.body}>
-        {!!title
-        && (
-          <Text allowFontScaling={false} style={styles.title}>
-            {title}
-          </Text>
-        )}
-        {children}
+        {parseChildren(children)}
       </View>
     </View>
   );
