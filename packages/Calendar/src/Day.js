@@ -7,8 +7,9 @@ const theme = getTheme();
 const calendarTheme = theme.onCalendar || theme;
 const textColor = calendarTheme.onBackground;
 const backgroundColor = calendarTheme.background;
-const primaryFontColor = theme.onPrimary;
-const disabledFontColor = theme.disabled;
+const primaryFontColor = calendarTheme.onPrimary;
+const primaryColor = calendarTheme.primary;
+const disabledFontColor = calendarTheme.disabled;
 
 const styles = StyleSheet.create({
   container: {
@@ -69,7 +70,7 @@ function Day({
     >
 
       <View style={[
-        styles.textContainer, { backgroundColor: isToday ? theme.primary : backgroundColor },
+        styles.textContainer, { backgroundColor: isToday ? primaryColor : backgroundColor },
       ]}
       >
         <Text
