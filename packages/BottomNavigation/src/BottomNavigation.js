@@ -2,16 +2,12 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import SafePadding from '@sharingapples/safe-padding';
-import { getTheme } from '@sharingapples/theme';
 import NavigatonContext from './NavigatonContext';
 
+import { backgroundColor, textColor } from './theme';
 import Nav from './Nav';
 
-const theme = getTheme();
-const backgroundColor = theme.background;
-const textColor = theme.onBackground;
-
-// the safe offset required for Home Bar
+// the safe offset required for iOS Home Bar
 const safeOffset = Math.min(SafePadding.bottom, 12);
 
 type Props = {

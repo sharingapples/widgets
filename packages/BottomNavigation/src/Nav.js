@@ -3,14 +3,9 @@ import React, { useContext } from 'react';
 import {
   TouchableOpacity, View, Text, Image, StyleSheet,
 } from 'react-native';
-import { getTheme } from '@sharingapples/theme';
 
+import { selectColor, textColor } from './theme';
 import NavigationContext from './NavigatonContext';
-
-const theme = getTheme();
-
-const selectColor = theme.brand;
-const textColor = theme.onSurface;
 
 type Props = {
   title: string,
