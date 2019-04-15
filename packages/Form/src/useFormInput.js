@@ -1,9 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useEditor } from './Editor';
 
-export default function useFormInput(name) {
+export default function useFormInput(name, defaultValue) {
   const { subscribe, dispatch, getState } = useEditor();
-  const [value, setValue] = useState(() => getState()[name]);
+  const [value, setValue] = useState(() => {
+    const state = getState();
+    const v = state[name];
+    if (v === undefined || v === null) {
+      return defaultValue;
+    }
+    return v;
+  });
 
   useEffect(() => {
     return subscribe(name, setValue);

@@ -1,18 +1,28 @@
-/* global __DEV__ */
 // @flow
-import React, { useRef, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 // Get the EditorContext
 const EditorContext = React.createContext();
 
-function createManager(initialState, parent) {
+export const FORM_STATE_BUSY = 'busy';
+export const FORM_STATE_NORMAL = 'normal';
+export const FORM_STATE_ERROR = 'error';
+
+type FormStates = FORM_STATE_NORMAL | FORM_STATE_BUSY | FORM_STATE_ERROR;
+
+function createManager(initialState, parent, onChange, onSubmit) {
   let state = initialState;
+  let formState: FormStates = FORM_STATE_NORMAL;
   const namedSubscriptions = {};
   const mappedSubscriptions = [];
+  const validators = [];
+
+  let requiresSubmit = 0;
 
   const manager = {
     getParent: () => parent,
     getState: () => state,
+    getFormState: () => formState,
     dispatch: (name, value) => {
       const newValue = typeof value === 'function' ? value(state[name]) : value;
       const prevValue = state[name];
@@ -20,24 +30,29 @@ function createManager(initialState, parent) {
         return;
       }
 
-      const prevState = state;
-      const newState = Object.assign({}, state);
+      const newState = Array.isArray(state) ? state.slice() : Object.assign({}, state);
       newState[name] = newValue;
       state = newState;
 
       // let all the listeners know that the value has changed
       const subscriptions = namedSubscriptions[name];
       if (subscriptions && subscriptions.length > 0) {
-        subscriptions.forEach(fn => fn(newValue, newState, prevValue, prevState));
+        subscriptions.forEach(fn => fn(newValue));
       }
 
-      mappedSubscriptions.forEach(fn => fn(newState, prevState));
+      mappedSubscriptions.forEach(([listener, mapper]) => listener(mapper(newState)));
+
+      // Trigger the on change event
+      if (!requiresSubmit) {
+        onChange(newState);
+      }
     },
     subscribe: (name, listener) => {
-      if (typeof name !== 'string') {
-        mappedSubscriptions.push(listener);
+      if (typeof name === 'function') {
+        const tuple = [listener, name];
+        mappedSubscriptions.push(tuple);
         return () => {
-          const idx = mappedSubscriptions.indexOf(listener);
+          const idx = mappedSubscriptions.indexOf(tuple);
           mappedSubscriptions.splice(idx, 1);
         };
       }
@@ -56,8 +71,50 @@ function createManager(initialState, parent) {
         }
       };
     },
-    submit: () => {
+    validate: (check, fn) => {
+      const validation = {
+        done: null,
+        confirm: () => {
+          if (validation.done !== null) {
+            return validation.done;
+          }
+          return validation.run(typeof check === 'function' ? check(state) : state[check]);
+        },
+        run: (value) => {
+          validation.done = fn(value);
+          return validation.done;
+        },
+        remove: () => {
+          const idx = validators.indexOf(validation);
+          if (idx >= 0) {
+            validators.splice(idx, 1);
+          }
+        },
+      };
+      validators.push(validation);
+      return validation;
+    },
+    registerSubmit: () => {
+      requiresSubmit += 1;
+      return () => { requiresSubmit -= 1; };
+    },
+    submit: async () => {
       // Run all the validators
+      try {
+        formState = FORM_STATE_BUSY;
+        const res = await Promise.all(validators.map(v => v.confirm()));
+        if (res.reduce((r, d) => r || d === false, false)) {
+          formState = FORM_STATE_ERROR;
+          return false;
+        }
+        formState = FORM_STATE_NORMAL;
+        onChange(state);
+        if (onSubmit) onSubmit(state);
+        return true;
+      } catch (err) {
+        formState = FORM_STATE_ERROR;
+        return false;
+      }
     },
   };
 
@@ -69,20 +126,31 @@ export function useEditor(parent = null) {
   return parent || instance;
 }
 
-function useEditorInstance(defaultValue, parent) {
-  const instance = useRef(null);
+type Props = {
+  value: {},
+  onChange: ({}) => void,
+  onSubmit: ?({}) => void,
+  parent: ?{},
+};
 
-  if (instance.current === null) {
-    instance.current = createManager(defaultValue, parent);
+export default function Editor({ value, onChange, onSubmit, parent, ...other }: Props) {
+  const [instance, setInstance] = useState(null);
+  useEffect(() => {
+    if (instance !== null) {
+      // eslint-disable-next-line no-console
+      console.warn('The editor onChange parameter is not expected to change');
+    }
+
+    setInstance(createManager(value, parent, onChange, onSubmit));
+
+    // The useEffect hook is expected to be called only once,
+    // hence, a warning above and dependency on `onChange` only.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onChange]);
+
+  if (instance === null) {
+    return null;
   }
-  return instance.current;
-}
 
-export default function Editor({ defaultValue, parent, ...other }) {
-  const instance = useEditorInstance(defaultValue, parent);
   return <EditorContext.Provider value={instance} {...other} />;
 }
-
-Editor.defaultProps = {
-  defaultValue: {},
-};

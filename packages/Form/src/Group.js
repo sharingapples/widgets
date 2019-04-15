@@ -4,16 +4,21 @@ import useFormInput from './useFormInput';
 import Editor from './Editor';
 
 type Props = {
-  name: string,
+  name: string | number,
   defaultValue?: {},
   onSubmit: ?((err: boolean, v: {}) => void),
 };
 
-export default function Group({ name, defaultValue, ...other }: Props) {
-  const group = useFormInput(name, defaultValue);
+export default function Group({ name, onSubmit, defaultValue, ...other }: Props) {
+  const [value, onChange] = useFormInput(name, defaultValue);
 
   return (
-    <Editor value={group.value} onChange={group.onChange} {...other} />
+    <Editor
+      {...other}
+      value={value}
+      onChange={onChange}
+      onSubmit={onSubmit}
+    />
   );
 }
 

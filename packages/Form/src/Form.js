@@ -1,17 +1,15 @@
 // @flow
-import React, { useState } from 'react';
+import React from 'react';
 
 import Editor from './Editor';
 
 type Props = {
   defaultValue?: {},
-  onSubmit: ?((err: boolean, state: {}) => void),
+  onSubmit: ?((state: {}) => void),
 }
 
-const Form = ({ defaultValue, ...other }: Props) => {
-  // const [value, setValue] = useState(defaultValue);
-
-  return <Editor defaultValue={defaultValue} {...other} />;
+const Form = ({ defaultValue, onSubmit, ...other }: Props) => {
+  return <Editor {...other} value={defaultValue} onChange={onSubmit} />;
 };
 
 Form.defaultProps = {
