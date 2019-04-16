@@ -1,15 +1,8 @@
 // @flow
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { getTheme } from '@sharingapples/theme';
+import { textColor, backgroundColor, primaryFontColor, primaryColor, disabledFontColor } from '../theme';
 
-const theme = getTheme();
-const calendarTheme = theme.onCalendar || theme;
-const textColor = calendarTheme.onBackground;
-const backgroundColor = calendarTheme.background;
-const primaryFontColor = calendarTheme.onPrimary;
-const primaryColor = calendarTheme.primary;
-const disabledFontColor = calendarTheme.disabled;
 
 const styles = StyleSheet.create({
   container: {

@@ -1,19 +1,14 @@
 // @flow
 import React from 'react';
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { getTheme } from '@sharingapples/theme';
+import { textColor, primaryColor, disabledFontColor } from '../theme';
 import right from '../assets/right.png';
 import left from '../assets/left.png';
-
-const theme = getTheme();
-const calendarTheme = theme.onCalendar || theme;
-const textColor = calendarTheme.onBackground;
-const primaryColor = calendarTheme.primary;
 
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomColor: theme.colorDisabled,
+    borderBottomColor: disabledFontColor,
     borderBottomWidth: StyleSheet.hairlineWidth,
     marginBottom: 5,
   },

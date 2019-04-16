@@ -1,7 +1,4 @@
-import { getTheme } from '@sharingapples/theme';
-
-const theme = getTheme();
-const calendarTheme = theme.onCalendar || theme;
+import { primaryColor } from '../theme';
 
 /* eslint-disable no-bitwise */
 
@@ -14,10 +11,10 @@ export const WEEK_DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 export const ALL_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
 const borderStyles = Array(16).fill(null).map((n, idx) => ({
-  borderTopColor: idx & 1 ? 'transparent' : calendarTheme.primary,
-  borderRightColor: idx & 2 ? 'transparent' : calendarTheme.primary,
-  borderBottomColor: idx & 4 ? 'transparent' : calendarTheme.primary,
-  borderLeftColor: idx & 8 ? 'transparent' : calendarTheme.primary,
+  borderTopColor: idx & 1 ? 'transparent' : primaryColor,
+  borderRightColor: idx & 2 ? 'transparent' : primaryColor,
+  borderBottomColor: idx & 4 ? 'transparent' : primaryColor,
+  borderLeftColor: idx & 8 ? 'transparent' : primaryColor,
 }));
 
 
