@@ -8,10 +8,10 @@ import { backgroundColor, textColor } from './theme';
 import Nav from './Nav';
 
 // the safe offset required for iOS Home Bar
+/** Minimum safe offset */
 const safeOffset = Math.min(SafePadding.bottom, 12);
 
 type Props = {
-  children: React.node,
   home: Class<Component>,
 };
 
@@ -37,23 +37,13 @@ const behavior = Platform.OS === 'ios' ? 'height' : undefined;
  * Display a navigation bar at the bottom of the screen, with each navigation
  * item navigating to its repective screen when pressed.
  *
- * @param {object} props BottomNavigation props
- * @param {Class<Component>} props.home The default home screen to display at the beginning
- * @example <caption>Navigation Example</caption>
- * import React from 'react';
- * import BottomNavigation from '@sharingapples/bottom-navigation';
- * // import { BottomNavigation } from '@sharingapples/widgets';
- * import { Screen1, Screen2, Screen3 } from './screens';
+ * Uses the available view area, and places the navigation bar at the bottom
+ * of the view with the remaining area for the Screen to be displayed.
  *
- * export default function App() {
- *   return (
- *     <BottomNavigation home={Screen2}>
- *       <BottomNavigation.Item title="Screen1" screen={Screen1} />
- *       <BottomNavigation.Item title="Screen2" screen={Screen2} />
- *       <BottomNavigation.Item title="Screen3" screen={Screen3} />
- *     </BottomNavigation>
- *   );
- * }
+ * On iOS, it puts an extra `12px` bottom margin for the ios **Home Bar**. And
+ * since the Screen area is wrapped around KeyboardAvoidingView, the extra
+ * margin is balanced when the soft keyboard is showing.
+ *
  */
 function BottomNavigation({ home, ...other }: Props) {
   const [Screen, setScreen] = useState(() => home);
