@@ -6,8 +6,12 @@ const calendarTheme = theme.onCalendar || theme;
 /* eslint-disable no-bitwise */
 
 export const DAY_DIFF = 86400 * 1000;
+export const YEARS_DIFF = 20;
 export const SEVEN_DAYS = 7;
 export const SINGLE_DAY = 1;
+
+export const WEEK_DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+export const ALL_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
 const borderStyles = Array(16).fill(null).map((n, idx) => ({
   borderTopColor: idx & 1 ? 'transparent' : calendarTheme.primary,
@@ -41,7 +45,7 @@ export function isDate(date) {
 }
 
 export function generateYears(year) {
-  return Array(16).fill(0).map((m, idx) => year + idx);
+  return Array(20).fill(0).map((m, idx) => year + idx);
 }
 
 
