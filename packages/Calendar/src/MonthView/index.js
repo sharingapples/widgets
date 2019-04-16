@@ -7,6 +7,7 @@ import Header from '../common/Header';
 import { getMonthCount, ALL_MONTHS } from '../common/util';
 import CalendarContext from '../common/CalendarContext';
 import DayView from '../DayView';
+import YearView from '../YearView';
 
 
 const theme = getTheme();
@@ -30,7 +31,7 @@ function renderHeaderTitle(year, setView) {
     <>
       <TouchableOpacity
         style={{ paddingHorizontal: 5 }}
-        onPress={() => setView()}
+        onPress={() => setView(() => YearView)}
       >
         <Text allowFontScaling={false} style={styles.dateText}>
           {year}
