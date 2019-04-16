@@ -1,7 +1,7 @@
 // @flow
 import React, { useState } from 'react';
 import { Dimensions } from 'react-native';
-import CalendarView from './CalendarView';
+import DayView from './DayView';
 
 import CalendarContext from './common/CalendarContext';
 import { getMonthCount } from './common/util';
@@ -12,7 +12,7 @@ type Props = {
 
 function Calendar({ value, ...other }: Props) {
   const monthsState = useState(() => getMonthCount(Dimensions.get('screen'), value));
-  const [CurrentView, setView] = useState(() => CalendarView);
+  const [CurrentView, setView] = useState(() => DayView);
   return (
     <CalendarContext.Provider value={monthsState}>
       <CurrentView setView={setView} value={value} {...other} />
