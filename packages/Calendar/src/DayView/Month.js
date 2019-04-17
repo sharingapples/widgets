@@ -14,7 +14,7 @@ function getStartOfMonth(date) {
   return first.getTime() - first.getDay() * 86400 * 1000;
 }
 
-function Month({ date, view, setView, ...other }: Props) {
+function Month({ date, ...other }: Props) {
   const start = getStartOfMonth(date);
   const weeks = new Array(NUM_OF_WEEKS).fill(null).map((c, i) => start + i * WEEK_DIFF);
   return weeks.map(week => (
