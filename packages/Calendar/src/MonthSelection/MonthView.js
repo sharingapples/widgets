@@ -2,7 +2,7 @@
 import React, { useContext, useCallback } from 'react';
 import { View, TouchableHighlight, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
-import { backgroundColor, textColor } from '../theme';
+import { textColor } from '../theme';
 import { ALL_MONTHS } from '../common/util';
 import CalendarContext from '../common/CalendarContext';
 import YearView from '../YearSelection';
@@ -11,8 +11,7 @@ import CalendarView from '../Calendar';
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    backgroundColor,
+    flex: 1,
   },
   header: {
     width: '100%',
@@ -92,15 +91,24 @@ function MonthView({ setView, children }: Props) {
   }, []);
 
 
+  function back() {
+    // to last month viewed
+    const previousMonths = months;
+    setView(() => CalendarView);
+    setMonths(previousMonths);
+  }
+
+  back.title = 'Back';
+
   return (
     <>
       {months.map((month, idx) => (
-        <View key={month} style={{ flex: 1, padding: 5 }}>
+        <View key={month} style={styles.container}>
           {renderHeader(month.getFullYear() + idx, setView)}
           {renderAllMonth(month.getFullYear() + idx, selectMonth)}
         </View>
       ))}
-      {children(shift)}
+      {children(shift, back)}
     </>
   );
 }

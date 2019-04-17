@@ -40,14 +40,6 @@ function Calendar({ value, ...other }: Props) {
     setMonths(mnths => getMonthCount(layout, mnths));
   }, []);
 
-  function back() {
-    // to last month viewed
-    const previousMonths = months;
-    setView(() => CalendarView);
-    setMonths(previousMonths);
-  }
-
-
   return (
     <CalendarContext.Provider value={[months, setMonths]}>
       <View style={styles.container} onLayout={handleLayout}>
@@ -56,7 +48,7 @@ function Calendar({ value, ...other }: Props) {
             <View style={styles.navBar} pointerEvents="box-none">
               <IconButton icon={left} onPress={() => shift(-1)} />
               <View style={styles.row}>
-                {action && <Button onPress={action || back} title={action.title || 'Back'} />}
+                {action && <Button onPress={action} title={action.title} />}
                 <IconButton icon={right} onPress={() => shift(1)} />
               </View>
             </View>
