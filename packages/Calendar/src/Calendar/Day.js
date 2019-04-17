@@ -10,11 +10,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 3,
     paddingVertical: 3,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    margin: -1,
+    borderWidth: StyleSheet.hairlineWidth,
+    margin: -StyleSheet.hairlineWidth,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderTopColor: 'transparent',
+    borderBottomColor: 'transparent',
   },
   textContainer: {
     paddingHorizontal: 6,
@@ -24,6 +25,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 30,
     height: 30,
+  },
+  text: {
+    fontSize: 14,
   },
 });
 
@@ -51,7 +55,7 @@ function Day({
   const isToday = dateObj.toDateString() === new Date().toDateString();
   return (
     <TouchableOpacity
-      style={[styles.container, borderStyle || { borderColor: 'transparent' }]}
+      style={[styles.container, borderStyle]}
       onLongPress={() => {
         // stack this to selected date
         selectDate(dateObj, true);
@@ -68,10 +72,9 @@ function Day({
       >
         <Text
           allowFontScaling={false}
-          style={{
+          style={[styles.text, {
             color: isToday ? primaryFontColor : getFontColor(isCurrentMonth),
-            fontSize: 14,
-          }}
+          }]}
         >
           {dateObj.getDate()}
         </Text>

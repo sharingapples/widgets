@@ -3,11 +3,10 @@ import React, { useContext, useCallback } from 'react';
 import { View, TouchableHighlight, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 import { backgroundColor, textColor } from '../theme';
-import Header from '../common/Header';
-import { getMonthCount, ALL_MONTHS } from '../common/util';
+import { ALL_MONTHS } from '../common/util';
 import CalendarContext from '../common/CalendarContext';
-import DayView from '../DayView';
-import YearView from '../YearView';
+import YearView from '../YearSelection';
+import CalendarView from '../Calendar';
 
 
 const styles = StyleSheet.create({
@@ -15,25 +14,39 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor,
   },
+  header: {
+    width: '100%',
+    alignItems: 'center',
+  },
   dateText: {
-    fontSize: 16,
+    fontSize: 14,
     color: textColor,
-    fontWeight: 'bold',
+  },
+  nav: {
+    paddingHorizontal: 5,
+  },
+  month: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  row: {
+    flexDirection: 'row',
   },
 });
 
-function renderHeaderTitle(year, setView) {
+function renderHeader(year, setView) {
   return (
-    <>
+    <View style={styles.header}>
       <TouchableOpacity
-        style={{ paddingHorizontal: 5 }}
+        style={styles.nav}
         onPress={() => setView(() => YearView)}
       >
         <Text allowFontScaling={false} style={styles.dateText}>
           {year}
         </Text>
       </TouchableOpacity>
-    </>
+    </View>
   );
 }
 
@@ -45,28 +58,25 @@ function renderAllMonth(year, selectMonth) {
       return (
         <TouchableHighlight
           key={m}
-          style={{ flex: 1, alignItems: 'center', paddingVertical: 10 }}
+          style={styles.month}
           onPress={() => selectMonth(year, month)}
         >
           <Text>{ALL_MONTHS[month]}</Text>
         </TouchableHighlight>
       );
     });
-    months.push(<View key={i} style={{ flexDirection: 'row' }}>{row}</View>);
+    months.push(<View key={i} style={styles.row}>{row}</View>);
   }
   return months;
 }
 
 type Props = {
   setView: React.Node => void,
+  children: React.Node,
 }
 
-function MonthView({ setView }: Props) {
+function MonthView({ setView, children }: Props) {
   const [months, setMonths] = useContext(CalendarContext);
-  const handleLayout = useCallback((e) => {
-    const { layout } = e.nativeEvent;
-    setMonths(mnths => getMonthCount(layout, mnths));
-  }, []);
 
   const shift = useCallback((val) => {
     setMonths(mnths => mnths.map(d => new Date(
@@ -78,26 +88,20 @@ function MonthView({ setView }: Props) {
 
   const selectMonth = useCallback((year, month) => {
     setMonths(mnths => mnths.map((d, idx) => new Date(year, month + idx, 1)));
-    setView(() => DayView);
+    setView(() => CalendarView);
   }, []);
 
-  const first = 0;
-  const last = months.length - 1;
+
   return (
-    <View style={styles.container} onLayout={handleLayout}>
+    <>
       {months.map((month, idx) => (
         <View key={month} style={{ flex: 1, padding: 5 }}>
-          <Header
-            idx={idx}
-            shift={shift}
-            prev={(idx === first || months.length === 1)}
-            next={(idx === last || months.length === 1)}
-            headerTitle={renderHeaderTitle(month.getFullYear() + idx, setView)}
-          />
+          {renderHeader(month.getFullYear() + idx, setView)}
           {renderAllMonth(month.getFullYear() + idx, selectMonth)}
         </View>
       ))}
-    </View>
+      {children(shift)}
+    </>
   );
 }
 

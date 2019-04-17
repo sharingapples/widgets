@@ -3,10 +3,10 @@ import React, { useCallback, useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 import { backgroundColor, textColor } from '../theme';
-import Header from '../common/Header';
-import { getMonthCount, generateYears, YEARS_DIFF } from '../common/util';
+import { generateYears, YEARS_DIFF } from '../common/util';
 import CalendarContext from '../common/CalendarContext';
-import MonthView from '../MonthView';
+import MonthSelection from '../MonthSelection';
+import CalendarView from '../Calendar';
 
 
 const styles = StyleSheet.create({
@@ -19,12 +19,23 @@ const styles = StyleSheet.create({
     color: textColor,
     fontWeight: 'bold',
   },
+  header: {
+    alignItems: 'center',
+  },
+  year: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  row: {
+    flexDirection: 'row',
+  },
 });
 
 function renderHeaderTitle() {
   return (
     <>
-      <View style={{ paddingHorizontal: 5 }}>
+      <View style={styles.header}>
         <Text allowFontScaling={false} style={styles.dateText}>
           Years
         </Text>
@@ -43,32 +54,29 @@ function renderAllYears(yearStart, selectYear) {
       return (
         <TouchableOpacity
           key={y}
-          style={{ flex: 1, alignItems: 'center', paddingVertical: 10 }}
+          style={styles.year}
           onPress={() => selectYear(year)}
         >
           <Text>{year}</Text>
         </TouchableOpacity>
       );
     });
-    years.push(<View key={i} style={{ flexDirection: 'row' }}>{row}</View>);
+    years.push(<View key={i} style={styles.row}>{row}</View>);
   }
   return years;
 }
 
 type Props = {
   setView: React.Node => void,
+  children: React.Node,
 }
 
-function YearView({ setView }: Props) {
+function YearView({ setView, children }: Props) {
   const [months, setMonths] = useContext(CalendarContext);
-  const handleLayout = useCallback((e) => {
-    const { layout } = e.nativeEvent;
-    setMonths(mnths => getMonthCount(layout, mnths));
-  }, []);
 
   const shift = useCallback((val) => {
     setMonths(mnths => mnths.map(d => new Date(
-      d.getFullYear() + val,
+      d.getFullYear() + val * YEARS_DIFF,
       d.getMonth(),
       1
     )));
@@ -76,26 +84,20 @@ function YearView({ setView }: Props) {
 
   const selectYear = useCallback((year) => {
     setMonths(mnths => mnths.map((d, idx) => new Date(year + idx, d.getMonth(), 1)));
-    setView(() => MonthView);
+    setView(() => MonthSelection);
   }, [setMonths, setView]);
 
-  const first = 0;
-  const last = months.length - 1;
+
   return (
-    <View style={styles.container} onLayout={handleLayout}>
+    <>
       {months.map((month, idx) => (
         <View key={month} style={{ flex: 1, padding: 5 }}>
-          <Header
-            idx={idx}
-            shift={shift}
-            prev={(idx === first || months.length === 1)}
-            next={(idx === last || months.length === 1)}
-            headerTitle={renderHeaderTitle()}
-          />
+          {renderHeaderTitle()}
           {renderAllYears(month.getFullYear() + idx * YEARS_DIFF, selectYear)}
         </View>
       ))}
-    </View>
+      {children(shift)}
+    </>
   );
 }
 
