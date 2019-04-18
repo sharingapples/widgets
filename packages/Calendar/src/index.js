@@ -3,11 +3,7 @@ import React, { useState, useCallback } from 'react';
 import { Dimensions, View, StyleSheet } from 'react-native';
 import CalendarView from './Calendar';
 
-import left from './assets/left.png';
-import right from './assets/right.png';
 import CalendarContext from './common/CalendarContext';
-import IconButton from './common/IconButton';
-import Button from './common/Button';
 import { getMonthCount } from './common/util';
 import { backgroundColor } from './theme';
 
@@ -29,11 +25,18 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
   },
+  view: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    width: '100%',
+    height: '100%',
+    flexDirection: 'row',
+  },
 });
 
 function Calendar({ value, ...other }: Props) {
   const [months, setMonths] = useState(() => getMonthCount(Dimensions.get('screen'), value));
-  const [CurrentView, setView] = useState(() => CalendarView);
+  const [CurrentView, setView] = useState(() => null);
 
   const handleLayout = useCallback((e) => {
     const { layout } = e.nativeEvent;
@@ -43,17 +46,13 @@ function Calendar({ value, ...other }: Props) {
   return (
     <CalendarContext.Provider value={[months, setMonths]}>
       <View style={styles.container} onLayout={handleLayout}>
-        <CurrentView setView={setView} value={value} {...other}>
-          {(shift, action) => (
-            <View style={styles.navBar} pointerEvents="box-none">
-              <IconButton icon={left} onPress={() => shift(-1)} />
-              <View style={styles.row}>
-                {action && <Button onPress={action} title={action.title} />}
-                <IconButton icon={right} onPress={() => shift(1)} />
-              </View>
-            </View>
+        <CalendarView setView={setView} value={value} {...other} />
+        {CurrentView
+          && (
+          <View style={styles.view}>
+            <CurrentView setView={setView} value={months} {...other} />
+          </View>
           )}
-        </CurrentView>
       </View>
     </CalendarContext.Provider>
   );

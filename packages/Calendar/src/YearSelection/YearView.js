@@ -1,33 +1,44 @@
 // @flow
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 import { textColor } from '../theme';
-import { generateYears, YEARS_DIFF } from '../common/util';
-import CalendarContext from '../common/CalendarContext';
 import MonthSelection from '../MonthSelection';
-import CalendarView from '../Calendar';
+import Header from '../common/Header';
 
+const YEARS_DIFF = 20;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   dateText: {
-    fontSize: 16,
+    fontSize: 14,
     color: textColor,
-    fontWeight: 'bold',
   },
   header: {
     alignItems: 'center',
+    width: '100%',
+    paddingVertical: 10,
   },
   year: {
     flex: 1,
+    paddingVertical: 12,
     alignItems: 'center',
-    paddingVertical: 10,
   },
   row: {
     flexDirection: 'row',
+  },
+  nav: {
+    padding: 5,
+  },
+  navBar: {
+    width: '100%',
+    position: 'absolute',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
   },
 });
 
@@ -44,12 +55,12 @@ function renderHeaderTitle() {
 }
 
 
-function renderAllYears(yearStart, selectYear) {
-  const generatedYears = generateYears(yearStart);
+function renderAllYears(initalYear, selectYear) {
   const years = [];
   for (let i = 0; i < 5; i += 1) {
+    const yearStart = initalYear + i * 1;
     const row = [0, 1, 2, 3].map((y) => {
-      const year = generatedYears[y + 4 * i];
+      const year = yearStart + 5 * y;
       return (
         <TouchableOpacity
           key={y}
@@ -67,11 +78,11 @@ function renderAllYears(yearStart, selectYear) {
 
 type Props = {
   setView: React.Node => void,
-  children: React.Node,
+  value: Date | Array<Date>,
 }
 
-function YearView({ setView, children }: Props) {
-  const [months, setMonths] = useContext(CalendarContext);
+function YearView({ setView, value }: Props) {
+  const [months, setMonths] = useState(value);
 
   const shift = useCallback((val) => {
     setMonths(mnths => mnths.map(d => new Date(
@@ -87,10 +98,7 @@ function YearView({ setView, children }: Props) {
   }, [setMonths, setView]);
 
   function back() {
-    // to last month viewed
-    const previousMonths = months;
-    setView(() => CalendarView);
-    setMonths(previousMonths);
+    setView(() => null);
   }
 
   back.title = 'Back';
@@ -104,7 +112,7 @@ function YearView({ setView, children }: Props) {
           {renderAllYears(month.getFullYear() + idx * YEARS_DIFF, selectYear)}
         </View>
       ))}
-      {children(shift, back)}
+      <Header shift={shift} action={back} />
     </>
   );
 }

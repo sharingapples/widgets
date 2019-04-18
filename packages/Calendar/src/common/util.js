@@ -3,7 +3,6 @@ import { primaryColor } from '../theme';
 /* eslint-disable no-bitwise */
 
 export const DAY_DIFF = 86400 * 1000;
-export const YEARS_DIFF = 20;
 export const SEVEN_DAYS = 7;
 export const SINGLE_DAY = 1;
 
@@ -40,11 +39,6 @@ function memoize(dep) {
 export function isDate(date) {
   return date instanceof Date;
 }
-
-export function generateYears(year) {
-  return Array(20).fill(0).map((m, idx) => year + idx);
-}
-
 
 function getDateString(date, diff) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() + diff).toDateString();

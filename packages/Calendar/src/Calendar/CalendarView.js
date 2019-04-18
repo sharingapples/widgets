@@ -5,12 +5,13 @@ import Month from './Month';
 
 import CalendarContext from '../common/CalendarContext';
 import { primaryColor } from '../theme';
+import Header from '../common/Header';
 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 5,
+    padding: 5,
   },
   clearTextContainer: {
     marginLeft: 15,
@@ -19,6 +20,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: primaryColor,
   },
+  row: {
+    flexDirection: 'row',
+  },
 });
 
 type Props = {
@@ -26,11 +30,10 @@ type Props = {
   setValue: number => void,
   value: ?Date,
   setView: React.Node => void,
-  children: React.Node,
 }
 
 function CalendarView({
-  renderDate, setValue, value, setView, children,
+  renderDate, setValue, value, setView,
 }: Props) {
   const [months, setMonths] = useContext(CalendarContext);
 
@@ -63,7 +66,6 @@ function CalendarView({
   }
 
   clearSelect.title = 'Clear';
-
   return (
     <>
       {months.map(month => (
@@ -77,7 +79,7 @@ function CalendarView({
           />
         </View>
       ))}
-      {children(shift, Array.isArray(value) && clearSelect)}
+      <Header shift={shift} action={Array.isArray(value) && clearSelect} />
     </>
   );
 }

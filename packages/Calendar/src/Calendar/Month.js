@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'center',
+    paddingVertical: 5,
   },
   dateText: {
     fontSize: 14,
@@ -31,7 +32,9 @@ const styles = StyleSheet.create({
   daysContainer: {
     width: '100%',
     flexDirection: 'row',
+    marginTop: 5,
     paddingVertical: 5,
+    marginBottom: 5,
     borderBottomColor: textColor,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
