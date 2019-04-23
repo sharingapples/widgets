@@ -1,18 +1,14 @@
-// Entry point to import and export all widgets
-import BottomNavigation from './BottomNavigation/BottomNavigation';
-import StatusBar from './StatusBar/StatusBar';
-import BottomPopup from './BottomPopup/BottomPopup';
-import Calendar from './Calendar/Calendar';
-import CalendarWithInput from './Calendar/CalendarWithInput';
-import Form from './Form';
-import SafePadding from './SafePadding';
+import { setTheme } from '@sharingapples/theme';
+import material from '@sharingapples/theme/stock/material';
 
-export {
-  BottomNavigation,
-  StatusBar,
-  BottomPopup,
-  Calendar,
-  CalendarWithInput,
-  Form,
-  SafePadding,
-};
+setTheme(Object.assign(material, {
+  disable: 'grey',
+  primary: '#ffff00',
+  onPrimary: 'black',
+  surface: '#333',
+  onSurface: '#fff',
+  background: '#000',
+  onBackground: '#fff',
+}));
+
+require('./showcase');
