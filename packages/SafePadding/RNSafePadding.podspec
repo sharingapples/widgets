@@ -1,22 +1,24 @@
+require 'json';
+
+package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 
 Pod::Spec.new do |s|
   s.name         = "RNSafePadding"
-  s.version      = "0.1.0"
-  s.summary      = "RNSafePadding"
+  s.version      = package['version']
+  s.summary      = package['description']
   s.description  = <<-DESC
                   RNSafePadding
                    DESC
-  s.homepage     = ""
+  s.homepage     = "https://github.com/sharingapples/widgets"
   s.license      = "MIT"
-  # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
-  s.author             = { "Ranjan Shrestha" => "ranjan@sharingapples.com" }
+  s.license      = package['license']
+  s.author       = { "Ranjan Shrestha" => "ranjan@sharingapples.com" }
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/sharingapples/widgets.git", :tag => "master" }
-  s.source_files  = "packages/SafePadding/ios/*.{h,m}"
+  s.source_files = "ios/*.{h,m}"
   s.requires_arc = true
 
   s.dependency "React"
   #s.dependency "others"
-
 end
 
