@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.author       = { "Ranjan Shrestha" => "ranjan@sharingapples.com" }
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/sharingapples/widgets.git", :tag => "master" }
-  s.source_files = "ios/*.{h,m}"
+  s.source_files = "packages/SafePadding/ios/*.{h,m}"
   s.requires_arc = true
 
   s.dependency "React"
