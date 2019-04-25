@@ -110,7 +110,7 @@ SPEC CHECKSUMS:
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   React: 1d605e098d69bdf08960787f3446f0a9dc2e2ccf
-  RNSafePadding: 9201c781c693f5eced4d0b72d2fb9a6be47aba42
+  RNSafePadding: 2e5cfe273f46a792d5761aa9ecd9b7b2261d7b69
   yoga: 128daf064cacaede0c3bb27424b6b4c71052e6cd
 
 PODFILE CHECKSUM: ad7c9c6ad55f60d8acbad8b04a38486d2fad063c
