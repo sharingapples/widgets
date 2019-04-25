@@ -1,10 +1,10 @@
 {
   "name": "@sharingapples/status-bar",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A StatusBar with purpose",
   "main": "src/StatusBar.js",
   "dependencies": {
-    "@sharingapples/safe-padding": "^1.0.6"
+    "@sharingapples/safe-padding": "^1.0.7"
   },
   "peerDependencies": {
     "@sharingapples/theme": "^1.0.0",

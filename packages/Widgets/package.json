@@ -1,6 +1,6 @@
 {
   "name": "@sharingapples/widgets",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "React Native Widgets",
   "main": "index.js",
   "repository": "git@github.com:bhoos/widgets.git",
@@ -10,10 +10,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@sharingapples/bottom-navigation": "^1.0.6",
+    "@sharingapples/bottom-navigation": "^1.0.7",
     "@sharingapples/calendar": "^1.0.4",
-    "@sharingapples/safe-padding": "^1.0.6",
-    "@sharingapples/status-bar": "^1.0.6"
+    "@sharingapples/safe-padding": "^1.0.7",
+    "@sharingapples/status-bar": "^1.0.7"
   },
   "peerDependencies": {
     "@sharingapples/theme": "^1.0.0",
