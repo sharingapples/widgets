@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     borderWidth: StyleSheet.hairlineWidth,
     margin: -StyleSheet.hairlineWidth,
+    // because of inconsistency in android for border each has to be defined
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
     borderTopColor: 'transparent',
