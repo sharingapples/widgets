@@ -10,6 +10,10 @@ export const FORM_STATE_ERROR = 'error';
 
 type FormStates = FORM_STATE_NORMAL | FORM_STATE_BUSY | FORM_STATE_ERROR;
 
+export const OP_NORMAL = 0;
+export const OP_ARRAY_REMOVE = 1;
+export const OP_ARRAY_INSERT = 2;
+
 function createManager(initialState, parent, onChange, onSubmit) {
   let state = initialState;
   let formState: FormStates = FORM_STATE_NORMAL;
@@ -23,7 +27,8 @@ function createManager(initialState, parent, onChange, onSubmit) {
     getParent: () => parent,
     getState: () => state,
     getFormState: () => formState,
-    dispatch: (name, value) => {
+
+    dispatch: (name, value, op = OP_NORMAL) => {
       const newValue = typeof value === 'function' ? value(state[name]) : value;
       const prevValue = state[name];
       if (prevValue === newValue) {
@@ -31,7 +36,13 @@ function createManager(initialState, parent, onChange, onSubmit) {
       }
 
       const newState = Array.isArray(state) ? state.slice() : Object.assign({}, state);
-      newState[name] = newValue;
+      if (op === OP_ARRAY_INSERT) {
+        newState.splice(name, 0, value);
+      } else if (op === OP_ARRAY_REMOVE) {
+        newState.splice(name, 1);
+      } else {
+        newState[name] = newValue;
+      }
       state = newState;
 
       // let all the listeners know that the value has changed
