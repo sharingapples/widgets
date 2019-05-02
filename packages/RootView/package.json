@@ -1,0 +1,17 @@
+{
+  "name": "@sharingapples/rootview",
+  "version": "0.1.0",
+  "main": "src/index.js",
+  "peerDependencies": {
+    "@sharingapples/theme": "^1.0.3",
+    "react": ">=16.8",
+    "react-native": ">=0.59"
+  },
+  "dependencies": {
+    "@sharingapples/safe-padding": "^1.0.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT"
+}
