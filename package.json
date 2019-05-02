@@ -14,6 +14,7 @@
     "@sharingapples/calendar": "^1.0.3",
     "@sharingapples/status-bar": "^1.0.0",
     "@sharingapples/theme": "^1.0.0",
+    "@sharingapples/rootview":"^0.1.0",
     "react": "16.8.3",
     "react-native": "0.59.4"
   },
