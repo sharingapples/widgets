@@ -19,9 +19,9 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     backgroundColor: theme.primary,
+    paddingTop: Math.min(SafePadding.top, 32),
   },
   body: {
-    paddingTop: Math.min(SafePadding.top, 32),
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
@@ -37,6 +37,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     paddingVertical: 8,
+  },
+  centered: {
+    ...StyleSheet.absoluteFillObject,
+    flexDirection: 'row',
+    padding: 8,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
 
@@ -68,6 +75,20 @@ function StatusBar({ children }: Props) {
     </View>
   );
 }
+
+StatusBar.centered = (title, left, right) => {
+  return (
+    <>
+      {Title(title)}
+      <View style={styles.centered}>
+        {left || <View />}
+        {right || <View />}
+      </View>
+    </>
+  );
+};
+
+StatusBar.Title = Title;
 
 StatusBar.defaultProps = {
   children: undefined,

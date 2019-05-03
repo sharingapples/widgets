@@ -5,7 +5,7 @@ import StatusBar from '@sharingapples/status-bar';
 export default function Home() {
   return (
     <View>
-      <StatusBar title="Widgets" />
+      <StatusBar>Widgets</StatusBar>
       <Text>Home</Text>
     </View>
   );
