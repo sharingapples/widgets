@@ -1,6 +1,6 @@
 {
   "name": "@sharingapples/status-bar",
-  "version": "1.0.7",
+  "version": "1.0.11",
   "description": "A StatusBar with purpose",
   "main": "src/StatusBar.js",
   "dependencies": {

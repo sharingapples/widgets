@@ -1,6 +1,6 @@
 {
   "name": "@sharingapples/root-view",
-  "version": "1.0.0",
+  "version": "1.0.11",
   "main": "src/index.js",
   "peerDependencies": {
     "@sharingapples/theme": "^1.0.3",
