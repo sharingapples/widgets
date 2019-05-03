@@ -12,6 +12,7 @@
   "dependencies": {
     "@sharingapples/bottom-navigation": "^1.0.0",
     "@sharingapples/calendar": "^1.0.3",
+    "@sharingapples/form": "^1.0.0",
     "@sharingapples/status-bar": "^1.0.0",
     "@sharingapples/theme": "^1.0.0",
     "react": "16.8.3",

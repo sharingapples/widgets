@@ -1,30 +1,17 @@
 // @flow
 import React, { useState } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
-import SafePadding from '@sharingapples/safe-padding';
-import { getTheme } from '@sharingapples/theme';
+import { View, StyleSheet } from 'react-native';
+import RootView from '@sharingapples/root-view';
 import NavigatonContext from './NavigatonContext';
 
+import { textColor } from './theme';
 import Nav from './Nav';
 
-const theme = getTheme();
-const backgroundColor = theme.background;
-const textColor = theme.onBackground;
-
-// the safe offset required for Home Bar
-const safeOffset = Math.min(SafePadding.bottom, 12);
-
 type Props = {
-  children: React.node,
   home: Class<Component>,
 };
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor,
-    paddingBottom: safeOffset,
-  },
   container: {
     flex: 1,
   },
@@ -35,8 +22,18 @@ const styles = StyleSheet.create({
   },
 });
 
-const behavior = Platform.OS === 'ios' ? 'height' : undefined;
-
+/**
+ * Display a navigation bar at the bottom of the screen, with each navigation
+ * item navigating to its repective screen when pressed.
+ *
+ * Uses the available view area, and places the navigation bar at the bottom
+ * of the view with the remaining area for the Screen to be displayed.
+ *
+ * On iOS, it puts an extra `12px` bottom margin for the ios **Home Bar**. And
+ * since the Screen area is wrapped around KeyboardAvoidingView, the extra
+ * margin is balanced when the soft keyboard is showing.
+ *
+ */
 function BottomNavigation({ home, ...other }: Props) {
   const [Screen, setScreen] = useState(() => home);
 
@@ -46,18 +43,14 @@ function BottomNavigation({ home, ...other }: Props) {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.root}
-      behavior={behavior}
-      keyboardVerticalOffset={-safeOffset}
-    >
+    <RootView>
       <NavigatonContext.Provider value={contextValue}>
         <View style={styles.container}>
           <Screen />
         </View>
         <View style={styles.navBar} {...other} />
       </NavigatonContext.Provider>
-    </KeyboardAvoidingView>
+    </RootView>
   );
 }
 
