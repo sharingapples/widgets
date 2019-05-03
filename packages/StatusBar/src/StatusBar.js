@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-
+import type { Node } from 'react';
 import {
   View, Text, StatusBar as RNStatusBar, StyleSheet,
 } from 'react-native';
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  children?: string | React.Node | Array<React.Node>,
+  children?: Node,
 };
 
 function Title(title) {
