@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Group, useFormSubmit } from '@sharingapples/form';
 import { getTheme } from '@sharingapples/theme';
-import { StatusBar, RootView } from '@sharingapples/widgets';
+import { StatusBar, RootView, SafePadding } from '@sharingapples/widgets';
 import { useWizard } from '../src';
 
 
@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: SafePadding.bottom / 2,
   },
   text: {
     fontSize: 14,
