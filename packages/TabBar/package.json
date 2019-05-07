@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Tab Bar Navigation",
   "main": "src/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@sharingapples/animation": "^1.0.0",
     "@sharingapples/root-view": "^1.0.0",
