@@ -1,0 +1,16 @@
+{
+  "name": "@sharingapples/animation",
+  "version": "1.0.0",
+  "description": "React Native Animation with hooks",
+  "main": "src/index.js",
+  "react-native": "src/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0",
+    "react-native": "^0.59.0"
+  },
+  "author": "Ranjan Shrestha",
+  "license": "MIT"
+}

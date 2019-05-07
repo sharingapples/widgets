@@ -6,7 +6,7 @@ import Editor from './Editor';
 type Props = {
   name: string | number,
   defaultValue?: {},
-  onSubmit: ?((err: boolean, v: {}) => void),
+  onSubmit: ?((v: {}) => void),
 };
 
 export default function Group({ name, onSubmit, defaultValue, ...other }: Props) {

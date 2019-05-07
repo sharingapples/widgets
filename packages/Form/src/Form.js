@@ -9,7 +9,7 @@ type Props = {
 }
 
 const Form = ({ defaultValue, onSubmit, ...other }: Props) => {
-  return <Editor {...other} value={defaultValue} onChange={onSubmit} />;
+  return <Editor {...other} value={defaultValue} onSubmit={onSubmit} />;
 };
 
 Form.defaultProps = {

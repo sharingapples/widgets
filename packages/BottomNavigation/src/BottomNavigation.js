@@ -1,14 +1,16 @@
 // @flow
 import React, { useState } from 'react';
+import type { ComponentType } from 'react';
 import { View, StyleSheet } from 'react-native';
 import RootView from '@sharingapples/root-view';
 import NavigatonContext from './NavigatonContext';
+import type { Context } from './NavigatonContext';
 
 import { textColor } from './theme';
 import Nav from './Nav';
 
 type Props = {
-  home: Class<Component>,
+  home: ComponentType<*>,
 };
 
 const styles = StyleSheet.create({
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
 function BottomNavigation({ home, ...other }: Props) {
   const [Screen, setScreen] = useState(() => home);
 
-  const contextValue = {
+  const contextValue: Context = {
     setScreen,
     Screen,
   };
