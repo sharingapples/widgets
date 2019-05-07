@@ -4,12 +4,11 @@ import StatusBar from '@sharingapples/status-bar';
 import { Form } from '@sharingapples/form';
 import Profile from './Profile';
 
+const handleSubmit = (state) => {
+  console.log('Submit Data', state);
+};
 
 export default function FormShowcase() {
-  const handleSubmit = (state) => {
-    console.log('Submit Data', state);
-  };
-
   return (
     <>
       <StatusBar>Form</StatusBar>
