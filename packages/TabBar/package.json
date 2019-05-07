@@ -1,15 +1,15 @@
 {
   "name": "@sharingapples/tab-bar",
-  "version": "1.0.0",
+  "version": "1.0.12",
   "description": "Tab Bar Navigation",
   "main": "src/index.js",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@sharingapples/animation": "^1.0.0",
-    "@sharingapples/root-view": "^1.0.0",
-    "@sharingapples/router": "^1.0.0"
+    "@sharingapples/animation": "^1.0.12",
+    "@sharingapples/root-view": "^1.0.12",
+    "@sharingapples/router": "^1.0.12"
   },
   "peerDependencies": {
     "@sharingapples/theme": "^1.0.0",

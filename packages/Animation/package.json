@@ -1,6 +1,6 @@
 {
   "name": "@sharingapples/animation",
-  "version": "1.0.0",
+  "version": "1.0.12",
   "description": "React Native Animation with hooks",
   "main": "src/index.js",
   "react-native": "src/index.js",

@@ -1,6 +1,6 @@
 {
   "name": "@sharingapples/bottom-navigation",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Bottom Navigation",
   "main": "src/BottomNavigation.js",
   "react-native": "src/BottomNavigation.js",
@@ -10,7 +10,7 @@
     "react-native": ">=0.59"
   },
   "dependencies": {
-    "@sharingapples/root-view": "^1.0.11"
+    "@sharingapples/root-view": "^1.0.12"
   },
   "publishConfig": {
     "access": "public"

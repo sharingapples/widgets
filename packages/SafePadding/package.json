@@ -1,6 +1,6 @@
 {
   "name": "@sharingapples/safe-padding",
-  "version": "1.0.7",
+  "version": "1.0.12",
   "description": "Safe padding for notch based devices",
   "main": "index.js",
   "react-native": "index.js",

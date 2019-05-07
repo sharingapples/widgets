@@ -1,12 +1,12 @@
 {
   "name": "@sharingapples/wizard",
-  "version": "1.0.0",
+  "version": "1.0.12",
   "description": "React Native Wizard widget",
   "main": "index.js",
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "@sharingapples/form": "^1.0.10"
+    "@sharingapples/form": "^1.0.12"
   },
   "publishConfig": {
     "access": "public"
