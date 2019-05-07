@@ -8,11 +8,13 @@ export const FORM_STATE_BUSY = 'busy';
 export const FORM_STATE_NORMAL = 'normal';
 export const FORM_STATE_ERROR = 'error';
 
-type FormStates = FORM_STATE_NORMAL | FORM_STATE_BUSY | FORM_STATE_ERROR;
+type FormStates = 'busy' | 'normal' | 'error';
 
 export const OP_NORMAL = 0;
 export const OP_ARRAY_REMOVE = 1;
 export const OP_ARRAY_INSERT = 2;
+
+type Operations = 0 | 1 | 2;
 
 function createManager(initialState, parent, onChange, onSubmit) {
   let state = initialState;
@@ -28,7 +30,7 @@ function createManager(initialState, parent, onChange, onSubmit) {
     getState: () => state,
     getFormState: () => formState,
 
-    dispatch: (name, value, op = OP_NORMAL) => {
+    dispatch: (name: string | number, value: any, op: ?Operations = OP_NORMAL) => {
       const newValue = typeof value === 'function' ? value(state[name]) : value;
       const prevValue = state[name];
       if (prevValue === newValue) {
@@ -58,7 +60,7 @@ function createManager(initialState, parent, onChange, onSubmit) {
         onChange(newState);
       }
     },
-    subscribe: (name, listener) => {
+    subscribe: (name: string | () => any, listener: (any) => void) => {
       if (typeof name === 'function') {
         const tuple = [listener, name];
         mappedSubscriptions.push(tuple);
@@ -132,7 +134,7 @@ function createManager(initialState, parent, onChange, onSubmit) {
   return manager;
 }
 
-export function useEditor(parent = null) {
+export function useEditor(parent: ?{} = null) {
   const instance = useContext(EditorContext);
   return parent || instance;
 }
@@ -141,7 +143,7 @@ type Props = {
   value: {},
   onChange: ({}) => void,
   onSubmit: ?({}) => void,
-  parent: ?{},
+  parent?: ?{},
 };
 
 export default function Editor({ value, onChange, onSubmit, parent, ...other }: Props) {
@@ -165,3 +167,7 @@ export default function Editor({ value, onChange, onSubmit, parent, ...other }: 
 
   return <EditorContext.Provider value={instance} {...other} />;
 }
+
+Editor.defaultProps = {
+  parent: null,
+};

@@ -4,7 +4,6 @@ import type { Node } from 'react';
 import {
   View, Text, StatusBar as RNStatusBar, StyleSheet,
 } from 'react-native';
-import SafePadding from '@sharingapples/safe-padding';
 import { getTheme } from '@sharingapples/theme';
 import isDark from '@sharingapples/theme/isDark';
 
@@ -21,7 +20,6 @@ const styles = StyleSheet.create({
     backgroundColor,
   },
   body: {
-    paddingTop: Math.min(SafePadding.top, 32),
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
@@ -35,6 +33,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     paddingVertical: 8,
+  },
+  centered: {
+    ...StyleSheet.absoluteFillObject,
+    flexDirection: 'row',
+    padding: 8,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
 
@@ -66,6 +71,20 @@ function StatusBar({ children }: Props) {
     </View>
   );
 }
+
+StatusBar.centered = (title, left, right) => {
+  return (
+    <>
+      {Title(title)}
+      <View style={styles.centered}>
+        {left || <View />}
+        {right || <View />}
+      </View>
+    </>
+  );
+};
+
+StatusBar.Title = Title;
 
 StatusBar.defaultProps = {
   children: undefined,
