@@ -12,8 +12,8 @@ import React from 'react';
 import TabBar from '@sharingapples/tab-bar';
 import { Route, useRoutes } from '@sharingapples/router';
 
-import { Home, Calendar, Form } from './screens';
-import { home, calendar, form } from './assets';
+import { Home, Calendar, Form, Wizard } from './screens';
+import { home, calendar, form, wizard } from './assets';
 // import useTransitionState from '../packages/Animation/src/useTransitionState';
 
 const homeRoute = new Route(1, 'home', Home, 'Home', home);
@@ -21,13 +21,13 @@ const routes = [
   homeRoute,
   new Route(2, 'calendar', Calendar, 'Calendar', calendar),
   new Route(3, 'form', Form, 'Form', form),
+  new Route(4, 'wizard', Wizard, 'Wizard', wizard),
 ];
 
 homeRoute.useBadge = () => 10;
 
 function App() {
   useRoutes(routes);
-
   return (
     <TabBar routes={routes} />
     // <IconBar>
