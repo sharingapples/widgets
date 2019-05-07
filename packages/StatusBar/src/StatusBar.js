@@ -4,6 +4,7 @@ import type { Node } from 'react';
 import {
   View, Text, StatusBar as RNStatusBar, StyleSheet,
 } from 'react-native';
+import SafePadding from '@sharingapples/safe-padding';
 import { getTheme } from '@sharingapples/theme';
 import isDark from '@sharingapples/theme/isDark';
 
@@ -18,6 +19,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     backgroundColor,
+    paddingTop: Math.min(32, SafePadding.top),
   },
   body: {
     width: '100%',
