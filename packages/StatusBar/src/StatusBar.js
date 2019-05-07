@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-
+import type { Node } from 'react';
 import {
   View, Text, StatusBar as RNStatusBar, StyleSheet,
 } from 'react-native';
@@ -18,7 +18,7 @@ const barStyle = isDark(backgroundColor) ? 'light-content' : 'dark-content';
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    backgroundColor: theme.primary,
+    backgroundColor,
   },
   body: {
     paddingTop: Math.min(SafePadding.top, 32),
@@ -27,8 +27,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: textColor,
   },
   title: {
     color: textColor,
@@ -41,7 +39,7 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  children?: string | React.Node | Array<React.Node>,
+  children?: Node,
 };
 
 function Title(title) {
