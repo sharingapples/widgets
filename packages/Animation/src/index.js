@@ -1,4 +1,5 @@
-import useTransitionState, { TransitionView } from './useTransitionState';
+import useTransitionState from './useTransitionState';
+import TransitionView from './TransitionView';
 
 export {
   TransitionView,
