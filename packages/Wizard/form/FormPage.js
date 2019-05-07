@@ -59,7 +59,7 @@ function FormPage({ title, prevTitle, nextTitle, group, style, ...other }: Props
   const { prev, next } = useWizard();
   return (
     <RootView>
-      {!!title && <StatusBar backgroundColor={backgroundColor} title={title} light />}
+      {!!title && <StatusBar>{title}</StatusBar>}
       <Group name={group} onSubmit={next}>
         <ScrollView
           keyboardShouldPersistTaps="never"

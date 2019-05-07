@@ -7,7 +7,7 @@ function PageWithNoForm() {
   const { next, prev } = useWizard();
   return (
     <>
-      <StatusBar />
+      <StatusBar>Page 2</StatusBar>
       <View style={{ flex: 1, padding: 16 }}>
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text>This page has no form components </Text>

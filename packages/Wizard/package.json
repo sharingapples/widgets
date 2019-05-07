@@ -4,9 +4,12 @@
   "description": "React Native Wizard widget",
   "main": "index.js",
   "license": "MIT",
-  "private": false ,
+  "private": false,
   "dependencies": {
     "@sharingapples/form": "^1.0.10"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "peerDependencies": {
     "@sharingapples/theme": "^1.0.3",
