@@ -9,13 +9,23 @@ export class BasicRouter {
   routes: Array<Route<*>>;
   listeners: Array<Listener>;
 
+  registerListener: (listener: Listener) => () => void;
+  findRoute: (path: ? string) => ?Route<*>;
+  changeRoute: (path: string) => void;
+
   constructor(routes: Array<Route<*>> = [], defaultPath: null | string = null) {
     this.routes = routes;
     this.currentPath = defaultPath;
     this.listeners = [];
+
+    /* eslint-disable no-underscore-dangle */
+    this.registerListener = this._registerListener.bind(this);
+    this.findRoute = this._findRoute.bind(this);
+    this.changeRoute = this._changeRoute.bind(this);
+    /* eslint-enable no-underscore-dangle */
   }
 
-  registerListener = (listener: Listener) => {
+  _registerListener(listener: Listener) {
     this.listeners.push(listener);
     return () => {
       const idx = this.listeners.indexOf(listener);
@@ -25,13 +35,13 @@ export class BasicRouter {
     };
   }
 
-  findRoute = (path: ?string): ?Route<*> => {
+  _findRoute(path: ?string): ?Route<*> {
     if (!path) return null;
     // $FlowFixMe path is not undeinfed or null
     return this.routes.find(route => route.match(path));
   }
 
-  changeRoute = (path: string) => {
+  _changeRoute(path: string) {
     const newRoute = this.findRoute(path);
     if (__DEV__ && !newRoute) {
       // eslint-disable-next-line no-console
@@ -48,8 +58,11 @@ export class BasicRouter {
 }
 
 const rootRouter = new BasicRouter();
-export const RouterContext = React.createContext<BasicRouter>(rootRouter);
-
+// When the generic type is provided `<BasicRouter>` while
+// performing createContext, the function returned `false` ???
+// $FlowFixMe
+export const RouterContext = React.createContext(rootRouter);
+console.log('Context', RouterContext);
 type Props = {
   router?: BasicRouter,
 }
