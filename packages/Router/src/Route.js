@@ -3,12 +3,17 @@ import type { ComponentType } from 'react';
 import type { Icon } from './types';
 
 export default class Route<T> {
+  num: number;
   path: string;
   Page: ComponentType<T>;
   title: string;
   icon: ?Icon;
 
-  constructor(path: string, Page: ComponentType<T>, title: string, icon?: ?Icon) {
+  // helper hook to get badge values for specific routes
+  useBadge: ?() => number | string;
+
+  constructor(num: number, path: string, Page: ComponentType<T>, title: string, icon?: ?Icon) {
+    this.num = num;
     this.path = path;
     this.Page = Page;
     this.title = title;
