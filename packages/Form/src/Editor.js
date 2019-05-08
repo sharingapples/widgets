@@ -57,7 +57,7 @@ function createManager(initialState, parent, onChange, onSubmit) {
 
       // Trigger the on change event
       if (!requiresSubmit) {
-        onChange(newState);
+        if (onChange) onChange(newState);
       }
     },
     subscribe: (name: string | () => any, listener: (any) => void) => {
@@ -113,6 +113,7 @@ function createManager(initialState, parent, onChange, onSubmit) {
     },
     submit: async () => {
       // Run all the validators
+
       try {
         formState = FORM_STATE_BUSY;
         const res = await Promise.all(validators.map(v => v.confirm()));
@@ -121,7 +122,7 @@ function createManager(initialState, parent, onChange, onSubmit) {
           return false;
         }
         formState = FORM_STATE_NORMAL;
-        onChange(state);
+        if (onChange) onChange(state);
         if (onSubmit) onSubmit(state);
         return true;
       } catch (err) {

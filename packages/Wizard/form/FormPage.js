@@ -6,7 +6,6 @@ import { getTheme } from '@sharingapples/theme';
 import { StatusBar, RootView, SafePadding } from '@sharingapples/widgets';
 import { useWizard } from '../src';
 
-
 const theme = getTheme();
 const componentTheme = theme.Wizard || theme;
 const { backgroundColor } = componentTheme;
@@ -16,11 +15,15 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingHorizontal: 16,
     marginBottom: SafePadding.bottom / 2,
   },
   text: {
     fontSize: 14,
     color: textColor,
+  },
+  flex: {
+    flex: 1,
   },
 });
 
@@ -55,11 +58,12 @@ function Submit({ title }: SubmitProps) {
 }
 
 
-function FormPage({ title, prevTitle, nextTitle, group, style, ...other }: Props) {
+function FormPage({ title, prevTitle, nextTitle, group, ...other }: Props) {
   const { prev, next } = useWizard();
+
   return (
-    <RootView>
-      {!!title && <StatusBar>{title}</StatusBar>}
+    <RootView style={styles.flex}>
+      {!!title && <StatusBar backgroundColor={backgroundColor} title={title} light />}
       <Group name={group} onSubmit={next}>
         <ScrollView
           keyboardShouldPersistTaps="never"
