@@ -1,6 +1,6 @@
 {
   "name": "@sharingapples/form",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "The form with hooks",
   "main": "dist/index.js",
   "react-native": "src/index.js",
