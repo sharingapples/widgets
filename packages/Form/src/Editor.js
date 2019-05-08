@@ -56,7 +56,7 @@ function createManager(initialState, parent, onChange, onSubmit) {
       mappedSubscriptions.forEach(([listener, mapper]) => listener(mapper(newState)));
 
       // Trigger the on change event
-      if (!requiresSubmit) {
+      if (!requiresSubmit && onChange) {
         onChange(newState);
       }
     },
@@ -121,7 +121,7 @@ function createManager(initialState, parent, onChange, onSubmit) {
           return false;
         }
         formState = FORM_STATE_NORMAL;
-        onChange(state);
+        if (onChange) onChange(state);
         if (onSubmit) onSubmit(state);
         return true;
       } catch (err) {
