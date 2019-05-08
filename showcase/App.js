@@ -16,7 +16,7 @@ import { Home, Calendar, Form, Wizard } from './screens';
 import { home, calendar, form, wizard } from './assets';
 // import useTransitionState from '../packages/Animation/src/useTransitionState';
 
-const homeRoute = new Route(4, 'wizard', Wizard, 'Wizard', wizard);
+const homeRoute = new Route(1, 'home', Home, 'Home', home);
 const routes = [
   homeRoute,
   new Route(2, 'calendar', Calendar, 'Calendar', calendar),
