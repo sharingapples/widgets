@@ -6,12 +6,12 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "@sharingapples/form": "^1.0.12"
   },
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
+    "@sharingapples/form": "^1.0.12",
     "@sharingapples/theme": "^1.0.3",
     "@sharingapples/widgets": "^1.0.11",
     "react": ">=16.8",
