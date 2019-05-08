@@ -22,9 +22,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: textColor,
   },
-  flex: {
-    flex: 1,
-  },
 });
 
 type Props = {
@@ -62,7 +59,7 @@ function FormPage({ title, prevTitle, nextTitle, group, ...other }: Props) {
   const { prev, next } = useWizard();
 
   return (
-    <RootView style={styles.flex}>
+    <RootView>
       {!!title && <StatusBar backgroundColor={backgroundColor} title={title} light />}
       <Group name={group} onSubmit={next}>
         <ScrollView
