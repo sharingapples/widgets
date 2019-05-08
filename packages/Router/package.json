@@ -1,13 +1,9 @@
 {
-  "name": "@sharingapples/form",
-  "version": "1.0.14",
-  "description": "The form with hooks",
+  "name": "@sharingapples/router",
+  "version": "1.0.12",
+  "description": "Router library",
   "main": "dist/index.js",
   "react-native": "src/index.js",
-  "files": [
-    "dist",
-    "src"
-  ],
   "scripts": {
     "test": "jest",
     "clean": "rimraf dist",
@@ -15,6 +11,9 @@
     "lint": "eslint src",
     "build": "babel src -d dist",
     "prepare": "npm run lint && npm run clean && npm run build && npm run flow"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.3",
@@ -28,10 +27,7 @@
     "rimraf": "^2.6.2"
   },
   "peerDependencies": {
-    "react": ">=16.8"
-  },
-  "publishConfig": {
-    "access": "public"
+    "react": "^16.8.0"
   },
   "author": "Ranjan Shrestha",
   "license": "MIT"

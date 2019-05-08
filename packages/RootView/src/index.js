@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const RootView = props => (
+const RootView = (props: any) => (
   <KeyboardAvoidingView
     style={styles.root}
     behavior={behavior}

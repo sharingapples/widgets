@@ -1,5 +1,6 @@
 // @flow
 import React, { useContext } from 'react';
+import type { ComponentType } from 'react';
 import {
   TouchableOpacity, View, Text, Image, StyleSheet,
 } from 'react-native';
@@ -9,7 +10,7 @@ import NavigationContext from './NavigatonContext';
 
 type Props = {
   /** The screen to which is displayed when the Item is selected */
-  screen: Class<Component>,
+  screen: ComponentType<*>,
 
   /** The title to display below the the navigation item. Defaults to `screen.title` */
   title: ?string,
@@ -23,7 +24,7 @@ type Props = {
   /**
    * A small badge icon to display with red background
    */
-  badge: ?number,
+  badge?: ?number,
 }
 
 const styles = StyleSheet.create({
@@ -61,7 +62,9 @@ const styles = StyleSheet.create({
  * A navigation item with icon and text to display at the bottom of screen.
  */
 export default function Item({ title, icon, badge, screen }: Props) {
+  // $FlowFixMe
   const titleText = title || screen.title;
+  // $FlowFixMe
   const iconSource = icon || screen.icon;
 
   const { setScreen, Screen } = useContext(NavigationContext);
@@ -85,3 +88,7 @@ export default function Item({ title, icon, badge, screen }: Props) {
     </TouchableOpacity>
   );
 }
+
+Item.defaultProps = {
+  badge: undefined,
+};
