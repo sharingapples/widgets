@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-
+import type { Node } from 'react';
 import {
   View, Text, StatusBar as RNStatusBar, StyleSheet,
 } from 'react-native';
@@ -9,25 +9,24 @@ import { getTheme } from '@sharingapples/theme';
 import isDark from '@sharingapples/theme/isDark';
 
 const theme = getTheme();
-const backgroundColor = theme.primary;
-const textColor = theme.onPrimary;
+const componentTheme = theme.StatusBar || theme;
+const backgroundColor = componentTheme.primary;
+const textColor = componentTheme.onPrimary;
 
 const barStyle = isDark(backgroundColor) ? 'light-content' : 'dark-content';
 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    backgroundColor: theme.primary,
+    backgroundColor,
+    paddingTop: Math.min(32, SafePadding.top),
   },
   body: {
-    paddingTop: Math.min(SafePadding.top, 32),
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: textColor,
   },
   title: {
     color: textColor,
@@ -37,30 +36,57 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingVertical: 8,
   },
+  centered: {
+    ...StyleSheet.absoluteFillObject,
+    flexDirection: 'row',
+    padding: 8,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 });
 
 type Props = {
-  title: string,
-  children?: React.Node | Array<React.Node>,
+  children?: Node,
 };
 
+function Title(title) {
+  return (
+    <Text allowFontScaling={false} style={styles.title}>{title}</Text>
+  );
+}
+
+function parseChildren(children) {
+  if (typeof children === 'string') {
+    return Title(children);
+  }
+  return children;
+}
+
 // eslint-disab le-next-line react/prefer-stateless-function
-function StatusBar({ title, children }: Props) {
+function StatusBar({ children }: Props) {
   return (
     <View style={styles.container}>
       <RNStatusBar barStyle={barStyle} backgroundColor={backgroundColor} />
       <View style={styles.body}>
-        {!!title
-        && (
-          <Text allowFontScaling={false} style={styles.title}>
-            {title}
-          </Text>
-        )}
-        {children}
+        {parseChildren(children)}
       </View>
     </View>
   );
 }
+
+StatusBar.centered = (title, left, right) => {
+  return (
+    <>
+      {Title(title)}
+      <View style={styles.centered}>
+        {left || <View />}
+        {right || <View />}
+      </View>
+    </>
+  );
+};
+
+StatusBar.Title = Title;
 
 StatusBar.defaultProps = {
   children: undefined,

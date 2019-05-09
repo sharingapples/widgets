@@ -1,0 +1,38 @@
+{
+  "name": "@sharingapples/form",
+  "version": "1.0.15",
+  "description": "The form with hooks",
+  "main": "dist/index.js",
+  "react-native": "src/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "test": "jest",
+    "clean": "rimraf dist",
+    "flow": "flow-copy-source src dist",
+    "lint": "eslint src",
+    "build": "babel src -d dist",
+    "prepare": "npm run lint && npm run clean && npm run build && npm run flow"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "eslint": "^5.16.0",
+    "flow-copy-source": "^2.0.1",
+    "jest": "^24.7.1",
+    "rimraf": "^2.6.2"
+  },
+  "peerDependencies": {
+    "react": ">=16.8"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Ranjan Shrestha",
+  "license": "MIT"
+}

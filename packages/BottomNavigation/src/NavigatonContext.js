@@ -1,11 +1,13 @@
 // @flow
 import React from 'react';
+import type { ComponentType } from 'react';
 
-type Context = {
-  activeScreen: Class<Component>,
-  setActiveScreen: (screen: Class<Component>) => void,
+export type Context = {
+  Screen: ComponentType<*>,
+  setScreen: (() => ComponentType<*>) => void,
 };
 
-const NavigationContext = React.createContext<Context>();
+// $FlowFixMe Default value is not required
+const NavigationContext = React.createContext<Context>(null);
 
 export default NavigationContext;

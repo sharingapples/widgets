@@ -1,22 +1,30 @@
 // @flow
 import React, { useContext } from 'react';
+import type { ComponentType } from 'react';
 import {
   TouchableOpacity, View, Text, Image, StyleSheet,
 } from 'react-native';
-import { getTheme } from '@sharingapples/theme';
 
+import { selectColor, textColor } from './theme';
 import NavigationContext from './NavigatonContext';
 
-const theme = getTheme();
-
-const selectColor = theme.brand;
-const textColor = theme.onSurface;
-
 type Props = {
-  title: string,
-  screen: Class<Component>,
-  icon: number,
-  badge: ?number,
+  /** The screen to which is displayed when the Item is selected */
+  screen: ComponentType<*>,
+
+  /** The title to display below the the navigation item. Defaults to `screen.title` */
+  title: ?string,
+
+  /**
+   * A icon for the navigation item. The item doesn't resize the image and uses the
+   * image as it is. The best resolution is 20x20. Defaults to `screen.icon`
+   */
+  icon: ?number,
+
+  /**
+   * A small badge icon to display with red background
+   */
+  badge?: ?number,
 }
 
 const styles = StyleSheet.create({
@@ -50,7 +58,15 @@ const styles = StyleSheet.create({
   },
 });
 
+/**
+ * A navigation item with icon and text to display at the bottom of screen.
+ */
 export default function Item({ title, icon, badge, screen }: Props) {
+  // $FlowFixMe
+  const titleText = title || screen.title;
+  // $FlowFixMe
+  const iconSource = icon || screen.icon;
+
   const { setScreen, Screen } = useContext(NavigationContext);
   const tintColor = Screen === screen ? selectColor : textColor;
 
@@ -58,7 +74,7 @@ export default function Item({ title, icon, badge, screen }: Props) {
 
   return (
     <TouchableOpacity style={styles.container} onPress={selectScreen}>
-      <Image source={icon} style={{ tintColor }} />
+      <Image source={iconSource} style={{ tintColor }} />
       {badge && (
         <View style={styles.badgeContainer}>
           <View style={styles.badge}>
@@ -67,8 +83,12 @@ export default function Item({ title, icon, badge, screen }: Props) {
         </View>
       )}
       <Text allowFontScaling={false} style={[styles.title, { color: tintColor }]}>
-        {title}
+        {titleText}
       </Text>
     </TouchableOpacity>
   );
 }
+
+Item.defaultProps = {
+  badge: undefined,
+};
