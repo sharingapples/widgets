@@ -8,7 +8,7 @@ export default function Calendar() {
   return (
     <View>
       <StatusBar>Calendar</StatusBar>
-      <CalendarWidget value={value} setValue={setValue} />
+      <CalendarWidget value={value} setValue={setValue} type="range" />
     </View>
   );
 }

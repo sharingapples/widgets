@@ -30,10 +30,19 @@ type Props = {
   setValue: number => void,
   value: ?Date,
   setView: React.Node => void,
+  type: string,
+}
+
+function dateRange(date1, date2) {
+  const diffTime = date2.getTime() - date1.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const startDate = diffDays < 0 ? date2 : date1;
+  const dates = Array(Math.abs(diffDays)).fill(new Date(startDate)).map((m, idx) => new Date(m.setDate(m.getDate() + 1)))
+  return [startDate, ...dates];
 }
 
 function CalendarView({
-  renderDate, setValue, value, setView,
+  renderDate, setValue, value, setView, type,
 }: Props) {
   const [months, setMonths] = useContext(CalendarContext);
 
@@ -47,15 +56,25 @@ function CalendarView({
 
   const selectDate = useCallback((d, long) => {
     setValue((prev) => {
-      if (Array.isArray(prev)) {
-        // logic to remove the date if already Selected
-        const isAlreadySelected = prev.filter(dates => dates.toDateString() === d.toDateString());
-        return isAlreadySelected.length > 0
-          ? [...prev.filter(dates => dates.toDateString() !== d.toDateString())]
-          : [...prev, d];
+      if(type === 'multi') {
+        if (Array.isArray(prev)) {
+          // logic to remove the date if already Selected
+          const isAlreadySelected = prev.filter(dates => dates.toDateString() === d.toDateString());
+          return isAlreadySelected.length > 0
+            ? [...prev.filter(dates => dates.toDateString() !== d.toDateString())]
+            : [...prev, d];
+        }
+        if (long) {
+          return prev ? [prev, d] : [d];
+        }
       }
-      if (long) {
-        return prev ? [prev, d] : [d];
+      else if (type === 'range') {
+        if (Array.isArray(prev)) {
+          return d;
+        } else if (prev) {
+          return dateRange(prev, d);
+        }
+        return d;
       }
       return d;
     });
