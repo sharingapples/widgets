@@ -40,6 +40,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
   },
+  text: {
+    color: textColor,
+  }
 });
 
 function renderHeader(year, setView) {
@@ -68,7 +71,7 @@ function renderAllMonth(year, selectMonth) {
           style={styles.month}
           onPress={() => selectMonth(year, month)}
         >
-          <Text>{ALL_MONTHS[month]}</Text>
+          <Text allowFontScaling={false} style={styles.text}>{ALL_MONTHS[month]}</Text>
         </TouchableOpacity>
       );
     });

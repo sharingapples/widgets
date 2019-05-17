@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
   view: {
     position: 'absolute',
-    backgroundColor: 'white',
+    backgroundColor: backgroundColor,
     width: '100%',
     height: '100%',
     flexDirection: 'row',

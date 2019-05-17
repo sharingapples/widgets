@@ -40,6 +40,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
   },
+  text:{
+    color: textColor,
+  }
 });
 
 function renderHeaderTitle() {
@@ -67,7 +70,7 @@ function renderAllYears(initalYear, selectYear) {
           style={styles.year}
           onPress={() => selectYear(year)}
         >
-          <Text>{year}</Text>
+          <Text allowFontScaling={false} style={styles.text}>{year}</Text>
         </TouchableOpacity>
       );
     });
