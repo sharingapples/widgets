@@ -1,14 +1,8 @@
 // @flow
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { getTheme } from '@sharingapples/theme';
+import { textColor, backgroundColor, primaryFontColor, primaryColor, disabledFontColor } from '../theme';
 
-const theme = getTheme();
-const calendarTheme = theme.onCalendar || theme;
-const textColor = calendarTheme.onBackground;
-const backgroundColor = calendarTheme.background;
-const primaryFontColor = theme.onPrimary;
-const disabledFontColor = theme.disabled;
 
 const styles = StyleSheet.create({
   container: {
@@ -16,11 +10,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 3,
     paddingVertical: 3,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    margin: -1,
+    borderWidth: StyleSheet.hairlineWidth,
+    margin: -StyleSheet.hairlineWidth,
+    // because of inconsistency in android for border each has to be defined
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderTopColor: 'transparent',
+    borderBottomColor: 'transparent',
   },
   textContainer: {
     paddingHorizontal: 6,
@@ -30,6 +26,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 30,
     height: 30,
+  },
+  text: {
+    fontSize: 14,
   },
 });
 
@@ -55,10 +54,9 @@ function Day({
   const dateObj = new Date(date);
   const isCurrentMonth = currentMonth === dateObj.getMonth();
   const isToday = dateObj.toDateString() === new Date().toDateString();
-
   return (
     <TouchableOpacity
-      style={[styles.container, borderStyle || { borderColor: 'transparent' }]}
+      style={[styles.container, borderStyle]}
       onLongPress={() => {
         // stack this to selected date
         selectDate(dateObj, true);
@@ -70,15 +68,14 @@ function Day({
     >
 
       <View style={[
-        styles.textContainer, { backgroundColor: isToday ? theme.primary : backgroundColor },
+        styles.textContainer, { backgroundColor: isToday ? primaryColor : backgroundColor },
       ]}
       >
         <Text
           allowFontScaling={false}
-          style={{
+          style={[styles.text, {
             color: isToday ? primaryFontColor : getFontColor(isCurrentMonth),
-            fontSize: 14,
-          }}
+          }]}
         >
           {dateObj.getDate()}
         </Text>

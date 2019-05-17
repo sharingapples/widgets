@@ -56,8 +56,8 @@ function createManager(initialState, parent, onChange, onSubmit) {
       mappedSubscriptions.forEach(([listener, mapper]) => listener(mapper(newState)));
 
       // Trigger the on change event
-      if (!requiresSubmit && onChange) {
-        onChange(newState);
+      if (!requiresSubmit) {
+        if (onChange) onChange(newState);
       }
     },
     subscribe: (name: string | () => any, listener: (any) => void) => {
@@ -113,6 +113,7 @@ function createManager(initialState, parent, onChange, onSubmit) {
     },
     submit: async () => {
       // Run all the validators
+
       try {
         formState = FORM_STATE_BUSY;
         const res = await Promise.all(validators.map(v => v.confirm()));

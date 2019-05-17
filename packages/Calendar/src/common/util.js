@@ -1,7 +1,4 @@
-import { getTheme } from '@sharingapples/theme';
-
-const theme = getTheme();
-const calendarTheme = theme.onCalendar || theme;
+import { primaryColor } from '../theme';
 
 /* eslint-disable no-bitwise */
 
@@ -9,13 +6,22 @@ export const DAY_DIFF = 86400 * 1000;
 export const SEVEN_DAYS = 7;
 export const SINGLE_DAY = 1;
 
+export const WEEK_DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+export const ALL_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
 const borderStyles = Array(16).fill(null).map((n, idx) => ({
-  borderTopColor: idx & 1 ? 'transparent' : calendarTheme.primary,
-  borderRightColor: idx & 2 ? 'transparent' : calendarTheme.primary,
-  borderBottomColor: idx & 4 ? 'transparent' : calendarTheme.primary,
-  borderLeftColor: idx & 8 ? 'transparent' : calendarTheme.primary,
+  borderTopColor: idx & 1 ? 'transparent' : primaryColor,
+  borderRightColor: idx & 2 ? 'transparent' : primaryColor,
+  borderBottomColor: idx & 4 ? 'transparent' : primaryColor,
+  borderLeftColor: idx & 8 ? 'transparent' : primaryColor,
 }));
 
+
+export function getMonthCount({ width }, date) {
+  const value = Array.isArray(date) ? date[0] : date;
+  return width > 560
+    ? [value, new Date(value.getFullYear(), value.getMonth() + 1)] : [value];
+}
 
 const cache = {};
 
@@ -33,11 +39,6 @@ function memoize(dep) {
 export function isDate(date) {
   return date instanceof Date;
 }
-
-export function generateYears(year) {
-  return Array(16).fill(0).map((m, idx) => year + idx);
-}
-
 
 function getDateString(date, diff) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() + diff).toDateString();

@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Day from './Day';
-import { getDateBorderStyle, DAY_DIFF } from './util';
+import { getDateBorderStyle, DAY_DIFF } from '../common/util';
 
 const styles = StyleSheet.create({
   container: {

@@ -3,9 +3,8 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Group, useFormSubmit } from '@sharingapples/form';
 import { getTheme } from '@sharingapples/theme';
-import { StatusBar, RootView, SafePadding } from '@sharingapples/widgets';
+import { StatusBar } from '@sharingapples/widgets';
 import { useWizard } from '../src';
-
 
 const theme = getTheme();
 const componentTheme = theme.Wizard || theme;
@@ -16,7 +15,7 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: SafePadding.bottom / 2,
+    padding: 16,
   },
   text: {
     fontSize: 14,
@@ -55,11 +54,12 @@ function Submit({ title }: SubmitProps) {
 }
 
 
-function FormPage({ title, prevTitle, nextTitle, group, style, ...other }: Props) {
+function FormPage({ title, prevTitle, nextTitle, group, ...other }: Props) {
   const { prev, next } = useWizard();
+
   return (
-    <RootView>
-      {!!title && <StatusBar>{title}</StatusBar>}
+    <>
+      {!!title && <StatusBar backgroundColor={backgroundColor} title={title} light />}
       <Group name={group} onSubmit={next}>
         <ScrollView
           keyboardShouldPersistTaps="never"
@@ -70,7 +70,7 @@ function FormPage({ title, prevTitle, nextTitle, group, style, ...other }: Props
           {nextTitle ? <Submit title={nextTitle} /> : <View />}
         </View>
       </Group>
-    </RootView>
+    </>
   );
 }
 

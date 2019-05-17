@@ -1,17 +1,14 @@
 import React from 'react';
 import { View, TextInput } from 'react-native';
 import FormPage from '@sharingapples/wizard/form/FormPage';
-import { Form } from '@sharingapples/form';
 import LineInput from '../Form/LineInput';
 
-function SecondPage() {
+function PageWithForm() {
   return (
-    <Form onSubmit={v => console.log('submit', v)}>
-      <FormPage group="personal" nextTitle="Next" prevTitle="Prev" title="Page 1">
-        <LineInput name="name" label="Name" Type={TextInput} />
-      </FormPage>
-    </Form>
+    <FormPage group="personal" nextTitle="Next" title="Page 1">
+      <LineInput name="name" label="Name" Type={TextInput} />
+    </FormPage>
   );
 }
 
-export default SecondPage;
+export default PageWithForm;
