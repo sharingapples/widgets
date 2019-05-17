@@ -30,14 +30,14 @@ type Props = {
   setValue: number => void,
   value: ?Date,
   setView: React.Node => void,
-  type: string,
+  type: 'multi' | 'range' | 'single',
 }
 
 function dateRange(date1, date2) {
   const diffTime = date2.getTime() - date1.getTime();
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   const startDate = diffDays < 0 ? date2 : date1;
-  const dates = Array(Math.abs(diffDays)).fill(new Date(startDate)).map((m, idx) => new Date(m.setDate(m.getDate() + 1)))
+  const dates = Array(Math.abs(diffDays)).fill(new Date(startDate)).map(m => new Date(m.setDate(m.getDate() + 1)));
   return [startDate, ...dates];
 }
 
