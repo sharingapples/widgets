@@ -1,26 +1,19 @@
 // @flow
 import React, { useState } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
-import SafePadding from '@sharingapples/safe-padding';
+import type { ComponentType } from 'react';
+import { View, StyleSheet } from 'react-native';
+import RootView from '@sharingapples/root-view';
 import NavigatonContext from './NavigatonContext';
+import type { Context } from './NavigatonContext';
 
-import { backgroundColor, textColor } from './theme';
+import { textColor } from './theme';
 import Nav from './Nav';
 
-// the safe offset required for iOS Home Bar
-/** Minimum safe offset */
-const safeOffset = Math.min(SafePadding.bottom, 12);
-
 type Props = {
-  home: Class<Component>,
+  home: ComponentType<*>,
 };
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor,
-    paddingBottom: safeOffset,
-  },
   container: {
     flex: 1,
   },
@@ -30,8 +23,6 @@ const styles = StyleSheet.create({
     borderTopColor: textColor,
   },
 });
-
-const behavior = Platform.OS === 'ios' ? 'height' : undefined;
 
 /**
  * Display a navigation bar at the bottom of the screen, with each navigation
@@ -48,24 +39,20 @@ const behavior = Platform.OS === 'ios' ? 'height' : undefined;
 function BottomNavigation({ home, ...other }: Props) {
   const [Screen, setScreen] = useState(() => home);
 
-  const contextValue = {
+  const contextValue: Context = {
     setScreen,
     Screen,
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.root}
-      behavior={behavior}
-      keyboardVerticalOffset={-safeOffset}
-    >
+    <RootView>
       <NavigatonContext.Provider value={contextValue}>
         <View style={styles.container}>
           <Screen />
         </View>
         <View style={styles.navBar} {...other} />
       </NavigatonContext.Provider>
-    </KeyboardAvoidingView>
+    </RootView>
   );
 }
 

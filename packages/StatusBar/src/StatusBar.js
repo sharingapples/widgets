@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-
+import type { Node } from 'react';
 import {
   View, Text, StatusBar as RNStatusBar, StyleSheet,
 } from 'react-native';
@@ -18,17 +18,15 @@ const barStyle = isDark(backgroundColor) ? 'light-content' : 'dark-content';
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    backgroundColor: theme.primary,
+    backgroundColor,
+    paddingTop: Math.min(32, SafePadding.top),
   },
   body: {
-    paddingTop: Math.min(SafePadding.top, 32),
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: textColor,
   },
   title: {
     color: textColor,
@@ -38,10 +36,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingVertical: 8,
   },
+  centered: {
+    ...StyleSheet.absoluteFillObject,
+    flexDirection: 'row',
+    padding: 8,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 });
 
 type Props = {
-  children?: string | React.Node | Array<React.Node>,
+  children?: Node,
 };
 
 function Title(title) {
@@ -68,6 +73,20 @@ function StatusBar({ children }: Props) {
     </View>
   );
 }
+
+StatusBar.centered = (title, left, right) => {
+  return (
+    <>
+      {Title(title)}
+      <View style={styles.centered}>
+        {left || <View />}
+        {right || <View />}
+      </View>
+    </>
+  );
+};
+
+StatusBar.Title = Title;
 
 StatusBar.defaultProps = {
   children: undefined,

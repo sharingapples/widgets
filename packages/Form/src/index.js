@@ -7,6 +7,7 @@ import useFormSubmit from './useFormSubmit';
 import useFormValidator from './useFormValidator';
 import useFormValue from './useFormValue';
 import useFormParent from './useFormParent';
+import useFormArrayOperator from './useFormArrayOperator';
 
 export function pipe(...validators) {
   return (value) => {
@@ -26,4 +27,5 @@ export {
   useFormValidator,
   useFormValue,
   useFormParent,
+  useFormArrayOperator,
 };

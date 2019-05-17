@@ -2,7 +2,7 @@
 // @flow
 import React from 'react';
 import useFormInput from './useFormInput';
-import Editor from './Editor';
+import Editor, { useEditor } from './Editor';
 
 type Props = {
   name: string,
@@ -11,6 +11,7 @@ type Props = {
 
 export default function ArrayGroup({ name, onSubmit, ...other }: Props) {
   const [value, onChange] = useFormInput(name, []);
+  const parent = useEditor();
 
   if (__DEV__) {
     if (!Array.isArray(value)) {
@@ -23,6 +24,7 @@ export default function ArrayGroup({ name, onSubmit, ...other }: Props) {
     <Editor
       {...other}
       value={value}
+      parent={parent}
       onChange={onChange}
       onSubmit={onSubmit}
     />

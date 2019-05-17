@@ -3,12 +3,12 @@ import material from '@sharingapples/theme/stock/material';
 
 setTheme(Object.assign(material, {
   disable: 'grey',
-  primary: '#ffff00',
-  onPrimary: 'black',
-  surface: '#333',
-  onSurface: '#fff',
-  background: '#000',
-  onBackground: '#fff',
+  primary: '#3C800A',
+  onPrimary: 'white',
+  surface: '#fff',
+  onSurface: '#000',
+  background: '#fff',
+  onBackground: '#000',
 }));
 
 require('./showcase');
