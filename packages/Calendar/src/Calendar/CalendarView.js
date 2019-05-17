@@ -56,7 +56,7 @@ function CalendarView({
 
   const selectDate = useCallback((d, long) => {
     setValue((prev) => {
-      if(type === 'multi') {
+      if (type === 'multi') {
         if (Array.isArray(prev)) {
           // logic to remove the date if already Selected
           const isAlreadySelected = prev.filter(dates => dates.toDateString() === d.toDateString());
@@ -67,11 +67,11 @@ function CalendarView({
         if (long) {
           return prev ? [prev, d] : [d];
         }
-      }
-      else if (type === 'range') {
+      } else if (type === 'range') {
         if (Array.isArray(prev)) {
           return d;
-        } else if (prev) {
+        }
+        if (prev) {
           return dateRange(prev, d);
         }
         return d;
