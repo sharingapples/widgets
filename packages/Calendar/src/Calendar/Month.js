@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   },
   navText: {
     fontSize: 14,
+    color: textColor,
   },
   daysContainer: {
     width: '100%',

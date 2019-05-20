@@ -4,7 +4,7 @@ import CalendarWidget from '@sharingapples/calendar';
 import StatusBar from '@sharingapples/status-bar';
 
 export default function Calendar() {
-  const [value, setValue] = useState(new Date());
+  const [value, setValue] = useState([new Date(), new Date(2019, 4, 27)]);
   return (
     <View>
       <StatusBar>Calendar</StatusBar>

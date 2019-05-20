@@ -45,7 +45,7 @@ function CalendarView({
   renderDate, setValue, value, setView, type,
 }: Props) {
   const [months, setMonths] = useContext(CalendarContext);
-
+  console.log(value);
   const shift = useCallback((val) => {
     setMonths(mnths => mnths.map(d => new Date(
       d.getFullYear(),
