@@ -53,6 +53,8 @@ export class BasicRouter {
       this.listeners.forEach((listener) => {
         listener(newRoute);
       });
+
+      if (newRoute.onShow) newRoute.onShow();
     }
   }
 }
