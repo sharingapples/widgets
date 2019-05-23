@@ -3,7 +3,7 @@ import React, { useCallback, useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 import { textColor, backgroundColor } from '../theme';
-import { ALL_MONTHS } from '../common/util';
+import { ALL_MONTHS } from '../util';
 import YearView from '../YearSelection';
 import Header from '../common/Header';
 import CalendarContext from '../common/CalendarContext';
