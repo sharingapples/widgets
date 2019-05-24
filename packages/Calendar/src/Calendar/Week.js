@@ -24,12 +24,17 @@ function Week({ startOfWeek, month, value, ...other }: Props) {
     <View style={styles.container}>
       {days.map((i) => {
         const borderStyle = getDateBorderStyle(new Date(startOfWeek + i * DAY_DIFF), value);
+        const date = startOfWeek + i * DAY_DIFF;
+        const isCurrentMonth = new Date(date).getMonth() === month;
+        const isToday = new Date().toDateString() === new Date(date).toDateString();
         return (
           <Day
             key={i}
-            date={startOfWeek + i * DAY_DIFF}
+            date={date}
             borderStyle={borderStyle}
             currentMonth={month}
+            isCurrentMonth={isCurrentMonth}
+            isToday={isToday}
             {...other}
           />
         );

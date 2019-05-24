@@ -37,15 +37,21 @@ function dateRange(date1, date2) {
   const diffTime = date2.getTime() - date1.getTime();
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   const startDate = diffDays < 0 ? date2 : date1;
-  const dates = Array(Math.abs(diffDays)).fill(new Date(startDate)).map(m => new Date(m.setDate(m.getDate() + 1)));
+  const dates = Array(Math.abs(diffDays))
+    .fill(new Date(startDate))
+    .map(m => new Date(m.setDate(m.getDate() + 1)));
   return [startDate, ...dates];
+}
+
+function getStartOfMonth(date) {
+  const first = new Date(date.getFullYear(), date.getMonth(), 1);
+  return first.getTime() - first.getDay() * 86400 * 1000;
 }
 
 function CalendarView({
   renderDate, setValue, value, setView, type,
 }: Props) {
   const [months, setMonths] = useContext(CalendarContext);
-
   const shift = useCallback((val) => {
     setMonths(mnths => mnths.map(d => new Date(
       d.getFullYear(),
@@ -74,7 +80,6 @@ function CalendarView({
         if (prev) {
           return dateRange(prev, d);
         }
-        return d;
       }
       return d;
     });
@@ -90,11 +95,13 @@ function CalendarView({
       {months.map(month => (
         <View key={month} style={styles.container}>
           <Month
+            start={getStartOfMonth(month)}
             date={month}
             value={value}
             renderDate={renderDate}
             selectDate={selectDate}
             setView={setView}
+            month={month.getMonth()}
           />
         </View>
       ))}

@@ -1,14 +1,14 @@
 // @flow
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { textColor, backgroundColor, primaryFontColor, primaryColor, disabledFontColor } from '../theme';
-
+import { getDateBorderStyle } from '../util';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     paddingHorizontal: 3,
+    width: `${100 / 7}%`,
     paddingVertical: 3,
     borderWidth: StyleSheet.hairlineWidth,
     margin: -StyleSheet.hairlineWidth,
@@ -34,10 +34,10 @@ const styles = StyleSheet.create({
 
 type Props = {
   date: Date,
-  currentMonth: number,
   renderDate: (date: Date) => React.Node,
-  selectDate: (date: Date) => void,
   borderStyle: {},
+  value: Date | Array<Date>,
+  month: number,
 }
 
 function getFontColor(isCurrentMonth) {
@@ -46,30 +46,21 @@ function getFontColor(isCurrentMonth) {
 
 function Day({
   date,
-  currentMonth,
+  value,
   renderDate,
-  borderStyle,
-  selectDate,
+  month,
 }: Props) {
   const dateObj = new Date(date);
-  const isCurrentMonth = currentMonth === dateObj.getMonth();
-  const isToday = dateObj.toDateString() === new Date().toDateString();
-  return (
-    <TouchableOpacity
-      style={[styles.container, borderStyle]}
-      onLongPress={() => {
-        // stack this to selected date
-        selectDate(dateObj, true);
-      }}
-      onPress={() => {
-        // override array of selected dates and just add this date
-        selectDate(dateObj, false);
-      }}
-    >
+  const borderStyle = getDateBorderStyle(dateObj, value);
+  const isToday = new Date() === dateObj.toDateString();
+  const isCurrentMonth = dateObj.getMonth() === month;
 
-      <View style={[
-        styles.textContainer, { backgroundColor: isToday ? primaryColor : backgroundColor },
-      ]}
+  return (
+    <View style={borderStyle}>
+      <View
+        style={[styles.textContainer, {
+          backgroundColor: isToday ? primaryColor : backgroundColor,
+        }]}
       >
         <Text
           allowFontScaling={false}
@@ -81,7 +72,7 @@ function Day({
         </Text>
       </View>
       {renderDate && renderDate(dateObj)}
-    </TouchableOpacity>
+    </View>
   );
 }
 
