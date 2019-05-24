@@ -1,16 +1,18 @@
 // @flow
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
-import { textColor } from '../theme';
+import { textColor, backgroundColor } from '../theme';
 import MonthSelection from '../MonthSelection';
 import Header from '../common/Header';
+import CalendarContext from '../common/CalendarContext';
 
 const YEARS_DIFF = 20;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor,
   },
   dateText: {
     fontSize: 14,
@@ -40,9 +42,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
   },
-  text:{
+  text: {
     color: textColor,
-  }
+    fontSize: 14,
+  },
 });
 
 function renderHeaderTitle() {
@@ -81,11 +84,10 @@ function renderAllYears(initalYear, selectYear) {
 
 type Props = {
   setView: React.Node => void,
-  value: Date | Array<Date>,
 }
 
-function YearView({ setView, value }: Props) {
-  const [months, setMonths] = useState(value);
+function YearView({ setView }: Props) {
+  const [months, setMonths] = useContext(CalendarContext);
 
   const shift = useCallback((val) => {
     setMonths(mnths => mnths.map(d => new Date(
