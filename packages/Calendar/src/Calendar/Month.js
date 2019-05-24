@@ -6,7 +6,6 @@ import MonthSelection from '../MonthSelection';
 import YearSelection from '../YearSelection';
 import { WEEK_DAYS, DAY_DIFF, SEVEN_DAYS } from '../util';
 import { textColor } from '../theme';
-// import console = require('console');
 
 type Props = {
   start: number,
