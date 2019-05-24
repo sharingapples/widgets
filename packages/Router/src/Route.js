@@ -8,6 +8,7 @@ export default class Route<T> {
   Page: ComponentType<T>;
   title: string;
   icon: ?Icon;
+  onShow: ?() => void;
 
   // helper hook to get badge values for specific routes
   useBadge: ?() => number | string;
