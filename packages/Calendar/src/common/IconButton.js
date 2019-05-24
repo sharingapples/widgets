@@ -10,7 +10,8 @@ type Props = {
 
 const IconButton = ({ onPress, icon }: Props) => (
   <TouchableOpacity
-    onPress={() => onPress(-1)}
+    onPressIn={() => onPress(-1)}
+    hitSlop={{ top: 15, bottom: 15, left: 20, right: 20 }}
   >
     <Image source={icon} />
   </TouchableOpacity>
