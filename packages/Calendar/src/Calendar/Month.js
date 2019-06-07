@@ -1,15 +1,17 @@
 // @flow
-import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import Week from './Week';
+import React, { useState, useRef } from 'react';
+import { View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Text } from 'react-native';
+import Day from './Day';
 import MonthSelection from '../MonthSelection';
 import YearSelection from '../YearSelection';
-import { WEEK_DAYS } from '../common/util';
+import { WEEK_DAYS, DAY_DIFF, SEVEN_DAYS } from '../util';
 import { textColor } from '../theme';
 
 type Props = {
-  date: Date,
+  start: number,
   setView: React.Node => void,
+  selectDate: (Date, boolean) => void,
+  month: number,
 }
 
 
@@ -28,6 +30,7 @@ const styles = StyleSheet.create({
   },
   navText: {
     fontSize: 14,
+    color: textColor,
   },
   daysContainer: {
     width: '100%',
@@ -46,22 +49,32 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: textColor,
   },
+  dateContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '100%',
+  },
 });
 
 const NUM_OF_WEEKS = 6;
-const WEEK_DIFF = 7 * 86400 * 1000;
 
-function getStartOfMonth(date) {
-  const first = new Date(date.getFullYear(), date.getMonth(), 1);
-  return first.getTime() - first.getDay() * 86400 * 1000;
-}
-
-function Month({ date, setView, ...other }: Props) {
-  const start = getStartOfMonth(date);
+function Month({ start, setView, date, selectDate, ...other }: Props) {
+  const ref = useRef();
+  const [dimension, setDimension] = useState({ width: 0, height: 0, x: 0, y: 0 });
   const dateString = date.toString();
   const month = dateString.substr(4, 3);
   const year = dateString.substr(11, 4);
-  const weeks = new Array(NUM_OF_WEEKS).fill(null).map((c, i) => start + i * WEEK_DIFF);
+  const days = new Array(NUM_OF_WEEKS * SEVEN_DAYS).fill(null).map((c, i) => start + i * DAY_DIFF);
+  const handlePress = (e, long) => {
+    const x = e.nativeEvent.pageX;
+    const y = e.nativeEvent.pageY;
+    const index = Math.floor((x - dimension.x) / dimension.width)
+    + Math.floor((y - dimension.y) / dimension.height) * SEVEN_DAYS;
+    const selectedDate = start + index * DAY_DIFF;
+    selectDate(new Date(selectedDate), long);
+  };
+
+
   return (
     <>
       <View>
@@ -79,7 +92,6 @@ function Month({ date, setView, ...other }: Props) {
             <Text style={styles.navText} allowFontScaling={false}>{year}</Text>
           </TouchableOpacity>
         </View>
-
         <View style={styles.daysContainer}>
           {WEEK_DAYS.map(d => (
             <View key={d} style={styles.day}>
@@ -89,16 +101,39 @@ function Month({ date, setView, ...other }: Props) {
         </View>
       </View>
 
-      {weeks.map(week => (
-        <Week
-          key={week}
-          startOfWeek={week}
-          month={date.getMonth()}
-          {...other}
-        />
-      ))}
+      <View
+        ref={ref}
+        onLayout={() => {
+          if (ref.current.measure) {
+            ref.current.measure((x, y, width, height, pageX, pageY) => {
+              setDimension({
+                width: width / SEVEN_DAYS,
+                height: height / NUM_OF_WEEKS,
+                x: 5,
+                y: pageY,
+              });
+            });
+          }
+        }}
+      >
+        <TouchableWithoutFeedback
+          onPress={e => handlePress(e)}
+          onLongPress={e => handlePress(e, true)}
+        >
+          <View style={styles.dateContainer}>
+            {days.map(day => (
+              <Day
+                key={day}
+                date={day}
+                month={month}
+                {...other}
+              />
+            ))}
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
     </>
   );
 }
 
-export default Month;
+export default React.memo(Month);

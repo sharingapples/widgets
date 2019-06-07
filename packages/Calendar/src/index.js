@@ -4,7 +4,7 @@ import { Dimensions, View, StyleSheet } from 'react-native';
 import CalendarView from './Calendar';
 
 import CalendarContext from './common/CalendarContext';
-import { getMonthCount } from './common/util';
+import { getMonthCount } from './util';
 import { backgroundColor } from './theme';
 
 type Props = {
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
   view: {
     position: 'absolute',
-    backgroundColor: 'white',
+    backgroundColor,
     width: '100%',
     height: '100%',
     flexDirection: 'row',
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 });
 
 function Calendar({ value, ...other }: Props) {
-  const [months, setMonths] = useState(() => getMonthCount(Dimensions.get('screen'), value));
+  const [months, setMonths] = useState(() => getMonthCount(Dimensions.get('screen'), value || new Date()));
   const [CurrentView, setView] = useState(() => null);
 
   const handleLayout = useCallback((e) => {
