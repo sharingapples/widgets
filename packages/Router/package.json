@@ -1,6 +1,6 @@
 {
   "name": "@sharingapples/router",
-  "version": "1.0.12",
+  "version": "1.0.16",
   "description": "Router library",
   "main": "dist/index.js",
   "react-native": "src/index.js",

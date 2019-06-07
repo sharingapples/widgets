@@ -1,6 +1,6 @@
 {
   "name": "@sharingapples/calendar",
-  "version": "1.0.4",
+  "version": "1.0.16",
   "description": "React Native Calendar Widget",
   "main": "src/index.js",
   "peerDependencies": {
