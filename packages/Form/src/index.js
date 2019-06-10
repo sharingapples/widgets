@@ -3,6 +3,7 @@ import Group from './Group';
 import ArrayGroup from './ArrayGroup';
 
 import useFormInput from './useFormInput';
+import useFormArray from './useFormArray';
 import useFormSubmit from './useFormSubmit';
 import useFormValidator from './useFormValidator';
 import useFormValue from './useFormValue';
@@ -28,4 +29,5 @@ export {
   useFormValue,
   useFormParent,
   useFormArrayOperator,
+  useFormArray,
 };
