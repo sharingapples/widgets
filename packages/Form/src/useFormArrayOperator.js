@@ -1,4 +1,7 @@
 /* global __DEV__ */
+/**
+ * @deprecated In favour of useFormArray
+ */
 import { useEditor, OP_ARRAY_INSERT, OP_ARRAY_REMOVE } from './Editor';
 
 export default function useArrayOperator() {
