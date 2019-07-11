@@ -1,6 +1,6 @@
 {
   "name": "@sharingapples/form",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "The form with hooks",
   "main": "dist/index.js",
   "module": "es6/index.js",
