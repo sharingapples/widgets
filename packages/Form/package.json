@@ -16,7 +16,8 @@
     "flow": "flow-copy-source src dist",
     "lint": "eslint src",
     "build": "babel src -d dist",
-    "prepare": "npm run lint && npm run clean && npm run build && npm run flow"
+    "build:es6": "babel src -d es6 --config-file ./babel.es6.config.js",
+    "prepare": "npm run lint && npm run clean && npm run build && npm run build:es6 && npm run flow"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.3",
