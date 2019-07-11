@@ -3,6 +3,7 @@
   "version": "1.0.18",
   "description": "The form with hooks",
   "main": "dist/index.js",
+  "module": "es6/index.js",
   "react-native": "src/index.js",
   "files": [
     "dist",

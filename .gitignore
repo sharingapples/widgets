@@ -52,13 +52,13 @@ buck-out/
 */fastlane/Preview.html
 */fastlane/screenshots
 
-# Bundle artifact 
+# Bundle artifact
 *.jsbundle
 
 ios/Pods
 
 
 dist
-
+es6/
 metro.config.js
 
