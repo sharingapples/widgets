@@ -130,11 +130,11 @@ function createManager(initialState, parent, onChange, onSubmit) {
         }
         formState = FORM_STATE_NORMAL;
         if (onChange) onChange(state);
-        if (onSubmit) await onSubmit(state);
-        return true;
+        if (onSubmit) return onSubmit(state);
+        return undefined;
       } catch (err) {
         formState = FORM_STATE_ERROR;
-        return false;
+        throw err;
       }
     },
   };
