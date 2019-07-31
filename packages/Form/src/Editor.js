@@ -1,5 +1,6 @@
 // @flow
 import React, { useState, useContext, useEffect } from 'react';
+import ValidationError from './ValidationError';
 
 // Get the EditorContext
 const EditorContext = React.createContext();
@@ -91,6 +92,8 @@ function createManager(initialState, parent, onChange, onSubmit) {
         }
       };
     },
+
+    // Validation is run in a way to not run it reduntantly during the submission process
     validate: (check, fn) => {
       const validation = {
         done: null,
@@ -124,13 +127,15 @@ function createManager(initialState, parent, onChange, onSubmit) {
       try {
         formState = FORM_STATE_BUSY;
         const res = await Promise.all(validators.map(v => v.confirm()));
-        if (res.reduce((r, d) => r || d === false, false)) {
-          formState = FORM_STATE_ERROR;
-          return false;
+        for (let i = 0; i < res.length; i += 1) {
+          if (res[i] === false) throw new ValidationError();
         }
+
         formState = FORM_STATE_NORMAL;
         if (onChange) onChange(state);
         if (onSubmit) return onSubmit(state);
+
+        // In case there is no onSubmit defined, return undefined
         return undefined;
       } catch (err) {
         formState = FORM_STATE_ERROR;
