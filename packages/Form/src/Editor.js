@@ -136,7 +136,7 @@ function createManager(initialState, parent, onChange, onSubmit) {
         if (onSubmit) return onSubmit(state);
 
         // In case there is no onSubmit defined, return undefined
-        return undefined;
+        return state;
       } catch (err) {
         formState = FORM_STATE_ERROR;
         throw err;
