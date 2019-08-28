@@ -8,9 +8,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@sharingapples/animation": "^1.0.12"
-  },
   "peerDependencies": {
     "@sharingapples/form": "^1.0.12",
     "@sharingapples/theme": "^1.0.3",

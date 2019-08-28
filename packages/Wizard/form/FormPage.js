@@ -59,7 +59,7 @@ function FormPage({ title, prevTitle, nextTitle, group, ...other }: Props) {
 
   return (
     <>
-      {!!title && <StatusBar>{title}</StatusBar>}
+      {!!title && <StatusBar backgroundColor={backgroundColor} title={title} light />}
       <Group name={group} onSubmit={next}>
         <ScrollView
           keyboardShouldPersistTaps="never"

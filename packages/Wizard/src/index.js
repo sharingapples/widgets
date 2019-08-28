@@ -54,8 +54,8 @@ function Wizard({ children, start, onComplete }: Props) {
     ],
   }), []);
 
-  const calcWidth = (e) => { width.current = e.nativeEvent.layout.width; };
-  const context = { next, prev, currentPage: page, totalPages: pages.length };
+  const calcWidth = (e) => { width.current = e.nativeEvent.layout.width; }
+  const context = { next, prev, page };
   return (
     <View style={styles.container} onLayout={calcWidth}>
       <WizardContext.Provider value={context}>

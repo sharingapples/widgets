@@ -1,5 +1,6 @@
 // @flow
 import React, { useState, useContext, useEffect } from 'react';
+import ValidationError from './ValidationError';
 
 // Get the EditorContext
 const EditorContext = React.createContext();
@@ -13,8 +14,9 @@ type FormStates = 'busy' | 'normal' | 'error';
 export const OP_NORMAL = 0;
 export const OP_ARRAY_REMOVE = 1;
 export const OP_ARRAY_INSERT = 2;
+export const OP_ARRAY_CLEAR = 3;
 
-type Operations = 0 | 1 | 2;
+type Operations = 0 | 1 | 2 | 3;
 
 function createManager(initialState, parent, onChange, onSubmit) {
   let state = initialState;
@@ -39,9 +41,15 @@ function createManager(initialState, parent, onChange, onSubmit) {
 
       const newState = Array.isArray(state) ? state.slice() : Object.assign({}, state);
       if (op === OP_ARRAY_INSERT) {
-        newState.splice(name, 0, value);
+        if (name === -1) {
+          newState.push(value);
+        } else {
+          newState.splice(name, 0, value);
+        }
       } else if (op === OP_ARRAY_REMOVE) {
         newState.splice(name, 1);
+      } else if (op === OP_ARRAY_CLEAR) {
+        newState.length = 0;
       } else {
         newState[name] = newValue;
       }
@@ -84,6 +92,8 @@ function createManager(initialState, parent, onChange, onSubmit) {
         }
       };
     },
+
+    // Validation is run in a way to not run it reduntantly during the submission process
     validate: (check, fn) => {
       const validation = {
         done: null,
@@ -117,17 +127,19 @@ function createManager(initialState, parent, onChange, onSubmit) {
       try {
         formState = FORM_STATE_BUSY;
         const res = await Promise.all(validators.map(v => v.confirm()));
-        if (res.reduce((r, d) => r || d === false, false)) {
-          formState = FORM_STATE_ERROR;
-          return false;
+        for (let i = 0; i < res.length; i += 1) {
+          if (res[i] === false) throw new ValidationError();
         }
+
         formState = FORM_STATE_NORMAL;
         if (onChange) onChange(state);
-        if (onSubmit) onSubmit(state);
-        return true;
+        if (onSubmit) return onSubmit(state);
+
+        // In case there is no onSubmit defined, return undefined
+        return state;
       } catch (err) {
         formState = FORM_STATE_ERROR;
-        return false;
+        throw err;
       }
     },
   };
