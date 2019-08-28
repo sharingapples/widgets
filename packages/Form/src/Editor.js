@@ -121,7 +121,7 @@ function createManager(initialState, parent, onChange, onSubmit) {
       requiresSubmit += 1;
       return () => { requiresSubmit -= 1; };
     },
-    submit: async () => {
+    submit: async (source) => {
       // Run all the validators
 
       try {
@@ -133,7 +133,7 @@ function createManager(initialState, parent, onChange, onSubmit) {
 
         formState = FORM_STATE_NORMAL;
         if (onChange) onChange(state);
-        if (onSubmit) return onSubmit(state);
+        if (onSubmit) return onSubmit(state, source);
 
         // In case there is no onSubmit defined, return undefined
         return state;
