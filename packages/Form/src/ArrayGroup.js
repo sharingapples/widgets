@@ -13,6 +13,14 @@ export default function ArrayGroup({ name, onSubmit, ...other }: Props) {
   const [value, onChange] = useFormInput(name, []);
   const parent = useEditor();
 
+  const updateInitialState = useCallback((childName, fn) => {
+    parent.updateInitialState(name, (prev) => {
+      const res = prev || [];
+      res[name] = typeof fn === 'function' ? fn(res[name]) : fn;
+      return res;
+    });
+  }, []);
+
   if (__DEV__) {
     if (!Array.isArray(value)) {
       // eslint-disable-next-line no-console
@@ -27,6 +35,7 @@ export default function ArrayGroup({ name, onSubmit, ...other }: Props) {
       parent={parent}
       onChange={onChange}
       onSubmit={onSubmit}
+      updateInitialState={updateInitialState}
     />
   );
 }
