@@ -13,7 +13,7 @@ export default function useFormInput(name, defaultValue) {
   });
 
   useEffect(() => {
-    return subscribe(name, setValue);
+    return subscribe(name, setValue, defaultValue);
   // subscribe function is static
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name]);
