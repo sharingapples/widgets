@@ -1,6 +1,6 @@
 /* global __DEV__ */
 // @flow
-import React from 'react';
+import React, { useCallback } from 'react';
 import useFormInput from './useFormInput';
 import Editor, { useEditor } from './Editor';
 
@@ -16,7 +16,7 @@ export default function ArrayGroup({ name, onSubmit, ...other }: Props) {
   const updateInitialState = useCallback((childName, fn) => {
     parent.updateInitialState(name, (prev) => {
       const res = prev || [];
-      res[name] = typeof fn === 'function' ? fn(res[name]) : fn;
+      res[childName] = typeof fn === 'function' ? fn(res[name]) : fn;
       return res;
     });
   }, []);

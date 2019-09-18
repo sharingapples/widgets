@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { useCallback } from 'react';
 import useFormInput from './useFormInput';
 import Editor, { useEditor } from './Editor';
 
@@ -14,11 +14,15 @@ export default function Group({ name, onSubmit, defaultValue, ...other }: Props)
   const parent = useEditor();
 
   const updateInitialState = useCallback((childName, fn) => {
-    parent.updateInitialState(name, prev => ({
-      ...defaultValue,
-      ...prev,
-      [childName]: typeof fn === 'function' ? fn(prev[childName]) : fn,
-    }));
+    if (parent.updateInitialState) {
+      parent.updateInitialState(name, (prev) => {
+        return ({
+          ...defaultValue,
+          ...prev,
+          [childName]: typeof fn === 'function' ? fn(prev[childName]) : fn,
+        });
+      });
+    }
   }, []);
 
   return (
