@@ -31,6 +31,7 @@ function createManager(initialState, parent, onChange, onSubmit, updateInitialSt
     getParent: () => parent,
     getState: () => state,
     getFormState: () => formState,
+    updateInitialState,
 
     dispatch: (name: string | number, value: any, op: ?Operations = OP_NORMAL) => {
       const newValue = typeof value === 'function' ? value(state[name]) : value;
@@ -77,8 +78,7 @@ function createManager(initialState, parent, onChange, onSubmit, updateInitialSt
           mappedSubscriptions.splice(idx, 1);
         };
       }
-
-      if (defaultValue !== undefined) {
+      if (defaultValue !== undefined && updateInitialState) {
         updateInitialState(name, defaultValue);
       }
 
@@ -161,9 +161,12 @@ type Props = {
   onChange: ({}) => void,
   onSubmit: ?({}) => void,
   parent?: ?{},
+  updateInitialState: () => void,
 };
 
-export default function Editor({ value, onChange, onSubmit, parent, updateInitialState, ...other }: Props) {
+export default function Editor({
+  value, onChange, onSubmit, parent, updateInitialState, ...other
+}: Props) {
   const [instance, setInstance] = useState(null);
   useEffect(() => {
     if (instance !== null) {
@@ -181,6 +184,7 @@ export default function Editor({ value, onChange, onSubmit, parent, updateInitia
   if (instance === null) {
     return null;
   }
+
 
   return <EditorContext.Provider value={instance} {...other} />;
 }
