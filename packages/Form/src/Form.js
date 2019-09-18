@@ -18,7 +18,7 @@ const Form = ({ defaultValue, onSubmit, ...other }: Props) => {
     };
   }, []);
 
-  const interceptSubmit = useCallBack((state, source) => {
+  const interceptSubmit = useCallback((state, source) => {
     if (onSubmit) {
       onSubmit({
         ...initialState.current,
@@ -27,7 +27,7 @@ const Form = ({ defaultValue, onSubmit, ...other }: Props) => {
     }
   }, []);
 
-  return <Editor {...other} value={defaultValue} onSubmit={interceptSubmit} updateIntiialState={updateIntiialState} />;
+  return <Editor {...other} value={defaultValue} onSubmit={interceptSubmit} updateInitialState={updateInitialState} />;
 };
 
 Form.defaultProps = {
