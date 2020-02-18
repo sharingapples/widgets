@@ -9,9 +9,8 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/sharingapples/widgets"
   s.license      = package['license']
   s.author       = { "Ranjan Shrestha" => "ranjan@sharingapples.com" }
-  s.platform     = :ios, "9.0"
-  s.source       = { :git => "https://github.com/sharingapples/widgets.git", :tag => "#{s.version}" }
-  s.source_files = "ios/*.{h,m}"
+  s.source       = { :git => "https://github.com/sharingapples/widgets.git", :tag => "master" }
+  s.source_files = "packages/SafePadding/ios/**/*.{h,m}"
 
   s.dependency "React"
 end
