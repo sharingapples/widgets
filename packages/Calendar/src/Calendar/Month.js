@@ -109,7 +109,7 @@ function Month({ start, setView, date, selectDate, ...other }: Props) {
               setDimension({
                 width: width / SEVEN_DAYS,
                 height: height / NUM_OF_WEEKS,
-                x: 5,
+                x: pageX,
                 y: pageY,
               });
             });
