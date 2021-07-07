@@ -1,6 +1,6 @@
 /* global __DEV__ */
 // @flow
-import React from 'react';
+import React, { useCallback } from 'react';
 import useFormInput from './useFormInput';
 import Editor, { useEditor } from './Editor';
 
@@ -12,6 +12,14 @@ type Props = {
 export default function ArrayGroup({ name, onSubmit, ...other }: Props) {
   const [value, onChange] = useFormInput(name, []);
   const parent = useEditor();
+
+  const updateInitialState = useCallback((childName, fn) => {
+    parent.updateInitialState(name, (prev) => {
+      const res = prev || [];
+      res[childName] = typeof fn === 'function' ? fn(res[name]) : fn;
+      return res;
+    });
+  }, []);
 
   if (__DEV__) {
     if (!Array.isArray(value)) {
@@ -27,6 +35,7 @@ export default function ArrayGroup({ name, onSubmit, ...other }: Props) {
       parent={parent}
       onChange={onChange}
       onSubmit={onSubmit}
+      updateInitialState={updateInitialState}
     />
   );
 }

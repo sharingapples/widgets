@@ -18,7 +18,7 @@ export const OP_ARRAY_CLEAR = 3;
 
 type Operations = 0 | 1 | 2 | 3;
 
-function createManager(initialState, parent, onChange, onSubmit) {
+function createManager(initialState, parent, onChange, onSubmit, updateInitialState) {
   let state = initialState;
   let formState: FormStates = FORM_STATE_NORMAL;
   const namedSubscriptions = {};
@@ -31,6 +31,7 @@ function createManager(initialState, parent, onChange, onSubmit) {
     getParent: () => parent,
     getState: () => state,
     getFormState: () => formState,
+    updateInitialState,
 
     dispatch: (name: string | number, value: any, op: ?Operations = OP_NORMAL) => {
       const newValue = typeof value === 'function' ? value(state[name]) : value;
@@ -68,7 +69,7 @@ function createManager(initialState, parent, onChange, onSubmit) {
         if (onChange) onChange(newState);
       }
     },
-    subscribe: (name: string | () => any, listener: (any) => void) => {
+    subscribe: (name: string | () => any, listener: (any) => void, defaultValue) => {
       if (typeof name === 'function') {
         const tuple = [listener, name];
         mappedSubscriptions.push(tuple);
@@ -76,6 +77,9 @@ function createManager(initialState, parent, onChange, onSubmit) {
           const idx = mappedSubscriptions.indexOf(tuple);
           mappedSubscriptions.splice(idx, 1);
         };
+      }
+      if (defaultValue !== undefined && updateInitialState) {
+        updateInitialState(name, defaultValue);
       }
 
       const arr = namedSubscriptions[name] || [];
@@ -157,9 +161,12 @@ type Props = {
   onChange: ({}) => void,
   onSubmit: ?({}) => void,
   parent?: ?{},
+  updateInitialState: () => void,
 };
 
-export default function Editor({ value, onChange, onSubmit, parent, ...other }: Props) {
+export default function Editor({
+  value, onChange, onSubmit, parent, updateInitialState, ...other
+}: Props) {
   const [instance, setInstance] = useState(null);
   useEffect(() => {
     if (instance !== null) {
@@ -167,7 +174,7 @@ export default function Editor({ value, onChange, onSubmit, parent, ...other }: 
       console.warn('The editor onChange parameter is not expected to change');
     }
 
-    setInstance(createManager(value, parent, onChange, onSubmit));
+    setInstance(createManager(value, parent, onChange, onSubmit, updateInitialState));
 
     // The useEffect hook is expected to be called only once,
     // hence, a warning above and dependency on `onChange` only.
@@ -177,6 +184,7 @@ export default function Editor({ value, onChange, onSubmit, parent, ...other }: 
   if (instance === null) {
     return null;
   }
+
 
   return <EditorContext.Provider value={instance} {...other} />;
 }
