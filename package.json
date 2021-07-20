@@ -19,7 +19,7 @@
     "@sharingapples/theme": "^1.0.0",
     "@sharingapples/wizard": "^1.0.0",
     "react": "16.8.3",
-    "react-native": "0.59.4"
+    "react-native": "0.62.3"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
